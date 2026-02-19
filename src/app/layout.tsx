@@ -11,8 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://crosti-focaccias.com"),
-
+  metadataBase: new URL("https://crosti-focaccias.vercel.app"),
   title: {
     default: "Crosti Focaccias | Focaccias Artesanales en Mar del Plata",
     template: "%s | Crosti Focaccias",
@@ -43,7 +42,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     type: "website",
-    url: "https://crosti-focaccias.com",
+    url: "https://crosti-focaccias.vercel.app",
     title:
       "Crosti Focaccias | Focaccias Artesanales en Mar del Plata",
     description:
@@ -97,7 +96,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Restaurant",
               name: "Crosti Focaccias",
-              image: "https://crosti-focaccias.com/LogoCrosti.png",
+              image: "https://crosti-focaccias.vercel.app/LogoCrosti.png",
               address: {
                 "@type": "PostalAddress",
                 addressLocality: "Mar del Plata",
