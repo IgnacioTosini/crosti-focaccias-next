@@ -1,7 +1,7 @@
 import { OurMenuClient } from './OurMenuClient/OurMenuClient'
 
 async function getFocacciasServer() {
-  const res = await fetch('http://localhost:8080/api/focaccias', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/focaccias`, {
     cache: 'no-store',
   });
 
