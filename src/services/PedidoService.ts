@@ -1,10 +1,7 @@
 import axios from "axios";
 import type { Pedido, PedidoRequest, ApiResponse } from "../types";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL?.replace(
-    "/focaccias",
-    "/pedidos"
-) || "http://localhost:8080/api/pedidos";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8080/api/pedidos";
 
 export const pedidoService = {
     create: async (data: PedidoRequest): Promise<ApiResponse<Pedido>> => {
@@ -13,17 +10,17 @@ export const pedidoService = {
     },
 
     getAll: async (): Promise<ApiResponse<Pedido[]>> => {
-        const res = await axios.get(BASE_URL);
+        const res = await axios.get(`${BASE_URL}/pedidos`);
         return res.data;
     },
 
     getById: async (id: number): Promise<ApiResponse<Pedido>> => {
-        const res = await axios.get(`${BASE_URL}/${id}`);
+        const res = await axios.get(`${BASE_URL}/pedidos/${id}`);
         return res.data;
     },
 
     delete: async (id: number): Promise<ApiResponse<Pedido>> => {
-        const res = await axios.delete(`${BASE_URL}/${id}`);
+        const res = await axios.delete(`${BASE_URL}/pedidos/${id}`);
         return res.data;
     },
 
@@ -31,7 +28,7 @@ export const pedidoService = {
         phone: string
     ): Promise<ApiResponse<Pedido[]>> => {
         const res = await axios.get(
-            `${BASE_URL}/buscar/telefono/${encodeURIComponent(phone)}`
+            `${BASE_URL}/pedidos/buscar/telefono/${encodeURIComponent(phone)}`
         );
         return res.data;
     },

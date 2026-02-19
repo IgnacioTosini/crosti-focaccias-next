@@ -8,7 +8,6 @@ type AdminOrderCardProps = {
 }
 
 export const AdminOrderCard = ({ order }: AdminOrderCardProps) => {
-    console.log(order)
     const deletePedido = useDeletePedido();
     return (
         <div className='adminOrderCard'>
