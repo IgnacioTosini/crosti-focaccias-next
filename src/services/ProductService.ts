@@ -5,17 +5,17 @@ const BASE_URL_PRODUCT =
 
 export class ProductService {
     static async getFocaccias() {
-        const { data } = await axios.get(BASE_URL_PRODUCT);
+        const { data } = await axios.get(`${BASE_URL_PRODUCT}/focaccias`);
         return data;
     }
 
     static async getFocacciaById(id: number) {
-        const { data } = await axios.get(`${BASE_URL_PRODUCT}/${id}`);
+        const { data } = await axios.get(`${BASE_URL_PRODUCT}/focaccias/${id}`);
         return data;
     }
 
     static async getFeaturedFocaccias() {
-        const { data } = await axios.get(`${BASE_URL_PRODUCT}/featured`);
+        const { data } = await axios.get(`${BASE_URL_PRODUCT}/focaccias/featured`);
         return data;
     }
 }
