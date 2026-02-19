@@ -1,0 +1,13 @@
+@use '../../styles/variables' as *;
+@use 'sass:color';
+
+.abmPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100dvh;
+
+    .abmPageContent {
+        margin: 1rem;
+    }
+}
