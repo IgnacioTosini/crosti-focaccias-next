@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL?.replace('/api/focaccias', '') || 'http://localhost:8080';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080';
 
 export interface ChatMessage {
     id: string;
@@ -34,7 +34,7 @@ class ChatbotServiceClass {
             };
 
             const response = await axios.post<ChatResponse>(
-                `${BASE_URL}/api/chatbot/message`,
+                `${BASE_URL}/chatbot/message`,
                 request,
                 {
                     headers: {
