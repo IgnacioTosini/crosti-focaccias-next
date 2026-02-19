@@ -10,11 +10,17 @@
     background-color: $primary-color;
     padding: 2rem 1rem;
 
-    .bannerImage {
+    .bannerContainer {
+        position: relative;
         width: 100%;
         max-width: clamp(150px, 30%, 250px);
+        aspect-ratio: 1 / 1; // mantiene forma cuadrada
         margin-bottom: 1rem;
-        border-radius: 2rem;
+
+        .bannerImage {
+            object-fit: contain;
+            border-radius: 2rem;
+        }
     }
 
     .bannerText {

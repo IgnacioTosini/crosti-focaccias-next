@@ -14,14 +14,15 @@ export const Banner = () => {
 
   return (
     <div className="banner">
-      <Image
-        className="bannerImage"
-        src="/CrostiSinFondo.png"
-        alt="Banner de focaccias"
-        width={250}
-        height={250}
-        priority
-      />
+      <div className="bannerContainer">
+        <Image
+          src="/CrostiSinFondo.png"
+          alt="Banner de focaccias"
+          fill
+          priority
+          className="bannerImage"
+        />
+      </div>
       <div className="bannerText">
         <h1 className="bannerTitle">La ola de sabor en
           <span>La Feliz 🌊</span>
