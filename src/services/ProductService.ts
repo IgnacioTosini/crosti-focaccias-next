@@ -5,7 +5,6 @@ const BASE_URL_PRODUCT =
 
 export class ProductService {
     static async getFocaccias() {
-        console.log('Fetching focaccias from API...');
         const { data } = await axios.get(`${BASE_URL_PRODUCT}/focaccias`);
         return data;
     }
