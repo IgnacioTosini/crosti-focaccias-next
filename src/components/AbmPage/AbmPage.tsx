@@ -14,6 +14,7 @@ export const AbmPage = () => {
   const [focacciaEdit, setFocacciaEdit] = useState<FocacciaItem | null>(null);
 
   const { data, isLoading, error } = useFocaccias();
+  console.log(data);
 
   if (isLoading) return <p>Cargando...</p>;
   if (error) return <p>Error...</p>;
