@@ -3,7 +3,6 @@ import axios from "axios";
 
 export async function POST(req: NextRequest) {
     const formData = await req.formData();
-    console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/cloudinary/upload`)
 
     const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/cloudinary/upload`,
