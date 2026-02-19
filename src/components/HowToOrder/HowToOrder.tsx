@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import { FiMessageCircle } from 'react-icons/fi'
 import { FaMapMarkerAlt } from 'react-icons/fa'

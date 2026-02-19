@@ -1,4 +1,5 @@
 import { pedidoService } from "@/services/PedidoService";
+import { useCartStore } from "@/store/cart.store";
 import { useQuery } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -30,6 +31,7 @@ export const useCreatePedido = () => {
         mutationFn: pedidoService.create,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["pedidos"] });
+            useCartStore.getState().clearCart();
         },
     });
 };
