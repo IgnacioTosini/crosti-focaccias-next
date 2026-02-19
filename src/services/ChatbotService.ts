@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { env } from '../config/env';
 
-const BASE_URL = env.NEXT_PUBLIC_BASE_URL?.replace('/api/focaccias', '') || 'http://localhost:8080';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL?.replace('/api/focaccias', '') || 'http://localhost:8080';
 
 export interface ChatMessage {
     id: string;

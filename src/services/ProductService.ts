@@ -1,8 +1,7 @@
 import axios from "axios";
-import { env } from "../config/env";
 
 const BASE_URL_PRODUCT =
-    env.NEXT_PUBLIC_BASE_URL || "http://localhost:8080/api/focaccias";
+    process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8080/api/focaccias";
 
 export class ProductService {
     static async getFocaccias() {

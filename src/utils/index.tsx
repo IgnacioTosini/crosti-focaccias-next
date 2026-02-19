@@ -1,7 +1,5 @@
-import { env } from '../config/env';
-
 export const handleWhatsAppClick = () => {
-    window.open(`https://wa.me/${env.NEXT_PUBLIC_WHATSAPP_NUMBER || ''}`, '_blank');
+    window.open(`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ''}`, '_blank');
 };
 
 export const handleInstagramClick = () => {

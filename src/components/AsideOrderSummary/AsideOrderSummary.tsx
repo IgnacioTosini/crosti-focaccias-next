@@ -9,7 +9,6 @@ import { FiMessageCircle } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 import { phoneSchema, createPedidoSchema } from '../../schemas/pedidoSchema';
-import { env } from '../../config/env';
 import { animateAsideOrderSummaryOpen, animateAsideOrderSummaryClose } from '../../animations';
 import { useCreatePedido } from '@/hooks/usePedidost';
 import { useCartStore } from '@/store/cart.store';
@@ -123,7 +122,7 @@ export const AsideOrderSummary = () => {
             await createPedido.mutate(validatedData);
 
             const message = generateOrderMessage();
-            const businessWhatsApp = env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
+            const businessWhatsApp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
 
             // Abrir WhatsApp del negocio con el mensaje del cliente
             const whatsappUrl = `https://wa.me/${businessWhatsApp}?text=${encodeURIComponent(message)}`;
