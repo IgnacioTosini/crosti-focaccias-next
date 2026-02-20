@@ -5,5 +5,7 @@ export const useFocaccias = () => {
     return useQuery({
         queryKey: ['focaccias'],
         queryFn: ProductService.getFocaccias,
-    });
+        staleTime: 1000 * 60 * 60 * 24, // 24 horas
+    },
+    )
 };

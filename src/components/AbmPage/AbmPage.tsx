@@ -14,8 +14,6 @@ export const AbmPage = () => {
   const [focacciaEdit, setFocacciaEdit] = useState<FocacciaItem | null>(null);
 
   const { data, isLoading, error } = useFocaccias();
-  console.log(data);
-  console.log(process.env.NEXT_PUBLIC_BASE_URL);
   if (isLoading) return <p>Cargando...</p>;
   if (error) return <p>Error...</p>;
 
@@ -36,7 +34,7 @@ export const AbmPage = () => {
           />
         )}
         <ProductList
-          focaccias={data}
+          focaccias={data?.data}
           onEdit={(item) => {
             setFocacciaEdit(item);
             setIsOpen(true);

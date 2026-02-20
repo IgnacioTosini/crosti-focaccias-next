@@ -10,6 +10,7 @@ export const usePedidos = () => {
             const res = await pedidoService.getAll();
             return res.data;
         },
+        staleTime: 1000 * 60 * 60 * 24 * 7, // 7 dias
     });
 };
 
