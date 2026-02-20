@@ -4,8 +4,11 @@ import { ProductService } from '@/services/ProductService';
 export const useFocaccias = () => {
     return useQuery({
         queryKey: ['focaccias'],
-        queryFn: ProductService.getFocaccias,
-        staleTime: 1000 * 60 * 60 * 24, // 24 horas
+        queryFn: async () => {
+            const res = await ProductService.getFocaccias();
+            return res.data;
+        },
+        staleTime: 1000 * 60 * 60 * 4, // 4 horas
     },
     )
 };

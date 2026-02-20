@@ -14,6 +14,7 @@ export const AbmPage = () => {
   const [focacciaEdit, setFocacciaEdit] = useState<FocacciaItem | null>(null);
 
   const { data, isLoading, error } = useFocaccias();
+  const focacciasArray = Array.isArray(data) ? data : [];
   if (isLoading) return <p>Cargando...</p>;
   if (error) return <p>Error...</p>;
 
@@ -34,7 +35,7 @@ export const AbmPage = () => {
           />
         )}
         <ProductList
-          focaccias={data?.data}
+          focaccias={focacciasArray}
           onEdit={(item) => {
             setFocacciaEdit(item);
             setIsOpen(true);
