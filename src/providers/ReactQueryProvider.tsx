@@ -11,8 +11,8 @@ export function ReactQueryProvider({ children }: { children: React.ReactNode }) 
         new QueryClient({
             defaultOptions: {
                 queries: {
-                    staleTime: 1000 * 60 * 5,        // 5 min (mejor que 24h)
-                    gcTime: 1000 * 60 * 30,          // 30 min
+                    staleTime: 1000 * 60 * 5,   // 5 min
+                    gcTime: 1000 * 60 * 30,     // 30 min
                     refetchOnWindowFocus: false,
                     retry: 2,
                 },
@@ -20,16 +20,22 @@ export function ReactQueryProvider({ children }: { children: React.ReactNode }) 
         })
     )
 
-    const persister = createAsyncStoragePersister({
-        storage: typeof window !== 'undefined' ? window.localStorage : undefined,
-    })
+    const [persister] = useState(() =>
+        createAsyncStoragePersister({
+            storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+        })
+    )
 
     return (
         <PersistQueryClientProvider
             client={queryClient}
             persistOptions={{
                 persister,
-                maxAge: 1000 * 60 * 60 * 24, // 24h
+                maxAge: 1000 * 60 * 60 * 24,
+                buster: "crosti-v1"
+            }}
+            onSuccess={() => {
+                queryClient.resumePausedMutations()
             }}
         >
             {children}
