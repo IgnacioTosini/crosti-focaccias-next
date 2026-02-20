@@ -15,6 +15,8 @@ export const AbmPage = () => {
 
   const { data, isLoading, error } = useFocaccias();
   const focacciasArray = Array.isArray(data) ? data : [];
+  console.log(data);
+  console.log(focacciasArray);
   if (isLoading) return <p>Cargando...</p>;
   if (error) return <p>Error...</p>;
 
