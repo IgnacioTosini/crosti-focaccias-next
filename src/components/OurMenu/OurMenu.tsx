@@ -11,7 +11,7 @@ import { SmartLoading } from '../SmartLoading/SmartLoading'
 import './_ourMenu.scss'
 
 export default function OurMenu() {
-  const { data, isLoading, isFetching } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['focaccias'],
     queryFn: ProductService.getFocaccias,
     staleTime: 1000 * 60 * 5,
@@ -38,23 +38,10 @@ export default function OurMenu() {
   const hasMoreToShow =
     focaccias.length > 4 && !showAll
 
-  if (isLoading) {
-    return (
-      <div className='ourMenu'>
-        <h2 className='ourMenuTitle'>Nuestras Focaccias</h2>
-        <div className='menuItemsContainer'>
-          <SmartLoading type="skeleton" count={4} />
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className='ourMenu'>
       <h2 className='ourMenuTitle'>Nuestras Focaccias</h2>
-
       <div className='menuItemsContainer'>
-
         {!hasData ? (
           <div className='emptyState'>
             <p>No hay focaccias disponibles en este momento.</p>
