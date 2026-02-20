@@ -9,7 +9,6 @@ import OurMenu from '../OurMenu/OurMenu';
 import { CartUI } from '../CartUI/CartUI'
 import './_homePage.scss'
 
-
 export const HomePage = () => {
     return (
         <main className="homePage">
