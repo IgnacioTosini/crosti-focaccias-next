@@ -6,7 +6,7 @@ const BASE_URL_PRODUCT =
 export class ProductService {
     static async getFocaccias() {
         const { data } = await axios.get(`${BASE_URL_PRODUCT}/focaccias`);
-        return data;
+        return data.data;
     }
 
     static async getFocacciaById(id: number) {

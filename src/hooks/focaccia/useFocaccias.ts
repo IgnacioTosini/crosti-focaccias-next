@@ -6,7 +6,7 @@ export const useFocaccias = () => {
         queryKey: ['focaccias'],
         queryFn: async () => {
             const res = await ProductService.getFocaccias();
-            return res.data;
+            return res;
         },
         staleTime: 1000 * 60 * 60 * 4, // 4 horas
     },
