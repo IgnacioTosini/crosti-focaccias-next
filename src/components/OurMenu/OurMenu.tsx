@@ -64,7 +64,7 @@ export default function OurMenu() {
             )}
 
             {/* Skeleton solo para refetch */}
-            {isFetching && (
+            {isFetching && !data && (
               <SmartLoading type="skeleton" count={3} />
             )}
           </>
