@@ -1,14 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import { ProductService } from '@/services/ProductService';
+import type { FocacciaItem } from '@/types';
 
-export const useFocaccias = () => {
+const PRODUCTS_CACHE_TIME = 1000 * 60 * 30;
+
+export const useFocaccias = (initialData?: FocacciaItem[]) => {
     return useQuery({
         queryKey: ['focaccias'],
-        queryFn: async () => {
-            const res = await ProductService.getFocaccias();
-            return res;
-        },
-        staleTime: 1000 * 60 * 60 * 4, // 4 horas
-    },
-    )
+        queryFn: ProductService.getFocaccias,
+        staleTime: PRODUCTS_CACHE_TIME,
+        initialData,
+        initialDataUpdatedAt: initialData?.length ? Date.now() : undefined,
+        placeholderData: (previousData) => previousData,
+    });
 };

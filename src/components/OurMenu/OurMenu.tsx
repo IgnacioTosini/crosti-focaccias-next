@@ -1,21 +1,20 @@
 'use client'
 
 import { animateOurMenu } from '@/animations'
-import { ProductService } from '@/services/ProductService'
+import { useFocaccias } from '@/hooks/focaccia/useFocaccias'
 import { FocacciaItem } from '@/types'
-import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState, useEffect } from 'react'
 import { FaRegLightbulb } from 'react-icons/fa'
 import { ItemCard } from '../ItemCard/ItemCard'
 import { SmartLoading } from '../SmartLoading/SmartLoading'
 import './_ourMenu.scss'
 
-export default function OurMenu() {
-  const { data, isFetching } = useQuery({
-    queryKey: ['focaccias'],
-    queryFn: ProductService.getFocaccias,
-    staleTime: 1000 * 60 * 5,
-  })
+interface OurMenuProps {
+  initialFocaccias?: FocacciaItem[]
+}
+
+export default function OurMenu({ initialFocaccias }: OurMenuProps) {
+  const { data, isLoading, isFetching, isError } = useFocaccias(initialFocaccias)
 
   const focaccias = useMemo(() => {
     return data ?? []
@@ -42,7 +41,13 @@ export default function OurMenu() {
     <div className='ourMenu'>
       <h2 className='ourMenuTitle'>Nuestras Focaccias</h2>
       <div className='menuItemsContainer'>
-        {!hasData ? (
+        {isLoading && !hasData ? (
+          <SmartLoading type="initial" count={4} message="Cargando nuestras focaccias..." />
+        ) : isError && !hasData ? (
+          <div className='emptyState'>
+            <p>No pudimos cargar el menú ahora mismo. Intentá nuevamente en unos segundos.</p>
+          </div>
+        ) : !hasData ? (
           <div className='emptyState'>
             <p>No hay focaccias disponibles en este momento.</p>
           </div>
@@ -63,9 +68,8 @@ export default function OurMenu() {
               </div>
             )}
 
-            {/* Skeleton solo para refetch */}
-            {isFetching && !data && (
-              <SmartLoading type="skeleton" count={3} />
+            {isFetching && hasData && (
+              <SmartLoading type="more" />
             )}
           </>
         )}

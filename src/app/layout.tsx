@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "@/providers/Providers";
 import { ToastContainer } from "react-toastify";
+import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -106,6 +107,7 @@ export default function RootLayout({
             }),
           }}
         />
+        <Analytics />
       </body>
     </html>
   );
