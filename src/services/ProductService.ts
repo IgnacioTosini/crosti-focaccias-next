@@ -5,7 +5,7 @@ const PRODUCT_CACHE_KEY = "crosti-focaccias-cache";
 
 const api = axios.create({
     baseURL: "/api",
-    timeout: 8000,
+    timeout: 10000,
 });
 
 const unwrapResponse = <T>(payload: T | { data: T }) => {
