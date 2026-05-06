@@ -10,18 +10,10 @@ export const usePedidos = () => {
             const res = await pedidoService.getAll();
             return res.data;
         },
-        staleTime: 1000 * 60 * 60 * 24 * 7, // 7 dias
-    });
-};
-
-export const usePedido = (id: number) => {
-    return useQuery({
-        queryKey: ["pedido", id],
-        queryFn: async () => {
-            const res = await pedidoService.getById(id);
-            return res.data;
-        },
-        enabled: !!id,
+        // En admin conviene priorizar datos frescos para no mostrar listas cacheadas vacias.
+        staleTime: 0,
+        refetchOnMount: "always",
+        refetchOnWindowFocus: true,
     });
 };
 
@@ -30,8 +22,19 @@ export const useCreatePedido = () => {
 
     return useMutation({
         mutationFn: pedidoService.create,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["pedidos"] });
+        onSuccess: (response) => {
+            const createdPedido = response.data;
+
+            queryClient.setQueryData(["pedidos"], (current: unknown) => {
+                const currentPedidos = Array.isArray(current) ? current : [];
+                const withoutCreated = currentPedidos.filter(
+                    (pedido: { id?: number }) => pedido.id !== createdPedido.id
+                );
+
+                return [createdPedido, ...withoutCreated];
+            });
+
+            queryClient.invalidateQueries({ queryKey: ["pedidos"], refetchType: "inactive" });
             useCartStore.getState().clearCart();
         },
     });
@@ -42,8 +45,15 @@ export const useDeletePedido = () => {
 
     return useMutation({
         mutationFn: pedidoService.delete,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["pedidos"] });
+        onSuccess: (_, deletedId) => {
+            queryClient.setQueryData(["pedidos"], (current: unknown) => {
+                const currentPedidos = Array.isArray(current) ? current : [];
+                return currentPedidos.filter(
+                    (pedido: { id?: number }) => pedido.id !== deletedId
+                );
+            });
+
+            queryClient.invalidateQueries({ queryKey: ["pedidos"], refetchType: "inactive" });
         },
     });
 };

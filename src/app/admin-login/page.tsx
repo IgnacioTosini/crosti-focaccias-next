@@ -8,25 +8,28 @@ import './_adminLogin.scss'
 export default function AdminLoginPage() {
     const router = useRouter()
 
-    const handleLogin = async () => {
-        const password = (document.getElementById('password') as HTMLInputElement)?.value;
-        if (password !== process.env.NEXT_PUBLIC_SECRET_API_KEY) {
-            toast.error('Clave incorrecta');
+    const handleLogin = async (password: string) => {
+        const result = await loginAdmin(password)
+
+        if (result.error) {
+            toast.error(result.error)
             return;
         }
-        await loginAdmin()
+
         router.push('/admin')
     }
 
     return (
         <form className='adminLoginForm' onSubmit={(e) => {
             e.preventDefault()
-            handleLogin()
+            const formData = new FormData(e.currentTarget)
+            const password = String(formData.get('password') ?? '')
+            handleLogin(password)
         }}>
             <h1>Login Admin</h1>
             <label htmlFor="password">Contraseña:</label>
-            <input id="password" type="password" />
-            <button onClick={handleLogin}>
+            <input id="password" name='password' type="password" />
+            <button type='submit'>
                 Ingresar como administrador
             </button>
         </form>

@@ -43,7 +43,6 @@ export class ProductService {
         try {
             const { data } = await api.get("/focaccias");
             const focaccias = unwrapResponse<FocacciaItem[]>(data);
-
             writeCachedFocaccias(focaccias);
             return focaccias;
         } catch (error) {

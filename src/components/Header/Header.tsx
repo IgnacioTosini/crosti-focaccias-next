@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
-import { IoCartOutline, IoPersonOutline } from 'react-icons/io5';
+import { IoCartOutline } from 'react-icons/io5';
 import { animateHeader } from '../../animations';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useCartStore } from '@/store/cart.store';
 import './_header.scss'
 
@@ -24,26 +23,18 @@ export const Header = () => {
     <div className='header'>
       <div className='logoContainer'>
         <Image src="/LogoCrosti.png" alt="Crosti Logo" width={50} height={50} />
-        <h1>Crosti</h1>
+        <button className='logoText' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <h1>Crosti</h1>
+        </button>
       </div>
       <nav className='navLinks'>
         <ul>
-          <li>
-            <a
-              href="#menu"
-            >
-              Menú
-            </a>
-          </li>
           <li><a href="#sobre-nosotros">Sobre nosotros</a></li>
+          <li><a href="#menu">Menú</a></li>
           <li><a href="#contacto">Contacto</a></li>
         </ul>
         <div className='buttonsContainer'>
           <button className='primaryButton' onClick={() => setIsOrderOpen(true)}><IoCartOutline /><span>Carrito</span><span>{preOrder.quantity}</span></button>
-          <Link href="/admin" className="secondaryButton">
-            <IoPersonOutline />
-            <span>Admin</span>
-          </Link>
         </div>
       </nav>
     </div>

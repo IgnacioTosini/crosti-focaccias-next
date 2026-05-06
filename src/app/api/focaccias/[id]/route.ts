@@ -1,17 +1,17 @@
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
+import { prisma } from "@/lib/prisma";
 
-const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8080/api";
-const API_HEADERS = process.env.INTERNAL_API_KEY
-    ? { "X-API-KEY": process.env.INTERNAL_API_KEY }
-    : undefined;
-
-const backend = axios.create({
-    baseURL: BACKEND_BASE_URL,
-    headers: API_HEADERS,
-    timeout: 8000,
-});
+const focacciaSelect = {
+    id: true,
+    name: true,
+    description: true,
+    price: true,
+    isVeggie: true,
+    imageUrl: true,
+    imagePublicId: true,
+    featured: true,
+} as const;
 
 export async function GET(
     request: NextRequest,
@@ -19,25 +19,30 @@ export async function GET(
 ) {
     try {
         const { id } = await params;
+        const focacciaId = Number(id);
 
-        const response = await fetch(`${BACKEND_BASE_URL}/focaccias/${id}`, {
-            headers: API_HEADERS,
-            next: {
-                revalidate: 60 * 30,
-                tags: ["focaccias"],
-            },
-            cache: "force-cache",
+        if (Number.isNaN(focacciaId)) {
+            return NextResponse.json({ error: "Invalid focaccia id" }, { status: 400 });
+        }
+
+        const focaccia = await prisma.focaccia.findUnique({
+            where: { id: focacciaId },
+            select: focacciaSelect,
         });
 
-        if (!response.ok) {
+        if (!focaccia) {
             return NextResponse.json(
                 { error: "Error fetching focaccia" },
-                { status: response.status }
+                { status: 404 }
             );
         }
 
-        const data = await response.json();
-        return NextResponse.json(data);
+        return NextResponse.json({
+            data: {
+                ...focaccia,
+                pedidos: [],
+            },
+        });
     } catch (error) {
         console.error("Error fetching focaccia:", error);
         return NextResponse.json(
@@ -54,17 +59,40 @@ export async function PUT(
     try {
         const body = await request.json();
         const { id } = await params;
+        const focacciaId = Number(id);
 
-        const { data } = await backend.put(`/focaccias/${id}`, body);
+        if (Number.isNaN(focacciaId)) {
+            return NextResponse.json({ error: "Invalid focaccia id" }, { status: 400 });
+        }
+
+        const updated = await prisma.focaccia.update({
+            where: { id: focacciaId },
+            data: {
+                name: body.name,
+                description: body.description,
+                price: Number(body.price),
+                isVeggie: Boolean(body.isVeggie),
+                imageUrl: body.imageUrl,
+                imagePublicId: body.imagePublicId,
+                featured: Boolean(body.featured),
+            },
+            select: focacciaSelect,
+        });
+
         revalidateTag("focaccias", "max");
 
-        return NextResponse.json(data);
+        return NextResponse.json({
+            data: {
+                ...updated,
+                pedidos: [],
+            },
+        });
     } catch (error: unknown) {
-        const axiosError = error as { response?: { data?: unknown; status?: number }; message?: string };
-        console.error(axiosError.response?.data || axiosError.message);
+        const prismaError = error as { message?: string };
+        console.error(prismaError.message || "Error updating focaccia");
         return NextResponse.json(
             { error: "Error updating focaccia" },
-            { status: axiosError.response?.status || 500 }
+            { status: 500 }
         );
     }
 }
@@ -75,17 +103,27 @@ export async function DELETE(
 ) {
     try {
         const { id } = await params;
+        const focacciaId = Number(id);
+        console.log("Deleting focaccia with id:", focacciaId);
 
-        const { data } = await backend.delete(`/focaccias/${id}`);
+        if (Number.isNaN(focacciaId)) {
+            return NextResponse.json({ error: "Invalid focaccia id" }, { status: 400 });
+        }
+
+        await prisma.focaccia.delete({
+            where: { id: focacciaId },
+        });
+
         revalidateTag("focaccias", "max");
 
-        return NextResponse.json(data);
+        return NextResponse.json({ success: true });
     } catch (error: unknown) {
-        const axiosError = error as { response?: { status?: number } };
+        const prismaError = error as { message?: string };
+        console.error(prismaError.message || "Error deleting focaccia");
 
         return NextResponse.json(
             { error: "Error deleting focaccia" },
-            { status: axiosError.response?.status || 500 }
+            { status: 500 }
         );
     }
 }

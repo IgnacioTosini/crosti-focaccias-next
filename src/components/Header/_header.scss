@@ -27,9 +27,14 @@
             border-radius: 2rem;
         }
 
-        h1 {
-            color: $color-text;
-            font-size: $font-size-large;
+        .logoText {
+            border: none;
+            cursor: pointer;
+
+            h1 {
+                color: $color-text;
+                font-size: $font-size-large;
+            }
         }
     }
 

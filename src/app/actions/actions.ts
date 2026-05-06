@@ -5,8 +5,9 @@ import { cookies } from 'next/headers';
 export async function verificationAdmin(formData: FormData) {
     const cookieStore = await cookies();
     const secret = formData.get('secret');
+    const serverSecret = process.env.SECRET_API_KEY ?? process.env.NEXT_PUBLIC_SECRET_API_KEY;
 
-    if (secret !== process.env.NEXT_PUBLIC_SECRET_API_KEY) {
+    if (!serverSecret || secret !== serverSecret) {
         return { error: 'Clave incorrecta' };
     }
 

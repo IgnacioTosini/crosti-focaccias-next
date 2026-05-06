@@ -145,8 +145,6 @@ export const AdminForm = ({ focacciaEdit, onClose }: Props) => {
                   price: Number(values.price),
                   imageUrl,
                   imagePublicId,
-                  id: focacciaEdit.id,
-                  pedidos: focacciaEdit.pedidos,
                 }
               })
               toast.success('Focaccia actualizada exitosamente');
@@ -154,6 +152,8 @@ export const AdminForm = ({ focacciaEdit, onClose }: Props) => {
               setOptimizedImageFile(null);
               setOptimizationStats(null);
               setImageKey(prev => prev + 1); // Forzar re-render del componente imagen
+              resetForm();
+              onClose();
             } else {
               // Modo creación
               await createMutation.mutateAsync({
@@ -168,8 +168,9 @@ export const AdminForm = ({ focacciaEdit, onClose }: Props) => {
               setOptimizedImageFile(null);
               setOptimizationStats(null);
               setImageKey(prev => prev + 1); // Forzar re-render del componente imagen
+              resetForm();
+              onClose();
             }
-            resetForm();
           } catch (err) {
             toast.error('Error al guardar la focaccia: ' + (err));
           } finally {

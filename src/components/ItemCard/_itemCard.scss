@@ -14,7 +14,7 @@
     transition: all 0.2s ease-in-out;
     width: 100%;
     max-width: 350px;
-    height: 450px;
+    height: 480px;
     cursor: pointer;
 
     &:hover {
@@ -26,7 +26,7 @@
         border-radius: 1rem 1rem 0 0;
         overflow: hidden;
         width: 100%;
-        height: 200px;
+        height: 230px;
         object-fit: cover;
 
         .itemImage {
@@ -100,13 +100,16 @@
         font-size: $font-size-large;
         font-weight: $font-weight-extra-bold;
         color: $color-text;
-        padding: 0.5rem 1rem;
+        padding: 1.5rem 1rem;
+        text-align: center;
+        width: 100%;
+        min-height: 100px;
     }
 
     .itemDescription {
         font-size: $font-size-normal;
         color: $color-text-secondary;
-        padding: 0 1rem;
+        padding: 0.5rem 1rem;
         text-align: left;
         flex-grow: 1;
         display: flex;

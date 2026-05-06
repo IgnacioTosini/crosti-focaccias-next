@@ -3,8 +3,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChatbotService, type ChatMessage } from '../../services/ChatbotService';
 import { QUICK_REPLIES, CHATBOT_CONFIG } from '../../config/chatbotConfig';
-import './_chatbot.scss';
 import Image from 'next/image';
+import './_chatbot.scss';
 
 export const Chatbot = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -104,8 +104,8 @@ export const Chatbot = () => {
                     </div>
 
                     <div className="chatbotMessages">
-                        {messages.map((message) => (
-                            <div key={message.id} className={`message ${message.sender}`}>
+                        {messages.map((message, index) => (
+                            <div key={`${message.id}-${index}`} className={`message ${message.sender}`}>
                                 <div className={`messageAvatar ${message.sender}Avatar`}>
                                     {message.sender === 'bot'
                                         ? <Image src={CHATBOT_CONFIG.theme.botAvatar} alt="Bot" width={40} height={40} />

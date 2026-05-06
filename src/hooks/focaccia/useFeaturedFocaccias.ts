@@ -8,6 +8,8 @@ export const useFeaturedFocaccias = () => {
         queryKey: ["featuredFocaccias"],
         queryFn: ProductService.getFeaturedFocaccias,
         staleTime: PRODUCTS_CACHE_TIME,
+        refetchOnMount: 'always',
+        refetchOnReconnect: 'always',
         placeholderData: (previousData) => previousData,
     });
 };

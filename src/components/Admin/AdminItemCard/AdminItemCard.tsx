@@ -4,7 +4,7 @@ import { ItemCategory } from '../../ItemCategory/ItemCategory';
 import { ImageService } from '../../../services/ImageService';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
-import { useDeleteFocaccia } from '@/hooks/focaccia/useDeleteFocaccia ';
+import { useDeleteFocaccia } from '@/hooks/focaccia/useDeleteFocaccia';
 import './_adminItemCard.scss'
 
 type AdminItemCardProps = {
@@ -17,14 +17,16 @@ export const AdminItemCard = ({ item, onEdit }: AdminItemCardProps) => {
 
   const handleDelete = async () => {
     if (!window.confirm('¿Seguro que deseas eliminar esta focaccia?')) return
-
     try {
       if (item.imagePublicId) {
-        await ImageService.deleteImage(item.imagePublicId)
+        const imageDeleteResult = await ImageService.deleteImage(item.imagePublicId)
+
+        if (!imageDeleteResult?.success) {
+          throw new Error(imageDeleteResult?.error ?? 'No se pudo eliminar la imagen en Cloudinary')
+        }
       }
 
       await deleteMutation.mutateAsync(item.id)
-
       toast.success('Focaccia eliminada')
     } catch {
       toast.error('Error al eliminar')

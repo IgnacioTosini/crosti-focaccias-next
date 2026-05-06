@@ -1,0 +1,44 @@
+generator client {
+    provider      = "prisma-client-js"
+    binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DATABASE_URL")
+}
+
+model Focaccia {
+    id            Int      @id @default(autoincrement())
+    name          String
+    description   String
+    price         Float
+    isVeggie      Boolean  @default(false)
+    imageUrl      String
+    imagePublicId String
+    featured      Boolean  @default(false)
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    pedidoFocaccias PedidoFocaccia[]
+}
+
+model Pedido {
+    id             Int             @id @default(autoincrement())
+    clientPhone    String
+    quantity       Int
+    totalPrice     Float
+    orderDate      DateTime        @default(now())
+    pedidoFocaccias PedidoFocaccia[]
+}
+
+model PedidoFocaccia {
+    id         Int      @id @default(autoincrement())
+    pedidoId   Int
+    focacciaId Int
+    cantidad   Int
+    pedido     Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+    focaccia   Focaccia @relation(fields: [focacciaId], references: [id], onDelete: Restrict)
+
+    @@unique([pedidoId, focacciaId])
+}

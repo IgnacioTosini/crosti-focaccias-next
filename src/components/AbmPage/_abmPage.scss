@@ -8,6 +8,11 @@
     min-height: 100dvh;
 
     .abmPageContent {
+        display: flex;
         margin: 1rem;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 }

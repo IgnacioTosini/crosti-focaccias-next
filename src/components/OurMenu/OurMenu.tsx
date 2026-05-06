@@ -14,7 +14,10 @@ interface OurMenuProps {
 }
 
 export default function OurMenu({ initialFocaccias }: OurMenuProps) {
-  const { data, isLoading, isFetching, isError } = useFocaccias(initialFocaccias)
+  const { data, isLoading, isFetching, isError } = useFocaccias(initialFocaccias, {
+    live: true,
+    refetchIntervalMs: 15000,
+  })
 
   const focaccias = useMemo(() => {
     return data ?? []

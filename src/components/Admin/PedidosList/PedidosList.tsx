@@ -10,6 +10,14 @@ export const PedidosList = () => {
     const pedidosArray = Array.isArray(pedidos.data) ? pedidos.data : [];
     const [open, setOpen] = useState(true);
 
+    if (pedidos.isLoading) {
+        return <p>Cargando pedidos...</p>;
+    }
+
+    if (pedidos.isError) {
+        return <p>No se pudieron cargar los pedidos.</p>;
+    }
+
     return (
         <div className='productListContainer'>
             <div className='header'>
@@ -25,6 +33,9 @@ export const PedidosList = () => {
             <ul
                 className={`productListUl${open ? ' open' : ''}`}
             >
+                {pedidosArray.length === 0 && (
+                    <li>No hay pedidos registrados en la base de datos.</li>
+                )}
                 {pedidosArray.map((pedido: Pedido) => (
                     <li key={pedido.id}>
                         <AdminOrderCard order={pedido} />

@@ -119,7 +119,7 @@ export const AsideOrderSummary = () => {
             const validatedData = createPedidoSchema.parse(pedidoData);
 
             // Guardar el pedido en BD
-            await createPedido.mutate(validatedData);
+            await createPedido.mutateAsync(validatedData);
 
             const message = generateOrderMessage();
             const businessWhatsApp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '';
