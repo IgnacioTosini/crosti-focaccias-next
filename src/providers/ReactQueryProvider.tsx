@@ -52,9 +52,11 @@ export function ReactQueryProvider({ children }: { children: React.ReactNode }) 
             persistOptions={{
                 persister,
                 maxAge: PERSISTED_CACHE_TIME,
-                buster: "crosti-v3"
+                buster: "crosti-v4"
             }}
             onSuccess={() => {
+                queryClient.removeQueries({ queryKey: ['focaccias'] })
+                queryClient.removeQueries({ queryKey: ['featuredFocaccias'] })
                 queryClient.resumePausedMutations()
             }}
         >

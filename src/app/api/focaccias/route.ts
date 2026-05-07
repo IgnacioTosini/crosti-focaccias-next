@@ -2,7 +2,7 @@ import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export const revalidate = 1800;
+export const revalidate = 0;
 export const maxDuration = 10;
 
 const focacciaSelect = {
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
             },
             {
                 headers: {
-                    "Cache-Control": "public, s-maxage=1800, stale-while-revalidate=86400",
+                    "Cache-Control": "no-store",
                 },
             }
         );
