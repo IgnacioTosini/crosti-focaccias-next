@@ -29,13 +29,18 @@ const readCachedFocaccias = (): FocacciaItem[] => {
 };
 
 const writeCachedFocaccias = (focaccias: FocacciaItem[]) => {
-    if (typeof window === "undefined" || focaccias.length === 0) return;
+    if (typeof window === "undefined") return;
 
     try {
         window.localStorage.setItem(PRODUCT_CACHE_KEY, JSON.stringify(focaccias));
     } catch (error) {
         console.error("No se pudo guardar el cache de focaccias:", error);
     }
+};
+
+export const ProductCache = {
+    read: readCachedFocaccias,
+    write: writeCachedFocaccias,
 };
 
 export class ProductService {

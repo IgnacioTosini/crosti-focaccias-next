@@ -1,6 +1,7 @@
 import { deleteFocacciaAction } from "@/app/actions/focaccia.actions"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import type { FocacciaItem } from "@/types"
+import { ProductCache } from "@/services/ProductService"
 
 export const useDeleteFocaccia = () => {
     const queryClient = useQueryClient()
@@ -18,8 +19,11 @@ export const useDeleteFocaccia = () => {
 
             queryClient.removeQueries({ queryKey: ['focaccia', deletedId] })
 
-            queryClient.invalidateQueries({ queryKey: ['focaccias'], refetchType: 'inactive' })
-            queryClient.invalidateQueries({ queryKey: ['featuredFocaccias'], refetchType: 'inactive' })
+            const syncedFocaccias = queryClient.getQueryData<FocacciaItem[]>(['focaccias']) ?? []
+            ProductCache.write(syncedFocaccias)
+
+            queryClient.invalidateQueries({ queryKey: ['focaccias'], refetchType: 'active' })
+            queryClient.invalidateQueries({ queryKey: ['featuredFocaccias'], refetchType: 'active' })
         }
     })
 }

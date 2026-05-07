@@ -1,6 +1,7 @@
 import { updateFocacciaAction } from "@/app/actions/focaccia.actions";
 import { FocacciaCreate, FocacciaItem } from "@/types";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { ProductCache } from "@/services/ProductService";
 
 export const useUpdateFocaccia = () => {
     const queryClient = useQueryClient();
@@ -31,9 +32,12 @@ export const useUpdateFocaccia = () => {
                 return [normalizedUpdated, ...withoutUpdated];
             });
 
-            queryClient.invalidateQueries({ queryKey: ["focaccias"], refetchType: "inactive" });
-            queryClient.invalidateQueries({ queryKey: ["focaccia", variables.id], refetchType: "inactive" });
-            queryClient.invalidateQueries({ queryKey: ["featuredFocaccias"], refetchType: "inactive" });
+            const syncedFocaccias = queryClient.getQueryData<FocacciaItem[]>(["focaccias"]) ?? [];
+            ProductCache.write(syncedFocaccias);
+
+            queryClient.invalidateQueries({ queryKey: ["focaccias"], refetchType: "active" });
+            queryClient.invalidateQueries({ queryKey: ["focaccia", variables.id], refetchType: "active" });
+            queryClient.invalidateQueries({ queryKey: ["featuredFocaccias"], refetchType: "active" });
         },
     });
 };
