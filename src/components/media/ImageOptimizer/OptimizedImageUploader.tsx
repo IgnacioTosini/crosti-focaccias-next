@@ -34,8 +34,6 @@ export const OptimizedImageUploader: React.FC<OptimizedImageUploaderProps> = ({
         setUploadStats(stats);
 
         try {
-            console.log('🚀 Subiendo imagen optimizada a Cloudinary...');
-
             const response = await ImageService.uploadImage(optimizedFile, {
                 enableOptimization: false, // Ya está optimizada
                 ...optimizationOptions
@@ -44,7 +42,6 @@ export const OptimizedImageUploader: React.FC<OptimizedImageUploaderProps> = ({
             if (response.success) {
                 setUploadedUrl(response.url);
                 onImageUploaded?.(response.url, response.public_id);
-                console.log('✅ Imagen subida exitosamente:', response.url);
             } else {
                 throw new Error(response.error || 'Error al subir imagen');
             }

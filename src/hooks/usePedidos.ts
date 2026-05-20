@@ -14,7 +14,7 @@ export const usePedidos = () => {
         staleTime: 0,
         refetchOnMount: "always",
         refetchOnWindowFocus: true,
-        refetchInterval: 30_000,
+        refetchInterval: 15_000,
         refetchIntervalInBackground: false,
     });
 };

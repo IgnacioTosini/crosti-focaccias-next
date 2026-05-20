@@ -9,8 +9,14 @@ export type PedidoStatus =
     | 'ENTREGADO'
     | 'CANCELADO';
 
+export type ApiResponse<T> = {
+    data: T;
+    success: boolean;
+    message?: string;
+};
+
 export type PedidoFocacciaResponse = {
-    focacciaId: number;
+    focacciaId: number | null;
     name: string;
     description: string;
     mediumPrice: number;

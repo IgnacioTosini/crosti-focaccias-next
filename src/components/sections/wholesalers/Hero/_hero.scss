@@ -1,4 +1,5 @@
 @use '@/styles/variables' as *;
+@use 'sass:color';
 
 .wholesalersHero {
     display: flex;
@@ -96,7 +97,7 @@
                         background-color: $color-button;
 
                         &:hover {
-                            background-color: darken($color-button, 10%);
+                            background-color: color.adjust($color-button, $lightness: -10%);
                         }
                     }
 
@@ -104,7 +105,7 @@
                         background-color: $color-whatsapp;
 
                         &:hover {
-                            background-color: darken($color-whatsapp, 10%);
+                            background-color: color.adjust($color-whatsapp, $lightness: -10%);
                         }
                     }
                 }

@@ -31,8 +31,17 @@ export type PedidoWithRelations = Prisma.PedidoGetPayload<{
     include: typeof pedidoInclude;
 }>;
 
+type PedidoFocacciaItem = PedidoWithRelations["pedidoFocaccias"][number];
+type ActivePedidoFocacciaItem = PedidoFocacciaItem & {
+    focacciaId: number;
+    focaccia: NonNullable<PedidoFocacciaItem["focaccia"]>;
+};
+
+const hasActiveFocaccia = (item: PedidoFocacciaItem): item is ActivePedidoFocacciaItem =>
+    item.focacciaId !== null && item.focaccia !== null;
+
 const toPedidoFocacciaPayload = (
-    item: PedidoWithRelations["pedidoFocaccias"][number]
+    item: ActivePedidoFocacciaItem
 ): PedidoFocacciaResponse => ({
     focacciaId: item.focacciaId,
     name: item.focaccia.name,
@@ -57,7 +66,9 @@ export const toPedidoPayload = (pedido: PedidoWithRelations): Pedido => ({
     orderNumber: pedido.orderNumber,
     clientPhone: pedido.clientPhone,
     status: pedido.status,
-    pedidoFocaccias: pedido.pedidoFocaccias.map(toPedidoFocacciaPayload),
+    pedidoFocaccias: pedido.pedidoFocaccias
+        .filter(hasActiveFocaccia)
+        .map(toPedidoFocacciaPayload),
     quantity: pedido.quantity,
     subtotal: pedido.subtotal,
     discountTotal: pedido.discountTotal,

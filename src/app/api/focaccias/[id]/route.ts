@@ -119,7 +119,6 @@ export async function DELETE(
     try {
         const { id } = await params;
         const focacciaId = Number(id);
-        console.log("Deleting focaccia with id:", focacciaId);
 
         if (Number.isNaN(focacciaId)) {
             return NextResponse.json({ error: "Invalid focaccia id" }, { status: 400 });

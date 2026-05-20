@@ -3,7 +3,7 @@ import './_itemCategory.scss'
 
 type ItemCategoryProps = {
     focaccia: {
-        isVeggie: boolean;
+        isVeggie?: boolean;
     }
 }
 

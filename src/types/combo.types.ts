@@ -3,11 +3,12 @@ import type { FocacciaSize, FocacciaPedido } from './focaccia.types';
 export type ComboItemType = 'focaccia' | 'prepizza' | 'extra';
 
 export type ComboItem = {
-    id: number;
+    id?: number;
     itemType: ComboItemType;
-    label?: string;
+    label?: string | null;
     quantity: number;
-    size?: FocacciaSize;
+    size?: FocacciaSize | null;
+    order?: number;
     sabores?: string[]; // Para focaccias de combo
 };
 

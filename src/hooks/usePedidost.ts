@@ -81,3 +81,4 @@ export const useUpdatePedidoStatus = () => {
             void queryClient.invalidateQueries({ queryKey: ["pedidos"] });
         },
     });
+};

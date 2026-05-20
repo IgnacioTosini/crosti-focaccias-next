@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Pedido, PedidoRequest, PedidoStatus } from "@/types";
+import type { Pedido, PedidoRequest, PedidoStatus, ApiResponse } from "@/types";
 export type { ApiResponse } from "@/types";
 
 const api = axios.create({

@@ -82,8 +82,6 @@ export const ImageOptimizerPreview: React.FC<ImageOptimizerPreviewProps> = ({
                 compressionRatio: result.compressionRatio
             });
 
-            console.log(`🎯 Imagen optimizada: ${result.compressionRatio}% de reducción (${(result.optimizedSize / 1024 / 1024).toFixed(2)} MB)`);
-
         } catch (error) {
             console.error('Error al optimizar imagen:', error);
             // En caso de error, usar archivo original

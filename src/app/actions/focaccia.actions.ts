@@ -17,7 +17,7 @@ const ensureAdminSession = async () => {
 };
 
 const refreshFocacciaCache = () => {
-    revalidateTag('focaccias');
+    revalidateTag('focaccias', 'max');
     revalidatePath('/');
 };
 
