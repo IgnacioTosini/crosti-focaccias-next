@@ -1,0 +1,18 @@
+@use '@/styles/variables' as *;
+
+.placeCard {
+    background-color: rgba($quinary-color, 0.2);
+    border: 1px solid rgba($border-color, 0.2);
+    border-radius: 3rem;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .placeCardLabel {
+        color: $color-text;
+        font-size: $font-size-normal;
+        font-weight: $font-weight-bold;
+        font-family: $font-family;
+    }
+}

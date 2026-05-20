@@ -31,70 +31,69 @@ export const useImageOptimizer = () => {
         setIsOptimizing(true);
 
         const {
-            maxWidth = 1200,
-            maxHeight = 800,
-            quality = 0.8,
-            format = 'jpeg',
-            maxSizeKB = 500
+            maxWidth = 1920,
+            maxHeight = 1080,
+            quality = 0.9,
+            format = 'webp',
+            maxSizeKB = 300
         } = options;
 
         return new Promise((resolve, reject) => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
+            const objectUrl = URL.createObjectURL(file);
 
             img.onload = () => {
+                URL.revokeObjectURL(objectUrl);
                 try {
-                    // Calcular nuevas dimensiones manteniendo la proporción
                     let { width, height } = img;
 
                     if (width > maxWidth || height > maxHeight) {
                         const ratio = Math.min(maxWidth / width, maxHeight / height);
-                        width *= ratio;
-                        height *= ratio;
+                        width = Math.round(width * ratio);
+                        height = Math.round(height * ratio);
                     }
 
                     canvas.width = width;
                     canvas.height = height;
 
-                    // Dibujar la imagen redimensionada
-                    ctx!.drawImage(img, 0, 0, width, height);
+                    if (ctx) {
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = 'high';
+                        ctx.drawImage(img, 0, 0, width, height);
+                    }
 
-                    // Función para convertir a blob con calidad ajustable
-                    const convertToBlob = (currentQuality: number): Promise<Blob> => {
-                        return new Promise((resolveBlob) => {
-                            canvas.toBlob((blob) => {
-                                if (blob) {
-                                    resolveBlob(blob);
-                                }
-                            }, `image/${format}`, currentQuality);
-                        });
-                    };
+                    const toBlob = (q: number): Promise<Blob> =>
+                        new Promise<Blob>((res) =>
+                            canvas.toBlob((b) => res(b!), `image/${format}`, q)
+                        );
 
-                    // Optimizar calidad hasta alcanzar el tamaño deseado
+                    // Búsqueda binaria para encontrar la calidad óptima más alta
+                    // que respete el límite de tamaño
                     const optimizeQuality = async (initialQuality: number): Promise<Blob> => {
-                        let currentQuality = initialQuality;
-                        let blob = await convertToBlob(currentQuality);
-                        let bestBlob = blob;
+                        const initial = await toBlob(initialQuality);
 
-                        // Si la imagen optimizada es más grande que la original, usar la original
-                        if (blob.size >= file.size) {
+                        if (initial.size >= file.size) {
                             return new Blob([file], { type: file.type });
                         }
 
-                        // Si la imagen es más grande que el tamaño máximo, reducir calidad
-                        while (blob.size > maxSizeKB * 1024 && currentQuality > 0.1) {
-                            currentQuality -= 0.1;
-                            blob = await convertToBlob(currentQuality);
+                        if (initial.size <= maxSizeKB * 1024) return initial;
 
-                            // Si se vuelve más grande que la original, parar y usar la mejor versión
-                            if (blob.size >= file.size) {
-                                break;
+                        let low = 0.1, high = initialQuality, best = initial;
+
+                        for (let i = 0; i < 8; i++) {
+                            const mid = (low + high) / 2;
+                            const candidate = await toBlob(mid);
+                            if (candidate.size <= maxSizeKB * 1024) {
+                                best = candidate;
+                                low = mid;
+                            } else {
+                                high = mid;
                             }
-                            bestBlob = blob;
                         }
 
-                        return bestBlob;
+                        return best;
                     };
 
                     optimizeQuality(quality).then((optimizedBlob) => {
@@ -148,11 +147,12 @@ export const useImageOptimizer = () => {
             };
 
             img.onerror = () => {
+                URL.revokeObjectURL(objectUrl);
                 setIsOptimizing(false);
                 reject(new Error('Error al cargar la imagen'));
             };
 
-            img.src = URL.createObjectURL(file);
+            img.src = objectUrl;
         });
     }, []);
 

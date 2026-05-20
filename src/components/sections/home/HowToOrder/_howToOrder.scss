@@ -1,0 +1,119 @@
+@use '../../../../styles/variables' as *;
+@use 'sass:color';
+
+.howToOrder {
+    padding: 4rem 2rem;
+    text-align: center;
+    background-color: $secondary-color;
+    color: $color-text;
+    width: 100%;
+    overflow-x: hidden; // Evita scroll horizontal por animaciones GSAP
+
+    .howToOrderTitle {
+        font-size: $font-size-xxlarge;
+        font-weight: $font-weight-bold;
+        font-family: $font-family-display;
+        margin-bottom: 2rem;
+
+        &::after {
+            content: '';
+            display: block;
+            width: clamp(80px, 50%, 120px);
+            height: 4px;
+            background-color: color.adjust($color-button, $lightness: 10%);
+            margin: 1rem auto 0 auto;
+            border-radius: 2px;
+        }
+    }
+
+    .howToOrderTitleWrap {
+        position: relative;
+        width: fit-content;
+        margin: 0 auto;
+
+        .titleSticker {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.9;
+        }
+
+        .titleStickerLeft {
+            left: -4.6rem;
+            top: -0.5rem;
+            transform: rotate(-12deg);
+        }
+
+        .titleStickerRight {
+            right: -4.6rem;
+            top: 0.2rem;
+            transform: rotate(10deg);
+        }
+    }
+
+    .howToOrderSteps {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 2rem;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .step {
+            background-color: $primary-color;
+            padding: 1rem;
+            border-radius: 1rem;
+            width: fit-content;
+            max-width: 600px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.452);
+
+            .stepTitle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                width: fit-content;
+                font-size: $font-size-large;
+                font-weight: $font-weight-bold;
+                font-family: $font-family-display;
+                margin-bottom: 1rem;
+
+                .stepIconContact {
+                    color: $color-whatsapp;
+                }
+
+                .stepIconMap {
+                    color: #2563EB;
+                }
+            }
+
+            .stepDescription {
+                width: fit-content;
+                font-size: $font-size-medium;
+                line-height: 1.6;
+            }
+        }
+    }
+
+    @media (max-width: 768px) {
+        .howToOrderTitleWrap {
+            .titleSticker {
+                width: 56px;
+                height: 56px;
+            }
+
+            .titleStickerLeft {
+                left: -2rem;
+                top: -1.35rem;
+            }
+
+            .titleStickerRight {
+                right: -2rem;
+                top: auto;
+                bottom: 0;
+            }
+        }
+    }
+}

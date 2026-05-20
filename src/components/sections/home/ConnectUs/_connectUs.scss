@@ -1,0 +1,77 @@
+@use '../../../../styles/variables' as *;
+@use 'sass:color';
+
+.connectUs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+    background-color: $quaternary-color;
+    width: 100%;
+    overflow-x: hidden; // Evita scroll horizontal por animaciones GSAP
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+    }
+
+    .connectUsTitle {
+        font-size: $font-size-xlarge;
+        font-weight: $font-weight-bold;
+        font-family: $font-family-display;
+        color: $color-text-tertiary;
+        margin-bottom: 1rem;
+    }
+
+    .connectUsTitleWrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.65rem;
+
+        .connectCharacter {
+            width: 88px;
+            height: 88px;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.2));
+        }
+
+        .connectSticker {
+            width: 72px;
+            height: 72px;
+            object-fit: contain;
+            transform: rotate(11deg);
+            opacity: 0.95;
+        }
+    }
+
+    .connectCardsContainer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 1200px;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .connectUsTitleWrap {
+            .connectCharacter {
+                width: 72px;
+                height: 72px;
+            }
+
+            .connectSticker {
+                width: 56px;
+                height: 56px;
+            }
+        }
+    }
+}

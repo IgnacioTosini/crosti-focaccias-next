@@ -1,23 +1,25 @@
-$primary-color: #F8E9D2;
-$secondary-color: #FFFEFD;
-$tertiary-color: #EEFDF3;
-$quaternary-color: #8B4513;
-$quinary-color: #6B4423;
+$primary-color: #F4F5E7;
+$secondary-color: #FFFFFF;
+$tertiary-color: #FFFFFF;
+$quaternary-color: #CC0000;
+$quinary-color: #8B4513;
 
-$color-button: #A0522D;
-$color-button-secondary: #B8860B;
-$border-color: #3D3D3D;
+$color-button: #A30404;
+$color-button-secondary: #CC0000;
+$border-color: #433A3A;
 
 //Color text
-$color-text: #8B4513;
-$color-text-secondary: #D2691E;
+$color-text: #433A3A;
+$color-text-secondary: #A30404;
 $color-text-tertiary: #FFFFFF;
-$color-text-quaternary: #007A48;
+$color-text-quaternary: #CC0000;
 
-$color-hover-primary: #291F13;
-$color-hover-secondary: #c26f27;
+$color-hover-primary: #2F2828;
+$color-hover-secondary: #A30404;
+$color-title-accent: #A30404;
 
-$font-family: 'Inter', sans-serif;
+$font-family: 'Monument', 'Montserrat', sans-serif;
+$font-family-display: 'New Sun Playful', 'Kalam', cursive;
 
 $font-size-small: 12px;
 $font-size-xsmall: 13px;
@@ -36,6 +38,17 @@ $font-weight-extra-bold: 800;
 
 $color-error: #ff4d4f;
 $color-success: #52c41a;
+
+$color-admin-sidebar-bg: #23272f;
+$color-admin-sidebar-accent: #ffb347;
+$color-admin-main-bg: #f7f7fa;
+
+$color-status-confirmed: #1f59b6;
+$color-status-confirmed-bg: #3e82f7;
+$color-status-preparing: #a05e00;
+$color-status-preparing-bg: #ff9800;
+$color-status-ready: #006e61;
+$color-status-ready-bg: #00a38e;
 
 $color-instagram: #B453E6;
 $color-whatsapp: #25D366;

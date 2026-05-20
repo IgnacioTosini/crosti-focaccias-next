@@ -1,58 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import type { PedidoFocacciaResponse } from "@/types";
-
-type PedidoPayload = {
-    id: number;
-    clientPhone: string;
-    pedidoFocaccias: PedidoFocacciaResponse[];
-    quantity: number;
-    totalPrice: number;
-    orderDate: string;
-};
-
-const pedidoInclude = {
-    pedidoFocaccias: {
-        select: {
-            focacciaId: true,
-            cantidad: true,
-            focaccia: {
-                select: {
-                    name: true,
-                    description: true,
-                    price: true,
-                    isVeggie: true,
-                    imageUrl: true,
-                    imagePublicId: true,
-                    featured: true,
-                },
-            },
-        },
-    },
-} as const;
-
-type PedidoWithRelations = import("@prisma/client").Prisma.PedidoGetPayload<{
-    include: typeof pedidoInclude;
-}>;
-
-const toPedidoPayload = (pedido: PedidoWithRelations): PedidoPayload => ({
-    id: pedido.id,
-    clientPhone: pedido.clientPhone,
-    pedidoFocaccias: pedido.pedidoFocaccias.map((item) => ({
-        focacciaId: item.focacciaId,
-        name: item.focaccia.name,
-        description: item.focaccia.description,
-        price: item.focaccia.price,
-        isVeggie: item.focaccia.isVeggie,
-        imageUrl: item.focaccia.imageUrl,
-        imagePublicId: item.focaccia.imagePublicId,
-        featured: item.focaccia.featured,
-        cantidad: item.cantidad,
-    })),
-    quantity: pedido.quantity,
-    totalPrice: pedido.totalPrice,
-    orderDate: pedido.orderDate.toISOString(),
-});
+import { pedidoInclude, toPedidoPayload } from "@/lib/pedidoPayload";
 
 export async function GET(_request: NextRequest, context: { params: Promise<{ phone: string }> }) {
     try {

@@ -1,13 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Kalam, Montserrat } from "next/font/google";
 import { Providers } from "@/providers/Providers";
 import { ToastContainer } from "react-toastify";
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const monument = Montserrat({
+  variable: "--font-monument",
+  subsets: ["latin"],
+});
+
+const brandDisplay = Kalam({
+  variable: "--font-brand-display",
+  weight: ["400", "700"],
   subsets: ["latin"],
 });
 
@@ -75,7 +81,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffd700",
+  themeColor: "#A30404",
 };
 
 export default function RootLayout({
@@ -85,7 +91,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={inter.variable}>
+      <body className={`${monument.variable} ${brandDisplay.variable}`}>
         <Providers>
           {children}
           <ToastContainer position="top-right" autoClose={3000} />

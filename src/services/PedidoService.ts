@@ -1,5 +1,6 @@
 import axios from "axios";
-import type { Pedido, PedidoRequest, ApiResponse } from "../types";
+import type { Pedido, PedidoRequest, PedidoStatus } from "@/types";
+export type { ApiResponse } from "@/types";
 
 const api = axios.create({
     baseURL: "/api/pedidos",
@@ -19,6 +20,11 @@ export const pedidoService = {
 
     delete: async (id: number): Promise<ApiResponse<Pedido>> => {
         const res = await api.delete(`/${id}`);
+        return res.data;
+    },
+
+    updateStatus: async (id: number, status: PedidoStatus): Promise<ApiResponse<Pedido>> => {
+        const res = await api.patch(`/${id}`, { status });
         return res.data;
     },
 };

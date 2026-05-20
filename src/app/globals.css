@@ -2,16 +2,31 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-monument), 'Monument', 'Montserrat', sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  /* Offset global para links de ancla — compensa el header sticky */
+  scroll-padding-top: 96px;
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 148px;
+  }
 }
 
 body {
-  background-color: #F8E9D2;
+  background-color: #F4F5E7;
+  color: #433A3A;
+}
+
+h1,
+h2,
+.brand-display {
+  font-family: var(--font-brand-display), 'New Sun Playful', 'Kalam', cursive;
 }
 
 /* Clase para bloquear scroll cuando modal está abierto */

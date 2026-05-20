@@ -1,0 +1,105 @@
+@use '../../styles/variables' as *;
+@use 'sass:color';
+
+.admin-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    &__header {
+        h1 {
+            font-size: $font-size-xlarge;
+            font-weight: $font-weight-bold;
+            color: $color-text;
+            margin: 0 0 0.25rem;
+        }
+
+        p {
+            font-size: $font-size-normal;
+            color: color.scale($color-text, $lightness: 40%);
+            margin: 0;
+        }
+    }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+.dashboard-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    background: $secondary-color;
+    border-radius: 1rem;
+    padding: 1.75rem 1.5rem;
+    border: 2px solid transparent;
+    text-decoration: none;
+    color: $color-text;
+    box-shadow: 0 2px 8px rgba($border-color, 0.1);
+    transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.18s ease;
+
+    &:hover {
+        border-color: $color-admin-sidebar-accent;
+        box-shadow: 0 6px 24px rgba($border-color, 0.18);
+        transform: translateY(-3px);
+    }
+
+    &__icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 0.75rem;
+        background: color.scale($color-admin-sidebar-bg, $lightness: 10%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+    }
+
+    &__title {
+        font-size: $font-size-medium-large;
+        font-weight: $font-weight-bold;
+        margin: 0;
+        color: $color-text;
+    }
+
+    &__description {
+        font-size: $font-size-normal;
+        color: color.scale($color-text, $lightness: 40%);
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    &__arrow {
+        margin-top: auto;
+        align-self: flex-end;
+        font-size: $font-size-medium-large;
+        color: $color-admin-sidebar-accent;
+        transition: transform 0.18s ease;
+    }
+
+    &:hover &__arrow {
+        transform: translateX(4px);
+    }
+}
+
+@media (max-width: 900px) {
+    .admin-dashboard {
+        gap: 1.25rem;
+
+        &__header h1 {
+            font-size: $font-size-large;
+        }
+
+        &__grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .dashboard-card {
+        padding: 1.25rem 1rem;
+    }
+}

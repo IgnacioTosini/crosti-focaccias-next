@@ -8,13 +8,16 @@ const mapFocaccia = (item: {
     id: number;
     name: string;
     description: string;
-    price: number;
+    mediumPrice: number;
+    largePrice: number;
     isVeggie: boolean;
     imageUrl: string;
     imagePublicId: string;
     featured: boolean;
+    isAvailable: boolean;
 }): FocacciaItem => ({
     ...item,
+    price: item.mediumPrice,
     pedidos: [],
 });
 
@@ -27,11 +30,13 @@ const getCachedFocaccias = unstable_cache(
                 id: true,
                 name: true,
                 description: true,
-                price: true,
+                mediumPrice: true,
+                largePrice: true,
                 isVeggie: true,
                 imageUrl: true,
                 imagePublicId: true,
                 featured: true,
+                isAvailable: true,
             },
         });
 

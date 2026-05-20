@@ -28,54 +28,74 @@ export class ImageService {
         options: ImageOptimizationOptions = {}
     ): Promise<{ file: File; stats: { originalSize: number; optimizedSize: number; compressionRatio: number } }> {
         const {
-            maxWidth = 1200,
-            maxHeight = 800,
-            quality = 0.8,
-            format = 'jpeg',
-            maxSizeKB = 500
+            maxWidth = 1920,
+            maxHeight = 1080,
+            quality = 0.9,
+            format = 'webp',
+            maxSizeKB = 300
         } = options;
 
         return new Promise((resolve, reject) => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
+            const objectUrl = URL.createObjectURL(file);
 
             img.onload = () => {
+                URL.revokeObjectURL(objectUrl);
                 try {
-                    // Calcular nuevas dimensiones
                     let { width, height } = img;
 
                     if (width > maxWidth || height > maxHeight) {
                         const ratio = Math.min(maxWidth / width, maxHeight / height);
-                        width *= ratio;
-                        height *= ratio;
+                        width = Math.round(width * ratio);
+                        height = Math.round(height * ratio);
                     }
 
                     canvas.width = width;
                     canvas.height = height;
-                    ctx!.drawImage(img, 0, 0, width, height);
 
-                    // Función para ajustar calidad automáticamente
-                    const optimizeQuality = async (initialQuality: number): Promise<Blob> => {
-                        let currentQuality = initialQuality;
-                        let blob: Blob;
+                    if (ctx) {
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = 'high';
+                        ctx.drawImage(img, 0, 0, width, height);
+                    }
 
-                        do {
-                            blob = await new Promise<Blob>((resolveBlob) => {
-                                canvas.toBlob((b) => resolveBlob(b!), `image/${format}`, currentQuality);
-                            });
+                    const toBlob = (q: number): Promise<Blob> =>
+                        new Promise<Blob>((res) =>
+                            canvas.toBlob((b) => res(b!), `image/${format}`, q)
+                        );
 
-                            if (blob.size <= maxSizeKB * 1024 || currentQuality <= 0.1) break;
-                            currentQuality -= 0.1;
-                        } while (currentQuality > 0.1);
+                    // Primero intentar con la calidad indicada
+                    // Si supera el límite, usar búsqueda binaria para encontrar
+                    // la calidad más alta posible que respete el tamaño objetivo
+                    const findOptimalBlob = async (): Promise<Blob> => {
+                        const initial = await toBlob(quality);
+                        if (initial.size <= maxSizeKB * 1024) return initial;
 
-                        return blob;
+                        let low = 0.1;
+                        let high = quality;
+                        let best = initial;
+
+                        for (let i = 0; i < 8; i++) {
+                            const mid = (low + high) / 2;
+                            const candidate = await toBlob(mid);
+                            if (candidate.size <= maxSizeKB * 1024) {
+                                best = candidate;
+                                low = mid;
+                            } else {
+                                high = mid;
+                            }
+                        }
+
+                        return best;
                     };
 
-                    optimizeQuality(quality).then((optimizedBlob) => {
+                    findOptimalBlob().then((optimizedBlob) => {
+                        const ext = format === 'jpeg' ? 'jpg' : format;
                         const optimizedFile = new File(
                             [optimizedBlob],
-                            file.name.replace(/\.[^/.]+$/, `.${format === 'jpeg' ? 'jpg' : format}`),
+                            file.name.replace(/\.[^/.]+$/, `.${ext}`),
                             { type: `image/${format}`, lastModified: Date.now() }
                         );
 
@@ -93,14 +113,17 @@ export class ImageService {
                 }
             };
 
-            img.onerror = () => reject(new Error('Error al cargar la imagen'));
-            img.src = URL.createObjectURL(file);
+            img.onerror = () => {
+                URL.revokeObjectURL(objectUrl);
+                reject(new Error('Error al cargar la imagen'));
+            };
+            img.src = objectUrl;
         });
     }
 
     static async uploadImage(
         file: File,
-        options: ImageOptimizationOptions = { enableOptimization: true }
+        options: ImageOptimizationOptions = { enableOptimization: true, format: 'webp' }
     ): Promise<CloudinaryUploadResponse> {
         let fileToUpload = file;
 

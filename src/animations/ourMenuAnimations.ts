@@ -3,31 +3,35 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export const animateOurMenu = () => {
-    const timeline = gsap.timeline({
-        scrollTrigger: {
-            trigger: '.ourMenu',
-            start: 'top 55%',
-            toggleActions: 'play none none none'
-        },
-        defaults: { ease: 'power3.out' }
-    });
+export const animateOurMenu = (scope?: Element | string) => {
+    return gsap.context(() => {
+        // Estado inicial para evitar parpadeo (fix flash)
+        gsap.set('.ourMenuTitle', { autoAlpha: 0, y: 90, rotation: -4, scale: 0.75 });
+        gsap.set('.extraInfo', { autoAlpha: 0, y: 60, scale: 0.8 });
 
-    // Animar el título
-    timeline.from('.ourMenuTitle', {
-        y: 50,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'back.out(1.7)'
-    });
+        // Recalcular posiciones tras carga asíncrona de datos
+        ScrollTrigger.refresh();
 
-    // Animar la sección de extra info
-    timeline.from('.extraInfo', {
-        scale: 0.8,
-        opacity: 0,
-        duration: 0.6,
-        ease: 'back.out(1.5)'
-    }, '-=0.3');
+        const timeline = gsap.timeline({
+            scrollTrigger: {
+                trigger: scope ?? '.ourMenu',
+                start: 'top 60%',
+                once: true,
+                invalidateOnRefresh: true
+            },
+            defaults: { ease: 'power4.out' }
+        });
 
-    return timeline;
+        // Título: slide y rotación pronunciada
+        timeline.to('.ourMenuTitle', {
+            autoAlpha: 1, y: 0, rotation: 0, scale: 1,
+            duration: 1, ease: 'back.out(1.7)'
+        });
+
+        // Extra info: pop desde abajo
+        timeline.to('.extraInfo', {
+            autoAlpha: 1, y: 0, scale: 1,
+            duration: 0.8, ease: 'back.out(1.5)'
+        }, '-=0.4');
+    }, scope);
 };

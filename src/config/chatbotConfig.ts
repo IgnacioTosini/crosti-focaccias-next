@@ -74,7 +74,7 @@ export const CHATBOT_CONFIG = {
     theme: {
         primaryColor: '#ff6b35',
         secondaryColor: '#f7931e',
-        botAvatar: '/CrostiSinFondo.png',
+        botAvatar: '/personajes/crosti-logo.svg',
         userAvatar: '👤'
     }
 };

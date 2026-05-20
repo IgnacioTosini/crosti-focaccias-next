@@ -1,0 +1,209 @@
+@use '@/styles/variables' as *;
+@use 'sass:color';
+
+.comboCard {
+	border: 1px solid rgba(#a16f4f, 0.38);
+	border-radius: 0.95rem;
+	background: linear-gradient(150deg, #f7f3ea 0%, #f4ecdf 100%);
+	box-shadow: 0 6px 14px rgba(70, 40, 10, 0.08);
+	min-height: 170px;
+	overflow: hidden;
+
+	.comboCardBody {
+		display: flex;
+		flex-direction: column;
+        align-items: flex-start;
+		gap: 0.45rem;
+		height: 100%;
+		padding: 0.9rem 1rem 0.75rem;
+	}
+
+	.comboTitle {
+		margin: 0;
+		width: fit-content;
+		font-size: 0.72rem;
+		font-weight: $font-weight-bold;
+		color: #a85a11;
+		letter-spacing: 0.045em;
+		text-transform: uppercase;
+		background: #f5ebda;
+		border-radius: 999px;
+		padding: 0.34rem 0.62rem;
+	}
+
+	.comboSubtitle {
+		margin: 0.05rem 0 0;
+		color: #8f4514;
+		font-size: $font-size-large;
+		font-weight: $font-weight-bold;
+		letter-spacing: -0.012em;
+		line-height: 32px;
+	}
+
+	.comboDescription {
+		min-height: 3.2rem;
+		max-height: 4.5rem;
+		overflow-y: auto;
+        text-align: left;
+
+		scrollbar-width: thin;
+		scrollbar-color: $quinary-color rgba($quinary-color, 0.12);
+
+		&::-webkit-scrollbar {
+			width: 4px;
+		}
+
+		&::-webkit-scrollbar-track {
+			background: rgba($quinary-color, 0.12);
+			border-radius: 999px;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: $quinary-color;
+			border-radius: 999px;
+		}
+
+		p {
+			margin: 0;
+			color: #8b522b;
+			font-size: $font-size-normal;
+			line-height: 20px;
+            font-weight: $font-weight-regular;
+			word-break: break-word;
+			overflow-wrap: break-word;
+		}
+	}
+
+	.comboItemsList {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.3rem 0.5rem;
+
+		li {
+			font-size: 0.75rem;
+			color: #a16f4f;
+			background: rgba(#a16f4f, 0.1);
+			border-radius: 999px;
+			padding: 0.18rem 0.55rem;
+			white-space: nowrap;
+		}
+	}
+
+	.comboItemQty {
+		font-weight: $font-weight-bold;
+		margin-right: 0.2rem;
+	}
+
+	.comboItemSize {
+		color: #c4895a;
+		font-size: 0.7rem;
+		margin-left: 0.1rem;
+	}
+
+	.itemCardFooter {
+		margin-top: auto;
+		padding: 0.25rem 0 0;
+
+		.itemPrice {
+			color: #cf6e16;
+			font-size: $font-size-large;
+			font-weight: $font-weight-extra-bold;
+            line-height: 32px;
+		}
+
+		.addToCartButton {
+			border-radius: 0.62rem;
+			padding: 0.58rem 1rem;
+			min-width: 118px;
+			justify-content: center;
+			background-color: #9c4f13;
+
+			&:hover {
+				background-color: color.adjust(#9c4f13, $lightness: -8%);
+			}
+
+			&.consultButton {
+				background-color: #26b960;
+
+				&:hover {
+					background-color: color.adjust(#26b960, $lightness: -8%);
+				}
+			}
+		}
+	}
+}
+
+.comboCardDegustacion {
+	background: linear-gradient(160deg, #9b521f 0%, #86431a 100%);
+	border-color: rgba(#6d3211, 0.45);
+
+	.comboTitle {
+		color: #f8cc9a;
+		background: rgba(#f3be83, 0.16);
+	}
+
+	.comboSubtitle {
+		color: #fff5ea;
+	}
+
+	.comboDescription p {
+		color: #ffe8cf;
+	}
+
+	.comboItemsList li {
+		color: #ffdcb8;
+		background: rgba(#fff, 0.1);
+	}
+
+	.comboItemSize {
+		color: #ffc98a;
+	}
+
+	.itemCardFooter {
+		.itemPrice {
+			color: #fff3dd;
+		}
+
+		.addToCartButton {
+			background-color: #f6f0e8;
+			color: #8f4514;
+
+			&:hover {
+				background-color: color.adjust(#f6f0e8, $lightness: -6%);
+			}
+		}
+	}
+}
+
+.comboCardPrepizzas {
+	.comboDescription {
+		p {
+			font-size: 1rem;
+			line-height: 1.45;
+			color: #9f541c;
+		}
+	}
+
+	.itemCardFooter {
+		justify-content: flex-end;
+
+		.itemPrice {
+			display: none;
+		}
+	}
+}
+
+@media (max-width: 740px) {
+	.comboCard {
+		.comboCardBody {
+			padding: 0.85rem 0.85rem 0.72rem;
+		}
+
+		.comboDescription {
+			min-height: auto;
+		}
+	}
+}

@@ -16,6 +16,7 @@ export const pedidoFocacciaSchema = z.object({
     focacciaId: z.number()
         .positive('ID de focaccia inválido')
         .int('ID debe ser un número entero'),
+    size: z.enum(['MEDIANA', 'GRANDE']).optional(),
     cantidad: z.number()
         .min(1, 'La cantidad debe ser al menos 1')
         .max(20, 'No puedes pedir más de 100 unidades')
@@ -27,6 +28,7 @@ export const pedidoFocacciaSchema = z.object({
  */
 export const createPedidoSchema = z.object({
     clientPhone: phoneSchema,
+    promoCode: z.string().trim().min(2, 'Código de promoción inválido').max(50, 'Código demasiado largo').optional(),
     focaccias: z.array(pedidoFocacciaSchema)
         .min(1, 'Debes agregar al menos una focaccia al pedido')
         .max(20, 'No puedes agregar más de 50 items diferentes')

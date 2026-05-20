@@ -1,0 +1,165 @@
+@use '../../../../../styles/variables' as *;
+@use 'sass:color';
+
+.ordersListContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    gap: 1rem;
+
+    .ordersHeader {
+        position: relative;
+        background-color: $quaternary-color;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        width: 100%;
+
+        h1 {
+            font-size: $font-size-large;
+            font-weight: $font-weight-extra-bold;
+            font-family: $font-family-display;
+            color: $color-text-tertiary;
+            width: calc(100% - 2.5rem);
+            margin: 0;
+
+            @media (max-width: 576px) {
+                font-size: $font-size-medium-large;
+                text-align: center;
+                width: 100%;
+            }
+        }
+
+        .ordersToggleButton {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 1rem;
+            right: 1rem;
+            background: rgba($tertiary-color, 0.5);
+            border: none;
+            color: $color-text-secondary;
+            font-size: 1.5rem;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.3);
+            }
+
+            @media (max-width: 576px) {
+                top: 0.55rem;
+                right: 0.55rem;
+            }
+        }
+    }
+
+    .ordersSummary {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(140px, 1fr));
+        gap: 0.75rem;
+
+        @media (max-width: 860px) {
+            grid-template-columns: repeat(2, minmax(140px, 1fr));
+        }
+
+        @media (max-width: 576px) {
+            grid-template-columns: 1fr;
+        }
+
+        p {
+            margin: 0;
+            background: rgba($secondary-color, 0.95);
+            border: 1px solid rgba($border-color, 0.2);
+            border-radius: 0.5rem;
+            padding: 0.65rem 0.8rem;
+            display: flex;
+            flex-direction: column;
+
+            span {
+                font-size: $font-size-small;
+                color: color.scale($color-text, $lightness: 20%);
+            }
+
+            strong {
+                color: $color-text-secondary;
+                font-size: $font-size-medium-large;
+                font-weight: $font-weight-bold;
+            }
+        }
+    }
+
+    .ordersControls {
+        width: 100%;
+        display: grid;
+        grid-template-columns: minmax(260px, 1fr) minmax(180px, 240px);
+        gap: 0.75rem;
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+
+        input,
+        select {
+            height: 2.8rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba($border-color, 0.35);
+            padding: 0 0.75rem;
+            font-size: $font-size-medium;
+            color: $color-text;
+            background: $secondary-color;
+
+            &:focus {
+                outline: none;
+                border-color: rgba($quaternary-color, 0.7);
+                box-shadow: 0 0 0 2px rgba($quaternary-color, 0.12);
+            }
+        }
+    }
+
+    .ordersList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        display: grid;
+        gap: 0;
+        overflow-y: auto;
+        max-height: 0;
+        scrollbar-width: thin;
+        transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 0.5rem;
+
+        li {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+    }
+
+    .open {
+        max-height: 900px;
+    }
+
+    .ordersEmpty {
+        text-align: center;
+        padding: 1.4rem;
+        border: 1px dashed rgba($border-color, 0.35);
+        border-radius: 0.5rem;
+        color: color.scale($color-text, $lightness: 18%);
+    }
+}
+
+.ordersLoading,
+.ordersError {
+    padding: 1.2rem;
+    font-size: $font-size-medium;
+    color: $color-text;
+}

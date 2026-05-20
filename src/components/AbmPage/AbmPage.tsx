@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { AdminHeader } from '../../components/Admin/AdminHeader/AdminHeader';
-import { AdminForm } from '../../components/Admin/AdminForm/AdminForm';
-import { ProductList } from '../../components/Admin/ProductList/ProductList';
-import { PedidosList } from '../../components/Admin/PedidosList/PedidosList';
 import { useFocaccias } from '@/hooks/focaccia/useFocaccias';
 import type { FocacciaItem } from '@/types';
+import { AdminHeader } from '../sections/admin/Admin/AdminHeader/AdminHeader';
+import { AdminForm } from '../sections/admin/Admin/AdminForm/AdminForm';
+import { PedidosList } from '../sections/admin/Admin/PedidosList/PedidosList';
+import { ProductList } from '../sections/admin/Admin/ProductList/ProductList';
 import './_abmPage.scss';
 
 export const AbmPage = () => {

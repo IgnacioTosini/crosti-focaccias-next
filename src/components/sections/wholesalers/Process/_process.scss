@@ -1,0 +1,101 @@
+@use '@/styles/variables' as *;
+
+.processSection {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background-color: $primary-color;
+    min-height: 100dvh;
+    background-color: rgba($quinary-color, 0.1);
+
+    .processContainer {
+        width: 100%;
+        max-width: 1200px;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        .titleWithStickers {
+            position: relative;
+            width: fit-content;
+            align-self: center;
+
+            .titleSticker {
+                position: absolute;
+                opacity: 0.9;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .title {
+                position: relative;
+                z-index: 1;
+            }
+
+            .titleStickerLeft {
+                left: -5rem;
+                top: -0.25rem;
+                transform: rotate(-12deg);
+            }
+
+            .titleStickerRight {
+                right: -5.2rem;
+                bottom: -0.7rem;
+                transform: rotate(12deg);
+            }
+        }
+    }
+
+    .processSteps {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding-left: 80px;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 48px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #d97b2b;
+        }
+    }
+
+    @media (max-width: 768px) {
+        & {
+            padding: 1.5rem 0.75rem;
+        }
+
+        .processContainer {
+            .titleWithStickers {
+                .titleSticker {
+                    width: 60px;
+                    height: 60px;
+                    opacity: 0.8;
+                }
+
+                .titleStickerLeft {
+                    left: -2rem;
+                    top: -1rem;
+                }
+
+                .titleStickerRight {
+                    right: -2rem;
+                    bottom: -0.8rem;
+                }
+            }
+        }
+
+        .processSteps {
+            gap: 1.25rem;
+            padding-left: 56px;
+
+            &::before {
+                left: 34px;
+            }
+        }
+    }
+}

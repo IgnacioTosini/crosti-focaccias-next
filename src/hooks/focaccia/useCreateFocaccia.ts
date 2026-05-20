@@ -11,6 +11,7 @@ export const useCreateFocaccia = () => {
         onSuccess: (created) => {
             const normalizedCreated = {
                 ...created,
+                price: created.mediumPrice,
                 pedidos: [],
             } as FocacciaItem;
 
@@ -28,11 +29,10 @@ export const useCreateFocaccia = () => {
 
             const syncedFocaccias = queryClient.getQueryData<FocacciaItem[]>(["focaccias"]) ?? [];
             ProductCache.write(syncedFocaccias);
-
-            queryClient.invalidateQueries({ queryKey: ["focaccias"], refetchType: "active" });
-            if (normalizedCreated.featured) {
-                queryClient.invalidateQueries({ queryKey: ["featuredFocaccias"], refetchType: "active" });
-            }
+        },
+        onSettled: () => {
+            void queryClient.invalidateQueries({ queryKey: ["focaccias"] });
+            void queryClient.invalidateQueries({ queryKey: ["featuredFocaccias"] });
         },
     });
 };

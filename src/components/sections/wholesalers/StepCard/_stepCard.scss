@@ -1,0 +1,74 @@
+@use '@/styles/variables' as *;
+
+.stepCard {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .stepMarker {
+        position: absolute;
+        left: -80px;
+        z-index: 2;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: $font-family;
+        font-size: clamp($font-size-medium, 2.5vw, $font-size-medium-large);
+        font-weight: $font-weight-extra-bold;
+        color: $color-text-tertiary;
+        background-color: $color-hover-secondary;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.16);
+    }
+
+    .stepContent {
+        width: 100%;
+        background-color: $secondary-color;
+        border: 1px solid #e7e1d4;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.09);
+
+        h3,
+        p {
+            margin: 0;
+            font-family: $font-family;
+            color: $quinary-color;
+        }
+
+        h3 {
+            font-size: clamp($font-size-large, 2.5vw, $font-size-medium-large);
+            font-weight: $font-weight-extra-bold;
+        }
+
+        p {
+            margin-top: 0.65rem;
+            font-size: clamp($font-size-small, 2vw, $font-size-medium);
+            line-height: 1.5;
+            font-weight: $font-weight-medium;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .stepMarker {
+            left: -56px;
+            width: 42px;
+            height: 42px;
+            font-size: clamp($font-size-small, 2vw, $font-size-medium);
+        }
+
+        .stepContent {
+            padding: 1rem;
+
+            h3 {
+                font-size: clamp($font-size-large, 2vw, $font-size-medium-large);
+            }
+
+            p {
+                font-size: clamp($font-size-small, 1.5vw, $font-size-medium);
+            }
+        }
+    }
+}

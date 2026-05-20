@@ -2,8 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { ProductService } from '@/services/ProductService';
 import type { FocacciaItem } from '@/types';
 
-const PRODUCTS_CACHE_TIME = 1000 * 60 * 30;
-
 type UseFocacciasOptions = {
     live?: boolean;
     refetchIntervalMs?: number;
@@ -15,18 +13,25 @@ export const useFocaccias = (
 ) => {
     const hasInitialData = Array.isArray(initialData) && initialData.length > 0;
     const isLive = options?.live ?? false;
-    const refetchIntervalMs = options?.refetchIntervalMs ?? 15000;
+    // refetchIntervalMs funciona tanto en live (admin) como en público (OurMenu)
+    const refetchIntervalMs = options?.refetchIntervalMs;
 
     return useQuery({
         queryKey: ['focaccias'],
         queryFn: ProductService.getFocaccias,
-        staleTime: PRODUCTS_CACHE_TIME,
-        initialData: hasInitialData ? initialData : undefined,
-        refetchOnMount: 'always',
+        // Admin (live): staleTime 0 — igual que usePromociones en admin
+        // Público: 10 minutos — igual que usePromociones en público
+        staleTime: isLive ? 0 : 1000 * 60 * 10,
+        // Sin initialData: la caché arranca vacía y siempre fetchea (mismo patrón
+        // que usePromociones/CombosSection). Los datos SSR se muestran como
+        // placeholder para evitar flash de carga sin bloquear actualizaciones.
+        placeholderData: (previousData) =>
+            previousData ?? (hasInitialData ? initialData : undefined),
+        refetchOnMount: isLive ? 'always' : true,
         refetchOnWindowFocus: true,
         refetchOnReconnect: 'always',
-        refetchInterval: isLive ? refetchIntervalMs : false,
+        // Sin intervalo explícito → false (sin polling)
+        refetchInterval: refetchIntervalMs ?? false,
         refetchIntervalInBackground: isLive,
-        placeholderData: (previousData) => previousData,
     });
 };

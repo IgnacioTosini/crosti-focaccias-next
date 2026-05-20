@@ -1,62 +1,16 @@
+import { FocacciaSize } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import type { PedidoFocacciaResponse } from "@/types";
+import { pedidoInclude, toPedidoPayload } from "@/lib/pedidoPayload";
+import { calculatePromotions } from "@/lib/promociones";
 
-type PedidoPayload = {
-    id: number;
-    clientPhone: string;
-    pedidoFocaccias: PedidoFocacciaResponse[];
-    quantity: number;
-    totalPrice: number;
-    orderDate: string;
+const parseSize = (value: unknown): FocacciaSize => {
+    if (value === FocacciaSize.GRANDE) {
+        return FocacciaSize.GRANDE;
+    }
+
+    return FocacciaSize.MEDIANA;
 };
-
-const toPedidoPayload = (pedido: PedidoWithRelations): PedidoPayload => {
-    const items = pedido.pedidoFocaccias.map((item) => ({
-        focacciaId: item.focacciaId,
-        name: item.focaccia.name,
-        description: item.focaccia.description,
-        price: item.focaccia.price,
-        isVeggie: item.focaccia.isVeggie,
-        imageUrl: item.focaccia.imageUrl,
-        imagePublicId: item.focaccia.imagePublicId,
-        featured: item.focaccia.featured,
-        cantidad: item.cantidad,
-    }));
-
-    return {
-        id: pedido.id,
-        clientPhone: pedido.clientPhone,
-        pedidoFocaccias: items,
-        quantity: pedido.quantity,
-        totalPrice: pedido.totalPrice,
-        orderDate: pedido.orderDate.toISOString(),
-    };
-};
-
-const pedidoInclude = {
-    pedidoFocaccias: {
-        select: {
-            focacciaId: true,
-            cantidad: true,
-            focaccia: {
-                select: {
-                    name: true,
-                    description: true,
-                    price: true,
-                    isVeggie: true,
-                    imageUrl: true,
-                    imagePublicId: true,
-                    featured: true,
-                },
-            },
-        },
-    },
-} as const;
-
-type PedidoWithRelations = import("@prisma/client").Prisma.PedidoGetPayload<{
-    include: typeof pedidoInclude;
-}>;
 
 export async function GET() {
     try {
@@ -88,6 +42,7 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
         const clientPhone = String(body?.clientPhone ?? "").trim();
+        const promoCode = String(body?.promoCode ?? "").trim() || undefined;
         const focaccias = Array.isArray(body?.focaccias) ? body.focaccias : [];
 
         if (!clientPhone || focaccias.length === 0) {
@@ -102,9 +57,10 @@ export async function POST(request: NextRequest) {
         }
 
         const normalizedItems = focaccias
-            .map((item: { focacciaId?: unknown; cantidad?: unknown }) => ({
+            .map((item: { focacciaId?: unknown; cantidad?: unknown; size?: unknown }) => ({
                 focacciaId: Number(item.focacciaId),
                 cantidad: Number(item.cantidad),
+                size: parseSize(item.size),
             }))
             .filter((item: { focacciaId: number; cantidad: number }) => Number.isInteger(item.focacciaId) && item.focacciaId > 0 && Number.isInteger(item.cantidad) && item.cantidad > 0);
 
@@ -119,17 +75,29 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const quantitiesByFocacciaId = new Map<number, number>();
+        const quantitiesByFocacciaAndSize = new Map<string, { focacciaId: number; size: FocacciaSize; cantidad: number }>();
         for (const item of normalizedItems) {
-            const current = quantitiesByFocacciaId.get(item.focacciaId) ?? 0;
-            quantitiesByFocacciaId.set(item.focacciaId, current + item.cantidad);
+            const key = `${item.focacciaId}_${item.size}`;
+            const current = quantitiesByFocacciaAndSize.get(key);
+
+            if (current) {
+                current.cantidad += item.cantidad;
+                continue;
+            }
+
+            quantitiesByFocacciaAndSize.set(key, {
+                focacciaId: item.focacciaId,
+                size: item.size,
+                cantidad: item.cantidad,
+            });
         }
 
-        const focacciaIds = [...quantitiesByFocacciaId.keys()];
+        const itemsForCalculation = [...quantitiesByFocacciaAndSize.values()];
+        const focacciaIds = [...new Set(itemsForCalculation.map((item) => item.focacciaId))];
 
         const focacciasInDb = await prisma.focaccia.findMany({
             where: { id: { in: focacciaIds } },
-            select: { id: true, price: true },
+            select: { id: true, mediumPrice: true, largePrice: true, isAvailable: true },
         });
 
         if (focacciasInDb.length !== focacciaIds.length) {
@@ -143,28 +111,62 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const pricesById = new Map(focacciasInDb.map((item) => [item.id, item.price]));
-        const itemsForCreate = focacciaIds.map((focacciaId) => ({
-            focacciaId,
-            cantidad: quantitiesByFocacciaId.get(focacciaId) ?? 0,
-        }));
+        if (focacciasInDb.some((item) => !item.isAvailable)) {
+            return NextResponse.json(
+                {
+                    data: null,
+                    message: "Una o más focaccias no están disponibles",
+                    success: false,
+                },
+                { status: 400 }
+            );
+        }
+
+        const pricesById = new Map(focacciasInDb.map((item) => [item.id, item]));
+
+        const itemsForCreate = itemsForCalculation.map((item) => {
+            const focaccia = pricesById.get(item.focacciaId);
+            const unitPrice = item.size === FocacciaSize.GRANDE ? focaccia?.largePrice ?? 0 : focaccia?.mediumPrice ?? 0;
+            const lineSubtotal = unitPrice * item.cantidad;
+            const lineDiscount = 0;
+            const lineTotal = lineSubtotal - lineDiscount;
+
+            return {
+                focacciaId: item.focacciaId,
+                size: item.size,
+                cantidad: item.cantidad,
+                unitPrice,
+                lineSubtotal,
+                lineDiscount,
+                lineTotal,
+            };
+        });
 
         const quantity = itemsForCreate.reduce((acc, item) => acc + item.cantidad, 0);
-        const totalPrice = itemsForCreate.reduce((acc, item) => {
-            const price = pricesById.get(item.focacciaId) ?? 0;
-            return acc + price * item.cantidad;
-        }, 0);
+        const subtotal = itemsForCreate.reduce((acc, item) => acc + item.lineSubtotal, 0);
+        const created = await prisma.$transaction(async (tx) => {
+            const { discountTotal } = await calculatePromotions(tx, {
+                promoCode,
+                subtotal,
+            });
 
-        const created = await prisma.pedido.create({
-            data: {
-                clientPhone,
-                quantity,
-                totalPrice,
-                pedidoFocaccias: {
-                    create: itemsForCreate,
+            const totalPrice = Math.max(0, subtotal - discountTotal);
+
+            const createdPedido = await tx.pedido.create({
+                data: {
+                    clientPhone,
+                    quantity,
+                    subtotal,
+                    discountTotal,
+                    totalPrice,
+                    pedidoFocaccias: {
+                        create: itemsForCreate,
+                    },
                 },
-            },
-            include: pedidoInclude,
+                include: pedidoInclude,
+            });
+
+            return createdPedido;
         });
 
         return NextResponse.json(

@@ -1,0 +1,41 @@
+@use '@/styles/variables' as *;
+
+.combosSection {
+    display: flex;
+    flex-direction: column;
+	width: 100%;
+	margin: 0 0 1.2rem;
+	padding: 0.25rem 0;
+
+	.combosTitle {
+		margin: 0 0 1rem;
+        width: 100%;
+		font-family: $font-family-display;
+		font-size: $font-size-xxlarge;
+		color: #7d3f14;
+		letter-spacing: 0.01em;
+		text-wrap: balance;
+	}
+
+	.combosGrid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(220px, 1fr));
+		gap: 1rem;
+	}
+}
+
+@media (max-width: 1080px) {
+	.combosSection {
+		.combosGrid {
+			grid-template-columns: repeat(2, minmax(220px, 1fr));
+		}
+	}
+}
+
+@media (max-width: 740px) {
+	.combosSection {
+		.combosGrid {
+			grid-template-columns: 1fr;
+		}
+	}
+}

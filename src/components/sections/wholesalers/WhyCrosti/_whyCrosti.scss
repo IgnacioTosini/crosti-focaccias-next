@@ -1,0 +1,86 @@
+@use '@/styles/variables' as *;
+
+.whyCrosti {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem 1rem;
+    min-height: 100dvh;
+
+    @media (min-width: 768px) {
+        gap: 3rem;
+        padding: 3rem 2rem;
+    }
+
+    .whyCrostiContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        max-width: 1200px;
+
+        .titleWithStickers {
+            position: relative;
+            width: fit-content;
+
+            .titleSticker {
+                position: absolute;
+                opacity: 0.9;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .title {
+                position: relative;
+                z-index: 1;
+            }
+
+            .titleStickerLeft {
+                left: -5.5rem;
+                top: 50%;
+                transform: translateY(-50%) rotate(-12deg);
+            }
+
+            .titleStickerRight {
+                right: -5.25rem;
+                top: -0.5rem;
+                transform: rotate(10deg);
+            }
+        }
+
+        .whyCrostiCards {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .whyCrostiContainer {
+            .titleWithStickers {
+                .titleSticker {
+                    width: 64px;
+                    height: 64px;
+                    opacity: 0.8;
+                }
+
+                .titleStickerLeft {
+                    left: -2.25rem;
+                    top: -1.5rem;
+                    transform: rotate(-10deg);
+                }
+
+                .titleStickerRight {
+                    right: -2.15rem;
+                    top: auto;
+                    bottom: -1rem;
+                    transform: rotate(8deg);
+                }
+            }
+        }
+    }
+}

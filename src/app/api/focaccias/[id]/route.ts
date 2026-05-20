@@ -6,11 +6,13 @@ const focacciaSelect = {
     id: true,
     name: true,
     description: true,
-    price: true,
+    mediumPrice: true,
+    largePrice: true,
     isVeggie: true,
     imageUrl: true,
     imagePublicId: true,
     featured: true,
+    isAvailable: true,
 } as const;
 
 export async function GET(
@@ -40,6 +42,7 @@ export async function GET(
         return NextResponse.json({
             data: {
                 ...focaccia,
+                price: focaccia.mediumPrice,
                 pedidos: [],
             },
         });
@@ -60,9 +63,18 @@ export async function PUT(
         const body = await request.json();
         const { id } = await params;
         const focacciaId = Number(id);
+        const mediumPrice = Number(body.mediumPrice ?? body.price);
+        const largePrice = Number(body.largePrice ?? body.price);
 
         if (Number.isNaN(focacciaId)) {
             return NextResponse.json({ error: "Invalid focaccia id" }, { status: 400 });
+        }
+
+        if (!Number.isFinite(mediumPrice) || mediumPrice <= 0 || !Number.isFinite(largePrice) || largePrice <= 0) {
+            return NextResponse.json(
+                { error: "Precios inválidos" },
+                { status: 400 }
+            );
         }
 
         const updated = await prisma.focaccia.update({
@@ -70,11 +82,13 @@ export async function PUT(
             data: {
                 name: body.name,
                 description: body.description,
-                price: Number(body.price),
+                mediumPrice,
+                largePrice,
                 isVeggie: Boolean(body.isVeggie),
                 imageUrl: body.imageUrl,
                 imagePublicId: body.imagePublicId,
                 featured: Boolean(body.featured),
+                isAvailable: body.isAvailable === undefined ? true : Boolean(body.isAvailable),
             },
             select: focacciaSelect,
         });
@@ -84,6 +98,7 @@ export async function PUT(
         return NextResponse.json({
             data: {
                 ...updated,
+                price: updated.mediumPrice,
                 pedidos: [],
             },
         });

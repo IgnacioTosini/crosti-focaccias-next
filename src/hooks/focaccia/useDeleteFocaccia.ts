@@ -21,9 +21,11 @@ export const useDeleteFocaccia = () => {
 
             const syncedFocaccias = queryClient.getQueryData<FocacciaItem[]>(['focaccias']) ?? []
             ProductCache.write(syncedFocaccias)
-
-            queryClient.invalidateQueries({ queryKey: ['focaccias'], refetchType: 'active' })
-            queryClient.invalidateQueries({ queryKey: ['featuredFocaccias'], refetchType: 'active' })
-        }
+        },
+        onSettled: (_, __, deletedId) => {
+            void queryClient.invalidateQueries({ queryKey: ['focaccias'] })
+            void queryClient.invalidateQueries({ queryKey: ['featuredFocaccias'] })
+            if (deletedId) queryClient.removeQueries({ queryKey: ['focaccia', deletedId] })
+        },
     })
 }

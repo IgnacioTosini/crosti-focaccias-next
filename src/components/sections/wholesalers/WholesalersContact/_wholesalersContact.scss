@@ -1,0 +1,78 @@
+@use '@/styles/variables' as *;
+
+.wholesalersContact {
+	background: linear-gradient(180deg, #f6eedf 0%, #f5ebdb 100%);
+	padding: clamp(3rem, 8vw, 6rem) 1rem clamp(2.25rem, 5.5vw, 4rem);
+
+	.wholesalersContactContainer {
+		width: min(1080px, 100%);
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+
+		.titleWithStickers {
+			position: relative;
+			width: fit-content;
+			align-self: center;
+
+			.titleSticker {
+				position: absolute;
+				opacity: 0.9;
+				pointer-events: none;
+				z-index: 0;
+			}
+
+			.title {
+				position: relative;
+				z-index: 1;
+			}
+
+			.titleStickerLeft {
+				left: -5.35rem;
+				top: 50%;
+				transform: translateY(-50%) rotate(-10deg);
+			}
+
+			.titleStickerRight {
+				right: -5.1rem;
+				top: -0.6rem;
+				transform: rotate(8deg);
+			}
+		}
+
+		.wholesalersContactDescription {
+			margin: 0 auto;
+			width: min(760px, 100%);
+			text-align: center;
+			font-size: clamp($font-size-medium-large, 2.2vw, 2rem);
+			color: rgba($quinary-color, 0.9);
+			line-height: 1.35;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.wholesalersContactContainer {
+			.titleWithStickers {
+				.titleSticker {
+					width: 62px;
+					height: 62px;
+					opacity: 0.8;
+				}
+
+				.titleStickerLeft {
+					left: -2.1rem;
+					top: -1.2rem;
+					transform: rotate(-10deg);
+				}
+
+				.titleStickerRight {
+					right: -2rem;
+					top: auto;
+					bottom: -0.9rem;
+					transform: rotate(10deg);
+				}
+			}
+		}
+	}
+}

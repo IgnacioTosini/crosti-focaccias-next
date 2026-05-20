@@ -7,3 +7,4 @@ export * from './howToOrderAnimations';
 export * from './connectUsAnimations';
 export * from './itemCardAnimations';
 export * from './asideOrderSummaryAnimations';
+export * from './combosSectionAnimations';

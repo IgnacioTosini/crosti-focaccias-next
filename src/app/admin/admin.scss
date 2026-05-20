@@ -1,0 +1,140 @@
+@use '../../styles/variables' as *;
+@use 'sass:color';
+
+.admin-panel-layout {
+  display: flex;
+  min-height: 100vh;
+
+  .admin-sidebar {
+    width: 220px;
+    background: $color-admin-sidebar-bg;
+    color: $color-text-tertiary;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    h2 {
+      font-size: $font-size-medium-large;
+      margin-bottom: 1.5rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      margin-bottom: 1rem;
+
+      .adminHeaderButton {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        background-color: transparent;
+        border: 2px solid $tertiary-color;
+        color: $tertiary-color;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease, color 0.3s ease;
+
+        &:hover {
+          background-color: color.scale($tertiary-color, $lightness: 20%);
+          color: $color-text;
+        }
+      }
+    }
+
+    a {
+      display: inline-block;
+      padding: 0.35rem 0.55rem;
+      border-radius: 0.5rem;
+      color: $color-text-tertiary;
+      text-decoration: none;
+      font-weight: $font-weight-medium;
+      line-height: 1.2;
+      transition: color 0.2s, background-color 0.2s;
+
+      &.active {
+        color: $color-text-tertiary;
+        background: $color-admin-sidebar-accent;
+      }
+
+      &:hover:not(.active) {
+        color: $color-admin-sidebar-accent;
+      }
+
+      &.active:hover {
+        color: $color-text-tertiary;
+        background: $color-admin-sidebar-accent;
+      }
+    }
+  }
+
+  .admin-main-content {
+    flex: 1;
+    background: $color-admin-main-bg;
+    padding: 2rem 2.5rem;
+    min-height: 100vh;
+  }
+}
+
+@media (max-width: 900px) {
+  .admin-panel-layout {
+    flex-direction: column;
+    min-height: 100dvh;
+
+    .admin-sidebar {
+      width: 100%;
+      padding: 1rem;
+      gap: 0.75rem;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      box-shadow: 0 2px 10px rgba($border-color, 0.25);
+
+      h2 {
+        margin: 0;
+        font-size: $font-size-medium;
+      }
+
+      nav {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      ul {
+        display: flex;
+        gap: 0.5rem;
+        min-width: max-content;
+      }
+
+      li {
+        margin: 0;
+      }
+
+      a {
+        display: inline-block;
+        padding: 0.45rem 0.75rem;
+        border: 1px solid rgba($secondary-color, 0.25);
+        border-radius: 0.5rem;
+        white-space: nowrap;
+
+        &.active {
+          background: $color-admin-sidebar-accent;
+          border-color: $color-admin-sidebar-accent;
+          color: $color-admin-sidebar-bg;
+        }
+      }
+    }
+
+    .admin-main-content {
+      min-height: auto;
+      padding: 1rem;
+    }
+  }
+}

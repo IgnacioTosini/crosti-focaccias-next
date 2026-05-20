@@ -1,0 +1,52 @@
+@use '@/styles/variables' as *;
+@use 'sass:color';
+
+.itemCardFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0.9rem 1rem 0.6rem;
+    margin-top: 0.25rem;
+
+    .itemPrice {
+        font-size: $font-size-large;
+        font-weight: $font-weight-extra-bold;
+        color: $color-text-secondary;
+        padding: 0;
+        letter-spacing: -0.5px;
+        line-height: 1;
+    }
+
+    .addToCartButton {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: $color-button;
+        color: $color-text-tertiary;
+        border: none;
+        border-radius: 0.65rem;
+        padding: 0.7rem 1rem;
+        font-size: $font-size-medium;
+        font-weight: $font-weight-medium;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:disabled {
+            background-color: rgba($color-hover-primary, 0.55);
+            cursor: not-allowed;
+        }
+
+        &:hover {
+            background-color: color.adjust($color-hover-primary, $lightness: -10%);
+        }
+
+        &.consultButton {
+            background-color: $color-whatsapp;
+
+            &:hover {
+                background-color: color.adjust($color-whatsapp, $lightness: -8%);
+            }
+        }
+    }
+}

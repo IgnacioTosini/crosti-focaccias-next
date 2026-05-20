@@ -1,0 +1,195 @@
+.adminCombos {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.adminCombosHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background: #d50000;
+  color: #fff;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.adminCombosHeader h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.adminCombosHeader p {
+  margin: 0.35rem 0 0;
+}
+
+.comboForm {
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #ececec;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.comboForm h2 {
+  margin: 0;
+}
+
+.gridTwo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.comboForm label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-weight: 600;
+}
+
+.comboForm input,
+.comboForm select,
+.comboForm textarea {
+  border: 1px solid #d8d8d8;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+}
+
+.comboItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.comboItemsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.comboItemsHeader h3 {
+  margin: 0;
+}
+
+.comboItemRow {
+  display: grid;
+  grid-template-columns: 1.15fr 1.8fr 0.7fr 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.formActions,
+.comboCardActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+.primaryAction,
+.secondaryAction,
+.dangerAction {
+  border: none;
+  border-radius: 0.55rem;
+  padding: 0.55rem 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.primaryAction {
+  background: #d50000;
+  color: #fff;
+}
+
+.secondaryAction {
+  background: #2a2f3a;
+  color: #fff;
+}
+
+.dangerAction {
+  background: #c62828;
+  color: #fff;
+}
+
+.iconOnly {
+  padding-inline: 0.7rem;
+}
+
+.muted {
+  color: #6a6a6a;
+  margin: 0;
+}
+
+.combosList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.comboCardAdmin {
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.comboCardTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.comboCardTop h3 {
+  margin: 0;
+}
+
+.comboTypeTag {
+  background: #eef2ff;
+  color: #1f2b63;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.comboMeta {
+  display: flex;
+  gap: 1rem;
+  font-weight: 600;
+}
+
+.comboCardAdmin ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+@media (max-width: 900px) {
+  .adminCombosHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .gridTwo {
+    grid-template-columns: 1fr;
+  }
+
+  .comboItemRow {
+    grid-template-columns: 1fr;
+  }
+
+  .combosList {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,173 @@
+@use '@/styles/variables' as *;
+
+.wholesalersHero {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding: 4rem 2rem;
+    background-color: rgba($quinary-color, 0.1);
+
+    .contentContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+        }
+
+        .contentLeft {
+            max-width: 550px;
+
+            .badge {
+                background-color: rgba($quinary-color, 0.4);
+                color: $quinary-color;
+                padding: 0.25rem 0.75rem;
+                border-radius: 1rem;
+                font-size: $font-size-normal;
+                font-weight: $font-weight-bold;
+                font-family: $font-family;
+            }
+
+            .title {
+                margin-top: 1.5rem;
+                font-size: $font-size-xxxlarge;
+                color: $color-text;
+                line-height: 60px;
+                font-weight: $font-weight-bold;
+                font-family: $font-family-display;
+                text-align: left;
+
+                span {
+                    color: $color-text-secondary;
+                    font-family: $font-family-display;
+                }
+            }
+
+            .description {
+                margin-top: 1rem;
+                font-size: $font-size-large;
+                color: $color-text;
+                line-height: 33px;
+                font-weight: $font-weight-regular;
+            }
+
+            .placesList {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin-top: 2rem;
+
+                @media (max-width: 768px) {
+                    justify-content: center;
+                }
+            }
+
+            .buttonsContainer {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+                margin-top: 2rem;
+
+                .primaryWholesalerButton,
+                .secondaryWholesalerButton {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 1.25rem 2.25rem;
+                    border-radius: 3rem;
+                    font-weight: $font-weight-bold;
+                    font-family: $font-family;
+                    text-decoration: none;
+                    color: $color-text-tertiary;
+                    transition: all 0.3s ease-in-out;
+
+                    .icon {
+                        font-size: $font-size-large;
+                    }
+
+                    &.primaryWholesalerButton {
+                        background-color: $color-button;
+
+                        &:hover {
+                            background-color: darken($color-button, 10%);
+                        }
+                    }
+
+                    &.secondaryWholesalerButton {
+                        background-color: $color-whatsapp;
+
+                        &:hover {
+                            background-color: darken($color-whatsapp, 10%);
+                        }
+                    }
+                }
+            }
+        }
+
+        picture {
+            position: relative;
+
+            @media (max-width: 768px) {
+                .heroImage {
+                    width: 100%;
+                    max-width: 400px;
+                }
+
+                .qualityBadgeContainer {
+                    bottom: 20px;
+                    right: 15px;
+                }
+            }
+
+            .heroImage {
+                border-radius: 3rem;
+            }
+
+            .qualityBadgeContainer {
+                position: absolute;
+                bottom: 30px;
+                right: 50px;
+                background-color: $primary-color;
+                padding: 1rem 1.75rem;
+                border-radius: 1rem;
+                display: flex;
+                align-items: center;
+
+                @media (max-width: 768px) {
+                    max-width: 350px;
+                    bottom: 20px;
+                    right: 20px;
+                    padding: 0.75rem 1.25rem;
+                }
+
+                svg {
+                    font-size: $font-size-xlarge;
+                    color: $quinary-color;
+                    margin-right: 0.5rem;
+                }
+
+                .qualityBadge {
+                    h3 {
+                        margin: 0;
+                        font-size: clamp($font-size-medium, 2vw, $font-size-large);
+                        font-weight: $font-weight-bold;
+                        color: $color-text-secondary;
+                    }
+
+                    p {
+                        margin: 0;
+                        font-size: clamp($font-size-small, 1.5vw, $font-size-normal);
+                        color: $color-text-secondary;
+                    }
+                }
+            }
+        }
+    }
+}

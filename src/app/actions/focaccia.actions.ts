@@ -17,23 +17,27 @@ const ensureAdminSession = async () => {
 };
 
 const refreshFocacciaCache = () => {
-    revalidateTag('focaccias', 'max');
+    revalidateTag('focaccias');
     revalidatePath('/');
-    revalidatePath('/admin');
 };
 
 export async function createFocacciaAction(data: FocacciaMutationInput) {
     await ensureAdminSession();
 
+    const mediumPrice = Number((data as { mediumPrice?: number; price?: number }).mediumPrice ?? data.price);
+    const largePrice = Number((data as { largePrice?: number; price?: number }).largePrice ?? data.price);
+
     const focaccia = await prisma.focaccia.create({
         data: {
             name: data.name,
             description: data.description,
-            price: data.price,
+            mediumPrice,
+            largePrice,
             isVeggie: data.isVeggie,
             imageUrl: data.imageUrl,
             imagePublicId: data.imagePublicId,
             featured: data.featured,
+            isAvailable: (data as { isAvailable?: boolean }).isAvailable ?? true,
         },
     });
 
@@ -44,16 +48,21 @@ export async function createFocacciaAction(data: FocacciaMutationInput) {
 export async function updateFocacciaAction(id: number, data: FocacciaMutationInput) {
     await ensureAdminSession();
 
+    const mediumPrice = Number((data as { mediumPrice?: number; price?: number }).mediumPrice ?? data.price);
+    const largePrice = Number((data as { largePrice?: number; price?: number }).largePrice ?? data.price);
+
     const focaccia = await prisma.focaccia.update({
         where: { id },
         data: {
             name: data.name,
             description: data.description,
-            price: data.price,
+            mediumPrice,
+            largePrice,
             isVeggie: data.isVeggie,
             imageUrl: data.imageUrl,
             imagePublicId: data.imagePublicId,
             featured: data.featured,
+            isAvailable: (data as { isAvailable?: boolean }).isAvailable,
         },
     });
 
@@ -64,9 +73,7 @@ export async function updateFocacciaAction(id: number, data: FocacciaMutationInp
 export async function deleteFocacciaAction(id: number) {
     await ensureAdminSession();
 
-    await prisma.focaccia.delete({
-        where: { id },
-    });
+    await prisma.focaccia.delete({ where: { id } });
 
     refreshFocacciaCache();
     return { success: true };

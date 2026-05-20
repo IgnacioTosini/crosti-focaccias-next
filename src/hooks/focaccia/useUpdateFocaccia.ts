@@ -12,6 +12,7 @@ export const useUpdateFocaccia = () => {
         onSuccess: (updated, variables) => {
             const normalizedUpdated = {
                 ...updated,
+                price: updated.mediumPrice,
                 pedidos: [],
             } as FocacciaItem;
 
@@ -34,10 +35,11 @@ export const useUpdateFocaccia = () => {
 
             const syncedFocaccias = queryClient.getQueryData<FocacciaItem[]>(["focaccias"]) ?? [];
             ProductCache.write(syncedFocaccias);
-
-            queryClient.invalidateQueries({ queryKey: ["focaccias"], refetchType: "active" });
-            queryClient.invalidateQueries({ queryKey: ["focaccia", variables.id], refetchType: "active" });
-            queryClient.invalidateQueries({ queryKey: ["featuredFocaccias"], refetchType: "active" });
+        },
+        onSettled: (_, __, variables) => {
+            void queryClient.invalidateQueries({ queryKey: ["focaccias"] });
+            void queryClient.invalidateQueries({ queryKey: ["focaccia", variables.id] });
+            void queryClient.invalidateQueries({ queryKey: ["featuredFocaccias"] });
         },
     });
 };

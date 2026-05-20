@@ -1,0 +1,257 @@
+@use '../../../../../styles/variables' as *;
+@use 'sass:color';
+
+.adminOrderCard {
+    display: block;
+    background-color: $secondary-color;
+    border: 1px solid rgba($border-color, 0.25);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+    &:hover {
+        border-color: rgba($quaternary-color, 0.35);
+        box-shadow: 0 8px 18px rgba($border-color, 0.09);
+    }
+
+    .adminOrderCardContent {
+        position: relative;
+        display: grid;
+        gap: 1rem;
+        width: 100%;
+
+        .adminOrderTop {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+
+            @media (max-width: 768px) {
+                flex-direction: column;
+            }
+        }
+
+        .adminOrderCardHeader {
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            .adminOrderId {
+                font-size: $font-size-medium-large;
+                font-weight: $font-weight-bold;
+                color: $color-text;
+                margin: 0;
+            }
+
+            .adminOrderMeta {
+                margin: 0;
+                font-size: $font-size-normal;
+                color: $color-text;
+            }
+        }
+
+        .adminOrderStatus {
+            display: inline-flex;
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 0.2rem;
+            border-radius: 999px;
+            padding: 0.35rem 0.5rem;
+            margin-top: 1.65rem;
+            margin-right: 2.3rem;
+            font-size: $font-size-small;
+            font-weight: $font-weight-bold;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: rgba($border-color, 0.1);
+            color: $color-text;
+
+            .adminOrderStatusLabel {
+                font-size: 10px;
+                color: color.scale($color-text, $lightness: 20%);
+                padding: 0 0.25rem;
+            }
+
+            select {
+                border: 0;
+                outline: none;
+                border-radius: 999px;
+                padding: 0.2rem 1.65rem 0.2rem 0.45rem;
+                font-size: $font-size-small;
+                font-weight: $font-weight-bold;
+                letter-spacing: 0.02em;
+                text-transform: uppercase;
+                color: inherit;
+                background: transparent;
+                cursor: pointer;
+                appearance: none;
+                min-width: 150px;
+                background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+                background-position: calc(100% - 14px) 50%, calc(100% - 9px) 50%;
+                background-size: 5px 5px, 5px 5px;
+                background-repeat: no-repeat;
+
+                &:disabled {
+                    cursor: not-allowed;
+                    opacity: 0.7;
+                }
+            }
+        }
+
+        .adminOrderStatus--pendiente {
+            background: rgba($quinary-color, 0.15);
+            color: color.scale($quinary-color, $lightness: -20%);
+        }
+
+        .adminOrderStatus--confirmado {
+            background: rgba($color-status-confirmed-bg, 0.16);
+            color: $color-status-confirmed;
+        }
+
+        .adminOrderStatus--en_preparacion {
+            background: rgba($color-status-preparing-bg, 0.2);
+            color: $color-status-preparing;
+        }
+
+        .adminOrderStatus--listo {
+            background: rgba($color-status-ready-bg, 0.2);
+            color: $color-status-ready;
+        }
+
+        .adminOrderStatus--entregado {
+            background: rgba($color-success, 0.18);
+            color: color.scale($color-success, $lightness: -25%);
+        }
+
+        .adminOrderStatus--cancelado {
+            background: rgba($color-error, 0.14);
+            color: color.scale($color-error, $lightness: -20%);
+        }
+
+        .adminOrderTotals {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(130px, 1fr));
+            gap: 0.5rem;
+
+            @media (max-width: 992px) {
+                grid-template-columns: repeat(2, minmax(130px, 1fr));
+            }
+
+            @media (max-width: 576px) {
+                grid-template-columns: 1fr;
+            }
+
+            p {
+                margin: 0;
+                padding: 0.6rem 0.7rem;
+                border-radius: 0.5rem;
+                background: rgba($primary-color, 0.75);
+                border: 1px solid rgba($border-color, 0.12);
+                display: flex;
+                flex-direction: column;
+
+                span {
+                    font-size: $font-size-small;
+                    color: color.scale($color-text, $lightness: 25%);
+                }
+
+                strong {
+                    font-size: $font-size-medium;
+                    color: $color-text-secondary;
+                }
+            }
+        }
+
+        .adminOrderFocaccias {
+            width: 100%;
+            overflow-y: auto;
+            max-height: 250px;
+            scrollbar-width: thin;
+
+            h3 {
+                margin: 0 0 0.75rem;
+                font-size: $font-size-medium;
+                color: $color-text;
+            }
+
+            .adminOrderFocacciasList {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                margin: 0;
+                padding: 0;
+
+                .adminOrderFocacciaItem {
+                    list-style: none;
+                    border: 1px solid rgba($border-color, 0.2);
+                    border-radius: 0.5rem;
+                    padding: 0.65rem;
+                    display: grid;
+                    gap: 0.35rem;
+
+                    .focacciaName {
+                        margin: 0;
+                        font-size: $font-size-medium;
+                        color: $color-text;
+                        font-weight: $font-weight-bold;
+                    }
+
+                    .focacciaMeta {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 0.35rem;
+
+                        span {
+                            font-size: $font-size-small;
+                            color: $color-text-secondary;
+                            background: rgba($primary-color, 0.8);
+                            border-radius: 0.35rem;
+                            padding: 0.2rem 0.45rem;
+                        }
+                    }
+                }
+
+                .adminOrderFocacciaItem--empty {
+                    color: color.scale($color-text, $lightness: 20%);
+                    font-style: italic;
+                    text-align: center;
+                    padding: 0.85rem;
+                    background: rgba($primary-color, 0.5);
+                }
+            }
+        }
+
+        .adminOrderDeleteButton {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border: none;
+            color: $color-text-secondary;
+            font-size: $font-size-large;
+            width: 2.2rem;
+            height: 2.2rem;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+
+            &:hover:not(:disabled) {
+                color: color.scale($color-error, $lightness: -20%);
+            }
+
+            &:disabled {
+                cursor: not-allowed;
+                opacity: 0.5;
+            }
+
+            @media (max-width: 768px) {
+                top: -0.3rem;
+                right: -0.3rem;
+            }
+        }
+    }
+}

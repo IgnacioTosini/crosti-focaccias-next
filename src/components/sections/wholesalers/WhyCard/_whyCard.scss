@@ -1,0 +1,48 @@
+@use '@/styles/variables' as *;
+
+.whyCard {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	gap: 10px;
+	min-height: 240px;
+    max-width: 360px;
+	padding: 28px 32px 30px;
+	background-color: $primary-color;
+	border: 1px solid #ead8be;
+	border-radius: 1rem;
+    transition: box-shadow 0.3s ease-in-out;
+
+    &:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.336);
+    }
+
+	h3,
+	p {
+		margin: 0;
+	}
+
+	.whyCardIcon {
+		color: #d36a17;
+		font-size: 30px;
+		line-height: 1;
+		margin-bottom: 8px;
+	}
+
+	h3 {
+		color: $quinary-color;
+		font-family: $font-family;
+		font-size: $font-size-large;
+		line-height: 1.2;
+		font-weight: $font-weight-extra-bold;
+		margin-bottom: 4px;
+	}
+
+	.whyCardDescription {
+		color: $color-text;
+		font-family: $font-family;
+		font-size: $font-size-medium;
+		line-height: 1.5;
+		font-weight: $font-weight-medium;
+	}
+}
