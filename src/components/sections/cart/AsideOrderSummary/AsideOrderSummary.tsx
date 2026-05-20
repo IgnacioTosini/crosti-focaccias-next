@@ -135,36 +135,40 @@ export const AsideOrderSummary = () => {
             }
         });
 
-        preOrder.combos.forEach((combo) => {
-            combo.focaccias.forEach((slot) => {
-                if (!Number.isInteger(slot.focaccia.id) || slot.focaccia.id <= 0) {
-                    return;
-                }
-
-                const slotSize = slot.size === 'GRANDE' ? 'GRANDE' : 'MEDIANA';
-                const key = `${slot.focaccia.id}_${slotSize}`;
-                const existing = orderLines.get(key);
-
-                if (existing) {
-                    existing.cantidad += 1;
-                } else {
-                    orderLines.set(key, {
-                        focacciaId: slot.focaccia.id,
-                        cantidad: 1,
-                        size: slotSize,
-                    });
-                }
-            });
-        });
+        // Importante: no agregamos aquí las focaccias elegidas dentro de combos,
+        // porque su precio ya está incluido en el subtotal del combo.
 
         // Preparar datos del pedido
+        const comboData = preOrder.combos.map((combo) => ({
+            comboId: combo.combo.id,
+            title: combo.combo.name,
+            cantidad: combo.cantidad,
+            unitPrice: combo.unitPrice,
+            subtotal: combo.subtotal,
+            focaccias: combo.focaccias.map((slot) => ({
+                label: slot.focaccia.name,
+                size: slot.size,
+                cantidad: slot.cantidad,
+                sabores: Array.isArray(slot.sabores) ? slot.sabores.filter((sabor) => typeof sabor === 'string' && sabor.trim().length > 0) : [],
+            })),
+            prepizzas: (combo.prepizzas ?? []).map((item) => ({
+                label: item.label ?? undefined,
+                cantidad: item.quantity,
+            })),
+            extras: (combo.extras ?? []).map((item) => ({
+                label: item.label ?? undefined,
+                cantidad: item.quantity,
+            })),
+        }));
+
         const pedidoData = {
             clientPhone: clientPhone,
-            focaccias: [...orderLines.values()]
+            focaccias: [...orderLines.values()],
+            combos: comboData,
         };
 
         try {
-            if (pedidoData.focaccias.length > 0) {
+            if (pedidoData.focaccias.length > 0 || pedidoData.combos.length > 0) {
                 // Validar con Zod antes de enviar
                 const validatedData = createPedidoSchema.parse(pedidoData);
 
@@ -179,9 +183,11 @@ export const AsideOrderSummary = () => {
             const whatsappUrl = `https://wa.me/${businessWhatsApp}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
 
+            clearCart();
             toast.success('Pedido guardado exitosamente. ¡Serás redirigido a WhatsApp!');
             setClientPhone('');
             setPhoneError('');
+            setIsSendingOrder(false);
             handleClose();
         } catch (error) {
             if (error instanceof z.ZodError) {

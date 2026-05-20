@@ -211,6 +211,48 @@
                             padding: 0.2rem 0.45rem;
                         }
                     }
+
+                    &.comboSummaryItem {
+                        background: rgba($primary-color, 0.45);
+                    }
+
+                    .comboSection {
+                        margin-top: 0.15rem;
+                        border: 1px solid rgba($border-color, 0.18);
+                        border-radius: 0.45rem;
+                        padding: 0.45rem 0.55rem;
+                        background: rgba($secondary-color, 0.6);
+
+                        .comboSectionTitle {
+                            margin: 0 0 0.35rem;
+                            font-size: $font-size-small;
+                            font-weight: $font-weight-bold;
+                            color: $color-text;
+                        }
+
+                        .comboSectionEmpty {
+                            margin: 0;
+                            font-size: $font-size-small;
+                            color: color.scale($color-text, $lightness: 20%);
+                            font-style: italic;
+                        }
+
+                        .comboFlavorList {
+                            margin: 0;
+                            padding-left: 1rem;
+                            display: grid;
+                            gap: 0.2rem;
+
+                            .comboFlavorItem {
+                                font-size: $font-size-small;
+                                color: $color-text-secondary;
+                            }
+                        }
+                    }
+
+                    .comboSectionMeta {
+                        margin-top: 0.2rem;
+                    }
                 }
 
                 .adminOrderFocacciaItem--empty {

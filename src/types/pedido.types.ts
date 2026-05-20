@@ -63,10 +63,14 @@ export type PedidoRequest = {
     }>;
     combos?: Array<{
         comboId: number;
+        title: string;
         cantidad: number;
-        focaccias: Array<{
-            focacciaId: number;
-            size: 'GRANDE';
+        unitPrice: number;
+        subtotal: number;
+        focaccias?: Array<{
+            label?: string;
+            size?: 'MEDIANA' | 'GRANDE';
+            cantidad: number;
             sabores?: string[];
         }>;
         prepizzas?: Array<{

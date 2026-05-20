@@ -259,7 +259,7 @@ export const useCartStore = create<CartState>()(
                 return { combos, quantity, totalPrice };
             }),
 
-            clearCart: () => ({ focaccias: [], combos: [], quantity: 0, totalPrice: 0 }),
+            clearCart: () => set({ focaccias: [], combos: [], quantity: 0, totalPrice: 0 }),
         }),
         {
             name: "crosti-cart",

@@ -23,7 +23,13 @@ const allowedTransitions: Record<PedidoStatus, PedidoStatus[]> = {
     [PedidoStatus.EN_PREPARACION]: [PedidoStatus.LISTO, PedidoStatus.CANCELADO],
     [PedidoStatus.LISTO]: [PedidoStatus.ENTREGADO, PedidoStatus.CANCELADO],
     [PedidoStatus.ENTREGADO]: [],
-    [PedidoStatus.CANCELADO]: [],
+    [PedidoStatus.CANCELADO]: [
+        PedidoStatus.PENDIENTE,
+        PedidoStatus.CONFIRMADO,
+        PedidoStatus.EN_PREPARACION,
+        PedidoStatus.LISTO,
+        PedidoStatus.ENTREGADO,
+    ],
 };
 
 export async function GET(_request: NextRequest, context: { params: Promise<{ id: string }> }) {

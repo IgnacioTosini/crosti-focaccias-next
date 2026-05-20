@@ -73,5 +73,6 @@ export const toPedidoPayload = (pedido: PedidoWithRelations): Pedido => ({
     subtotal: pedido.subtotal,
     discountTotal: pedido.discountTotal,
     totalPrice: pedido.totalPrice,
+    notes: pedido.notes ?? undefined,
     orderDate: pedido.orderDate.toISOString(),
 });

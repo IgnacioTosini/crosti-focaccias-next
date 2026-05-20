@@ -4,6 +4,19 @@ import { prisma } from "@/lib/prisma";
 import { pedidoInclude, toPedidoPayload } from "@/lib/pedidoPayload";
 import { calculatePromotions } from "@/lib/promociones";
 
+const COMBOS_NOTES_PREFIX = "COMBOS_JSON:";
+
+type ComboPayload = {
+    comboId: number;
+    title: string;
+    cantidad: number;
+    unitPrice: number;
+    subtotal: number;
+    focaccias?: Array<{ label?: string; size?: FocacciaSize; cantidad: number; sabores?: string[] }>;
+    prepizzas?: Array<{ label?: string; cantidad: number }>;
+    extras?: Array<{ label?: string; cantidad: number }>;
+};
+
 const parseSize = (value: unknown): FocacciaSize => {
     if (value === FocacciaSize.GRANDE) {
         return FocacciaSize.GRANDE;
@@ -44,8 +57,9 @@ export async function POST(request: NextRequest) {
         const clientPhone = String(body?.clientPhone ?? "").trim();
         const promoCode = String(body?.promoCode ?? "").trim() || undefined;
         const focaccias = Array.isArray(body?.focaccias) ? body.focaccias : [];
+        const combos = Array.isArray(body?.combos) ? body.combos : [];
 
-        if (!clientPhone || focaccias.length === 0) {
+        if (!clientPhone || (focaccias.length === 0 && combos.length === 0)) {
             return NextResponse.json(
                 {
                     data: null,
@@ -56,6 +70,117 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        const normalizedCombos: ComboPayload[] = combos
+            .map((combo: {
+                comboId?: unknown;
+                title?: unknown;
+                cantidad?: unknown;
+                unitPrice?: unknown;
+                subtotal?: unknown;
+                focaccias?: unknown;
+                prepizzas?: unknown;
+                extras?: unknown;
+            }) => {
+                const cantidad = Number(combo.cantidad);
+                const unitPrice = Number(combo.unitPrice);
+                const rawSubtotal = Number(combo.subtotal);
+                const subtotal = Number.isFinite(rawSubtotal) && rawSubtotal >= 0
+                    ? rawSubtotal
+                    : Math.max(0, unitPrice * cantidad);
+
+                const normalizeDetails = (value: unknown) => {
+                    if (!Array.isArray(value)) {
+                        return [] as Array<{ label?: string; cantidad: number }>;
+                    }
+
+                    return value
+                        .map((entry: { label?: unknown; cantidad?: unknown; quantity?: unknown }) => {
+                            const detailQty = Number(entry.cantidad ?? entry.quantity);
+                            if (!Number.isInteger(detailQty) || detailQty <= 0) {
+                                return null;
+                            }
+
+                            const label = typeof entry.label === "string" ? entry.label.trim() : "";
+
+                            const normalizedDetail: { label?: string; cantidad: number } = {
+                                cantidad: detailQty,
+                            };
+
+                            if (label) {
+                                normalizedDetail.label = label;
+                            }
+
+                            return normalizedDetail;
+                        })
+                        .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+                };
+
+                const normalizeFocaccias = (value: unknown) => {
+                    if (!Array.isArray(value)) {
+                        return [] as Array<{ label?: string; size?: FocacciaSize; cantidad: number; sabores?: string[] }>;
+                    }
+
+                    return value
+                        .map((entry: { label?: unknown; size?: unknown; cantidad?: unknown; quantity?: unknown; sabores?: unknown }) => {
+                            const detailQty = Number(entry.cantidad ?? entry.quantity);
+                            if (!Number.isInteger(detailQty) || detailQty <= 0) {
+                                return null;
+                            }
+
+                            const label = typeof entry.label === "string" ? entry.label.trim() : "";
+                            const size = entry.size === FocacciaSize.GRANDE ? FocacciaSize.GRANDE : entry.size === FocacciaSize.MEDIANA ? FocacciaSize.MEDIANA : undefined;
+
+                            const normalizedDetail: { label?: string; size?: FocacciaSize; cantidad: number; sabores?: string[] } = {
+                                cantidad: detailQty,
+                            };
+
+                            if (Array.isArray(entry.sabores)) {
+                                const sabores = entry.sabores
+                                    .filter((sabor): sabor is string => typeof sabor === "string")
+                                    .map((sabor) => sabor.trim())
+                                    .filter((sabor) => sabor.length > 0);
+
+                                if (sabores.length > 0) {
+                                    normalizedDetail.sabores = sabores;
+                                }
+                            }
+
+                            if (label) {
+                                normalizedDetail.label = label;
+                            }
+
+                            if (size) {
+                                normalizedDetail.size = size;
+                            }
+
+                            return normalizedDetail;
+                        })
+                        .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+                };
+
+                return {
+                    comboId: Number(combo.comboId),
+                    title: String(combo.title ?? "").trim(),
+                    cantidad,
+                    unitPrice,
+                    subtotal,
+                    focaccias: normalizeFocaccias(combo.focaccias),
+                    prepizzas: normalizeDetails(combo.prepizzas),
+                    extras: normalizeDetails(combo.extras),
+                } satisfies ComboPayload;
+            })
+            .filter((combo: ComboPayload) =>
+                Number.isInteger(combo.comboId) &&
+                combo.comboId > 0 &&
+                combo.title.length > 0 &&
+                Number.isInteger(combo.cantidad) &&
+                combo.cantidad > 0 &&
+                Number.isFinite(combo.unitPrice) &&
+                combo.unitPrice >= 0 &&
+                Number.isFinite(combo.subtotal) &&
+                combo.subtotal >= 0
+            );
+
         const normalizedItems = focaccias
             .map((item: { focacciaId?: unknown; cantidad?: unknown; size?: unknown }) => ({
                 focacciaId: Number(item.focacciaId),
@@ -64,7 +189,7 @@ export async function POST(request: NextRequest) {
             }))
             .filter((item: { focacciaId: number; cantidad: number }) => Number.isInteger(item.focacciaId) && item.focacciaId > 0 && Number.isInteger(item.cantidad) && item.cantidad > 0);
 
-        if (normalizedItems.length === 0) {
+        if (normalizedItems.length === 0 && normalizedCombos.length === 0) {
             return NextResponse.json(
                 {
                     data: null,
@@ -142,8 +267,18 @@ export async function POST(request: NextRequest) {
             };
         });
 
-        const quantity = itemsForCreate.reduce((acc, item) => acc + item.cantidad, 0);
-        const subtotal = itemsForCreate.reduce((acc, item) => acc + item.lineSubtotal, 0);
+        const focacciasQuantity = itemsForCreate.reduce((acc, item) => acc + item.cantidad, 0);
+        const combosQuantity = normalizedCombos.reduce((acc, combo) => acc + combo.cantidad, 0);
+        const quantity = focacciasQuantity + combosQuantity;
+
+        const focacciasSubtotal = itemsForCreate.reduce((acc, item) => acc + item.lineSubtotal, 0);
+        const combosSubtotal = normalizedCombos.reduce((acc, combo) => acc + combo.subtotal, 0);
+        const subtotal = focacciasSubtotal + combosSubtotal;
+
+        const notes = normalizedCombos.length > 0
+            ? `${COMBOS_NOTES_PREFIX}${JSON.stringify(normalizedCombos)}`
+            : undefined;
+
         const created = await prisma.$transaction(async (tx) => {
             const { discountTotal } = await calculatePromotions(tx, {
                 promoCode,
@@ -159,6 +294,7 @@ export async function POST(request: NextRequest) {
                     subtotal,
                     discountTotal,
                     totalPrice,
+                    notes,
                     pedidoFocaccias: {
                         create: itemsForCreate,
                     },

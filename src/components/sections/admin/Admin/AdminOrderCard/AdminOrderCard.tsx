@@ -53,7 +53,7 @@ const allowedTransitions: Record<PedidoStatus, PedidoStatus[]> = {
     EN_PREPARACION: ['LISTO', 'CANCELADO'],
     LISTO: ['ENTREGADO', 'CANCELADO'],
     ENTREGADO: [],
-    CANCELADO: [],
+    CANCELADO: ['PENDIENTE', 'CONFIRMADO', 'EN_PREPARACION', 'LISTO', 'ENTREGADO'],
 };
 
 const sizeLabels: Record<string, string> = {
@@ -61,9 +61,39 @@ const sizeLabels: Record<string, string> = {
     GRANDE: 'Grande',
 };
 
+const COMBOS_NOTES_PREFIX = 'COMBOS_JSON:';
+
+type ComboSummary = {
+    comboId: number;
+    title: string;
+    cantidad: number;
+    unitPrice: number;
+    subtotal: number;
+    focaccias?: Array<{ label?: string; size?: 'MEDIANA' | 'GRANDE'; cantidad: number; sabores?: string[] }>;
+    prepizzas?: Array<{ label?: string; cantidad: number }>;
+    extras?: Array<{ label?: string; cantidad: number }>;
+};
+
+const parseComboSummary = (notes?: string): ComboSummary[] => {
+    if (!notes || !notes.startsWith(COMBOS_NOTES_PREFIX)) {
+        return [];
+    }
+
+    try {
+        const raw = JSON.parse(notes.slice(COMBOS_NOTES_PREFIX.length));
+        return Array.isArray(raw) ? raw as ComboSummary[] : [];
+    } catch {
+        return [];
+    }
+};
+
 export const AdminOrderCard = ({ order }: AdminOrderCardProps) => {
     const deletePedido = useDeletePedido();
     const updatePedidoStatus = useUpdatePedidoStatus();
+    const comboSummary = parseComboSummary(order.notes);
+    const focacciasCount = order.pedidoFocaccias.reduce((acc, pf) => acc + pf.cantidad, 0);
+    const combosCount = comboSummary.reduce((acc, combo) => acc + combo.cantidad, 0);
+    const productsCount = focacciasCount + combosCount;
 
     const availableStatusOptions = [
         order.status,
@@ -119,7 +149,12 @@ export const AdminOrderCard = ({ order }: AdminOrderCardProps) => {
                 <div className='adminOrderTotals'>
                     <p>
                         <span>Productos</span>
-                        <strong>{order.quantity}</strong>
+                        <strong>{productsCount}</strong>
+                        {comboSummary.length > 0 && (
+                            <span>
+                                {focacciasCount} focaccia(s) + {combosCount} combo(s)
+                            </span>
+                        )}
                     </p>
                     <p>
                         <span>Subtotal</span>
@@ -152,6 +187,50 @@ export const AdminOrderCard = ({ order }: AdminOrderCardProps) => {
                             </li>
                         ))}
                     </ul>
+
+                    {comboSummary.length > 0 && (
+                        <>
+                            <h3>Combos del pedido</h3>
+                            <ul className='adminOrderFocacciasList'>
+                                {comboSummary.map((combo) => (
+                                    <li key={`${combo.comboId}_${combo.title}`} className='adminOrderFocacciaItem comboSummaryItem'>
+                                        <p className='focacciaName'>{combo.title}</p>
+                                        <div className='focacciaMeta'>
+                                            <span>Cantidad: {combo.cantidad}</span>
+                                            <span>Unitario: {currencyFormatter.format(combo.unitPrice)}</span>
+                                            <span>Subtotal: {currencyFormatter.format(combo.subtotal)}</span>
+                                        </div>
+                                        <div className='comboSection'>
+                                            <p className='comboSectionTitle'>Sabores elegidos</p>
+                                            {combo.focaccias && combo.focaccias.length > 0 ? (
+                                                <ul className='comboFlavorList'>
+                                                    {combo.focaccias.map((item, index) => (
+                                                        <li key={`${combo.comboId}_flavor_${index}`} className='comboFlavorItem'>
+                                                            {item.cantidad} x {item.label ?? 'Sin detalle'}
+                                                            {item.size ? ` (${sizeLabels[item.size] ?? item.size})` : ''}
+                                                            {item.sabores && item.sabores.length > 0 ? ` - Sabores: ${item.sabores.join(', ')}` : ''}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <p className='comboSectionEmpty'>Sin sabores cargados</p>
+                                            )}
+                                        </div>
+                                        {combo.prepizzas && combo.prepizzas.length > 0 && (
+                                            <div className='focacciaMeta comboSectionMeta'>
+                                                <span>Prepizzas: {combo.prepizzas.map((item) => `${item.cantidad} x ${item.label ?? 'Sin detalle'}`).join(' | ')}</span>
+                                            </div>
+                                        )}
+                                        {combo.extras && combo.extras.length > 0 && (
+                                            <div className='focacciaMeta comboSectionMeta'>
+                                                <span>Extras: {combo.extras.map((item) => `${item.cantidad} x ${item.label ?? 'Sin detalle'}`).join(' | ')}</span>
+                                            </div>
+                                        )}
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                    )}
                 </div>
 
                 <button
