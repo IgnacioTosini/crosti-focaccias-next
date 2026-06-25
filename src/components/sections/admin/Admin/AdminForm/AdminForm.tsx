@@ -112,7 +112,6 @@ export const AdminForm = ({ focacciaEdit, onClose }: Props) => {
                 if (focacciaEdit && focacciaEdit.imagePublicId) {
                   try {
                     await ImageService.deleteImage(focacciaEdit.imagePublicId);
-                    console.log('✅ Imagen anterior eliminada de Cloudinary');
                   } catch (deleteError) {
                     console.warn('⚠️ No se pudo eliminar la imagen anterior:', deleteError);
                     // Continuar con la subida de la nueva imagen aunque falle la eliminación

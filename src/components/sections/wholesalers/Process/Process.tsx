@@ -1,9 +1,23 @@
+"use client";
+
+import { useEffect, useRef } from 'react';
 import { Title } from '@/components/shared/Title/Title';
 import { StepCard } from '../StepCard/StepCard';
 import Image from 'next/image';
+import { animateProcess } from '@/animations';
 import './_process.scss';
 
 export const Process = () => {
+    const processRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const ctx = animateProcess(processRef.current ?? undefined);
+
+        return () => {
+            ctx.revert();
+        };
+    }, []);
+
     const steps = [
         {
             stepNumber: 1,
@@ -28,7 +42,7 @@ export const Process = () => {
     ];
 
     return (
-        <div className="processSection">
+        <div className="processSection" ref={processRef}>
             <div className="processContainer">
                 <div className='titleWithStickers'>
                     <Image

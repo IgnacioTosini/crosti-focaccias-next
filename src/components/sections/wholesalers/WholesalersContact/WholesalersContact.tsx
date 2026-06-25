@@ -1,11 +1,25 @@
+"use client";
+
+import { useEffect, useRef } from 'react';
 import { Title } from '@/components/shared/Title/Title'
 import { WholesalersForm } from '../WholesalersForm/WholesalersForm'
 import Image from 'next/image'
+import { animateWholesalersContact } from '@/animations';
 import './_wholesalersContact.scss'
 
 export const WholesalersContact = () => {
+    const wholesalersContactRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        const ctx = animateWholesalersContact(wholesalersContactRef.current ?? undefined);
+
+        return () => {
+            ctx.revert();
+        };
+    }, []);
+
     return (
-        <section className="wholesalersContact" id="contacto">
+        <section className="wholesalersContact" id="contacto" ref={wholesalersContactRef}>
             <div className="wholesalersContactContainer">
                 <div className='titleWithStickers'>
                     <Image

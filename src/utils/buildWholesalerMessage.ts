@@ -8,22 +8,22 @@ export interface WholesalerFormValues {
 
 export const buildWholesalerMessage = (values: WholesalerFormValues): string => {
     const lines: string[] = [
-        '¡Hola Crosti! 👋 Quiero consultar sobre compras mayoristas.',
+        '¡Hola Crosti! Quiero consultar sobre compras mayoristas.',
         '',
-        `👤 *Nombre:* ${values.name}`,
+        `*Nombre:* ${values.name}`,
     ];
 
     if (values.business.trim()) {
-        lines.push(`🏢 *Negocio/Empresa:* ${values.business}`);
+        lines.push(`*Negocio/Empresa:* ${values.business}`);
     }
     if (values.social.trim()) {
-        lines.push(`📱 *Instagram/Web:* ${values.social}`);
+        lines.push(`*Instagram/Web:* ${values.social}`);
     }
 
-    lines.push(`📞 *Teléfono:* ${values.phone}`);
+    lines.push(`*Teléfono:* ${values.phone}`);
 
     if (values.details.trim()) {
-        lines.push('', `📝 *Detalles:*`, values.details);
+        lines.push('', '*Detalles:*', values.details);
     }
 
     return lines.join('\n');

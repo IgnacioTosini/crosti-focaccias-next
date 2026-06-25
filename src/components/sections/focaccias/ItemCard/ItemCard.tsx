@@ -69,6 +69,10 @@ export const ItemCard = ({ focaccia }: ItemCardProps) => {
               sizes="(max-width: 768px) 100vw, 300px"
               className='itemImage'
               onLoad={() => setShowSkeleton(false)}
+              onError={() => {
+                setImageError(true);
+                setShowSkeleton(false);
+              }}
             />
           ) : (
             <div className='imageError'>

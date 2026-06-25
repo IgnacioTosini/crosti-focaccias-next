@@ -31,6 +31,7 @@
             border: none;
             cursor: pointer;
             background-color: transparent;
+            text-decoration: none;
 
             h1 {
                 color: $color-text;
@@ -57,7 +58,9 @@
             list-style: none;
 
             li {
-                a, button {
+
+                a,
+                button {
                     text-decoration: none;
                     border: none;
                     background-color: transparent;

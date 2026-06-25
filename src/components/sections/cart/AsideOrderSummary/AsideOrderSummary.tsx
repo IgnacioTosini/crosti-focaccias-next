@@ -240,6 +240,7 @@ export const AsideOrderSummary = () => {
 
                 {hasItems && (
                     <div className='asideOrderSummaryFooter'>
+                        <span className='sendPrice'>* El costo de envío no está incluido. Se hablara por WhatsApp.</span>
                         <p className='asideOrderSummaryTotal'>Total: ${preOrder.totalPrice.toFixed(2)}</p>
                         <PhoneAndSend
                             clientPhone={clientPhone}

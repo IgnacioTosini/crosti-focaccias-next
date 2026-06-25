@@ -1,22 +1,16 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { animateHeader } from '@/animations';
+import { animateWholesalersHeader } from '@/animations';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import './_wholesalersHeader.scss'
 
 export const WholesalersHeader = () => {
-  const router = useRouter();
   const headerRef = useRef<HTMLDivElement>(null);
 
-  const handleBackToSite = () => {
-    router.push('/');
-  };
-
   useEffect(() => {
-    const ctx = animateHeader(headerRef.current ?? undefined);
+    const ctx = animateWholesalersHeader(headerRef.current ?? undefined);
 
     return () => {
       ctx.revert();
@@ -26,15 +20,14 @@ export const WholesalersHeader = () => {
   return (
     <div className='header' ref={headerRef}>
       <div className='logoContainer'>
-        <Image src="/personajes/crosti-logo.svg" alt="Crosti Logo" width={50} height={50} />
-        <button className='logoText' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+        <Image src="/personajes/crosti-logo.svg" alt="Crosti Logo" width={50} height={50} priority />
+        <Link className='logoText' href='/'>
           <h1>Crosti</h1>
-        </button>
+        </Link>
       </div>
       <nav className='navLinks'>
         <ul>
-          <li><button className="adminHeaderButton" onClick={handleBackToSite}>Volver al sitio</button></li>
-          <li><Link href="/wholesalers/#menu">Ver Menú</Link></li>
+          <li><Link className="adminHeaderButton" href="/">Volver al sitio</Link></li>
           <li><Link href="/wholesalers/#contacto">Contacto</Link></li>
         </ul>
       </nav>

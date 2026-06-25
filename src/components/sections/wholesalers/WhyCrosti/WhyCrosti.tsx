@@ -1,13 +1,27 @@
+"use client";
+
+import { useEffect, useRef } from 'react';
 import { Title } from '@/components/shared/Title/Title';
 import { WhyCard } from '../WhyCard/WhyCard';
 import { FaAward, FaBoxes, FaLeaf, FaTruck } from 'react-icons/fa';
 import { IoPeople } from 'react-icons/io5';
 import Image from 'next/image';
+import { animateWhyCrosti } from '@/animations';
 import './_whyCrosti.scss';
 
 export const WhyCrosti = () => {
+    const whyCrostiRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const ctx = animateWhyCrosti(whyCrostiRef.current ?? undefined);
+
+        return () => {
+            ctx.revert();
+        };
+    }, []);
+
     return (
-        <div className="whyCrosti">
+        <div className="whyCrosti" ref={whyCrostiRef}>
             <div className="whyCrostiContainer">
                 <div className='titleWithStickers'>
                     <Image

@@ -8,3 +8,4 @@ export * from './connectUsAnimations';
 export * from './itemCardAnimations';
 export * from './asideOrderSummaryAnimations';
 export * from './combosSectionAnimations';
+export * from './wholesalersAnimations';

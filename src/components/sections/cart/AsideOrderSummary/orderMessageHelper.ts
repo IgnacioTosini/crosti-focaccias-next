@@ -33,7 +33,7 @@ export function generateOrderMessage({ focaccias, combos, totalPrice, clientPhon
         message += `   Subtotal: $${(combo.unitPrice * combo.cantidad).toFixed(2)}\n`;
         if (combo.focaccias && combo.focaccias.length > 0) {
             message += `   Focaccias:\n`;
-            combo.focaccias.forEach((f, i) => {
+            combo.focaccias.forEach((f) => {
                 message += `      - ${f.cantidad} x ${f.focaccia.name} (${f.size})`;
                 if (f.sabores && f.sabores.length > 0) message += ` [Sabores: ${f.sabores.join(', ')}]`;
                 message += `\n`;

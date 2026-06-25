@@ -1,14 +1,28 @@
+"use client";
+
+import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { PlaceCard } from '../PlaceCard/PlaceCard'
 import Image from 'next/image'
 import { MdOutlineStarOutline } from "react-icons/md";
 import { IoIosSend } from "react-icons/io";
 import { BsWhatsapp } from "react-icons/bs";
+import { animateWholesalersHero } from '@/animations';
 import './_hero.scss';
 
 export const Hero = () => {
+    const heroRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const ctx = animateWholesalersHero(heroRef.current ?? undefined);
+
+        return () => {
+            ctx.revert();
+        };
+    }, []);
+
     return (
-        <div className="wholesalersHero">
+        <div className="wholesalersHero" ref={heroRef}>
             <div className='contentContainer'>
                 <div className='contentLeft'>
                     <span className='badge'>🏢 Ventas Mayoristas</span>
@@ -26,8 +40,17 @@ export const Hero = () => {
                         <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`} className='secondaryWholesalerButton'><BsWhatsapp className='icon'/>Whatsapp directo</Link>
                     </div>
                 </div>
-                <picture>
-                    <Image src="/wholesalers/HeroImage.webp" alt="Crosti Mayorista" width={550} height={420} className='heroImage' />
+                <div className='heroMedia'>
+                    <Image
+                        src="/wholesalers/HeroImage.webp"
+                        alt="Crosti Mayorista"
+                        width={550}
+                        height={420}
+                        className='heroImage'
+                        priority
+                        fetchPriority='high'
+                        sizes='(max-width: 768px) 100vw, 550px'
+                    />
                     <div className='qualityBadgeContainer'>
                         <MdOutlineStarOutline />
                         <div className='qualityBadge'>
@@ -35,7 +58,7 @@ export const Hero = () => {
                             <p>Masa madre · Ingredientes frescos · Hecho en el día</p>
                         </div>
                     </div>
-                </picture>
+                </div>
             </div>
         </div>
     )
