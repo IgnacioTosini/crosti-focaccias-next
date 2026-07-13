@@ -17,6 +17,13 @@ import OrderItemList from './OrderItemList';
 import { PhoneAndSend } from './PhoneAndSend';
 import './_asideOrderSummary.scss';
 
+const currencyFormatter = new Intl.NumberFormat('es-AR', {
+    style: 'currency',
+    currency: 'ARS',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+});
+
 export const AsideOrderSummary = () => {
     const { focaccias, combos, quantity, totalPrice, clearCart, setIsOrderOpen, setComboFlavorSelection } = useCartStore();
     const { data: availableFocacciasData } = useFocaccias();
@@ -214,7 +221,9 @@ export const AsideOrderSummary = () => {
                     <div className='asideOrderSummaryTitle'>
                         <FaShoppingCart className='asideOrderSummaryIcon' /> <p className='asideOrderSummaryText'>Tu pedido {<span className='asideOrderSummaryNumber'>{preOrder.quantity}</span>}</p>
                     </div>
-                    <IoClose onClick={handleClose} className='asideOrderSummaryCloseButton' />
+                    <button type='button' onClick={handleClose} className='asideOrderSummaryCloseButton' aria-label='Cerrar pedido'>
+                        <IoClose />
+                    </button>
                 </div>
 
                 <div className='asideOrderSummaryContent'>
@@ -240,8 +249,8 @@ export const AsideOrderSummary = () => {
 
                 {hasItems && (
                     <div className='asideOrderSummaryFooter'>
-                        <span className='sendPrice'>* El costo de envío no está incluido. Se hablara por WhatsApp.</span>
-                        <p className='asideOrderSummaryTotal'>Total: ${preOrder.totalPrice.toFixed(2)}</p>
+                        <span className='sendPrice'>El costo de envío no está incluido. Lo coordinamos por WhatsApp.</span>
+                        <p className='asideOrderSummaryTotal'><span>Total</span><strong>{currencyFormatter.format(preOrder.totalPrice)}</strong></p>
                         <PhoneAndSend
                             clientPhone={clientPhone}
                             phoneError={phoneError}

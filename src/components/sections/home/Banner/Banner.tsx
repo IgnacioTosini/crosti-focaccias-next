@@ -19,40 +19,54 @@ export const Banner = () => {
   }, []);
 
   return (
-    <div className="banner" ref={bannerRef}>
-      <div className="bannerContainer">
-        <Image
-          src="/personajes/crosti-logo.svg"
-          alt="Banner de focaccias"
-          fill
-          priority
-          className="bannerImage"
-        />
+    <section className="banner" ref={bannerRef} aria-label="Crosti Focaccias">
+      <div className="bannerContent">
+        <div className="bannerText">
+          <span className="bannerEyebrow">Focaccias artesanales en Mar del Plata</span>
+          <h1 className="bannerTitle">La ola de sabor en
+            <span>La Feliz</span>
+          </h1>
+          <p className="bannerSubtitle">Masa madre, ingredientes frescos y focaccias hechas en el día para compartir sin vueltas.</p>
+
+          <div className='buttonsContainer'>
+            <a className='menuButton' href="#menu"><IoCartOutline /><span>Ver menú</span></a>
+            <button className='whatsappButton' type='button' onClick={handleWhatsAppClick}><IoLogoWhatsapp /><span>WhatsApp</span></button>
+          </div>
+        </div>
+
+        <div className="bannerContainer">
+          <Image
+            src="/wholesalers/HeroImage.webp"
+            alt="Focaccias artesanales Crosti recién horneadas"
+            fill
+            priority
+            fetchPriority="high"
+            sizes="(max-width: 900px) 100vw, 520px"
+            className="bannerImage"
+          />
+          <Image
+            src="/personajes/crosti-original.svg"
+            alt="Crosti"
+            width={96}
+            height={96}
+            className="bannerCharacter"
+          />
+          <Image
+            src="/stickersAdicionales/cherry-tomatoes.png"
+            alt="Sticker decorativo tomates"
+            width={76}
+            height={76}
+            className="bannerSticker bannerStickerLeft"
+          />
+          <Image
+            src="/stickersAdicionales/focaccia-piece.png"
+            alt="Sticker decorativo focaccia"
+            width={76}
+            height={76}
+            className="bannerSticker bannerStickerRight"
+          />
+        </div>
       </div>
-      <div className="bannerText">
-        <Image
-          src="/stickersAdicionales/cherry-tomatoes.png"
-          alt="Sticker decorativo tomates"
-          width={76}
-          height={76}
-          className="bannerSticker bannerStickerLeft"
-        />
-        <h1 className="bannerTitle">La ola de sabor en
-          <span>La Feliz 🌊</span>
-        </h1>
-        <Image
-          src="/stickersAdicionales/focaccia-piece.png"
-          alt="Sticker decorativo focaccia"
-          width={76}
-          height={76}
-          className="bannerSticker bannerStickerRight"
-        />
-        <p className="bannerSubtitle">Focaccias caseras hechas en el día</p>
-      </div>
-      <div className='buttonsContainer'>
-        <button className='menuButton'><a href="#menu"><IoCartOutline /><span>Ver Menú</span></a></button>
-        <button className='whatsappButton' onClick={handleWhatsAppClick}><IoLogoWhatsapp /><span>WhatsApp</span></button>
-      </div>
-    </div>
+    </section>
   )
 }

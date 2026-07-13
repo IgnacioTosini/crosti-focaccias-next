@@ -11,7 +11,8 @@ type AdminOrderCardProps = {
 const currencyFormatter = new Intl.NumberFormat('es-AR', {
     style: 'currency',
     currency: 'ARS',
-    minimumFractionDigits: 2,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
 });
 
 const formatDate = (value: string) => {
@@ -32,7 +33,7 @@ const formatDate = (value: string) => {
 const statusLabels: Record<string, string> = {
     PENDIENTE: 'Pendiente',
     CONFIRMADO: 'Confirmado',
-    EN_PREPARACION: 'En preparacion',
+    EN_PREPARACION: 'En preparación',
     LISTO: 'Listo',
     ENTREGADO: 'Entregado',
     CANCELADO: 'Cancelado',
@@ -123,9 +124,11 @@ export const AdminOrderCard = ({ order }: AdminOrderCardProps) => {
                 <div className='adminOrderTop'>
                     <div className='adminOrderCardHeader'>
                         <h2 className='adminOrderId'>Pedido {order.orderNumber || `#${order.id}`}</h2>
-                        <p className='adminOrderMeta'>ID interno: #{order.id}</p>
-                        <p className='adminOrderMeta'>Tel: {order.clientPhone}</p>
-                        <p className='adminOrderMeta'>Fecha: {formatDate(order.orderDate)}</p>
+                        <div className='adminOrderMetaList'>
+                            <p className='adminOrderMeta'><span>ID</span> #{order.id}</p>
+                            <p className='adminOrderMeta'><span>Teléfono</span> {order.clientPhone}</p>
+                            <p className='adminOrderMeta'><span>Fecha</span> {formatDate(order.orderDate)}</p>
+                        </div>
                     </div>
                     <label className={`adminOrderStatus adminOrderStatus--${order.status.toLowerCase()}`}>
                         <span className='adminOrderStatusLabel'>Estado</span>
@@ -182,7 +185,7 @@ export const AdminOrderCard = ({ order }: AdminOrderCardProps) => {
                                     <span>Cantidad: {pf.cantidad}</span>
                                     <span>Unitario: {currencyFormatter.format(pf.unitPrice)}</span>
                                     <span>Subtotal: {currencyFormatter.format(pf.lineSubtotal)}</span>
-                                    <span>Total linea: {currencyFormatter.format(pf.lineTotal)}</span>
+                                    <span>Total línea: {currencyFormatter.format(pf.lineTotal)}</span>
                                 </div>
                             </li>
                         ))}

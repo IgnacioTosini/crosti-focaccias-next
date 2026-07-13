@@ -3,46 +3,46 @@
 .processSection {
     display: flex;
     justify-content: center;
-    padding: 2rem 1rem;
-    background-color: $primary-color;
-    min-height: 100dvh;
-    background-color: rgba($quinary-color, 0.1);
+    width: 100%;
+    padding: clamp(3rem, 7vw, 5rem) 1rem;
+    background:
+        linear-gradient(180deg, rgba($quinary-color, 0.08) 0%, rgba($primary-color, 0.8) 100%);
 
     .processContainer {
-        width: 100%;
-        max-width: 1200px;
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        gap: 2.25rem;
+        width: min(980px, 100%);
+    }
 
-        .titleWithStickers {
+    .titleWithStickers {
+        position: relative;
+        width: fit-content;
+        align-self: center;
+
+        .titleSticker {
+            position: absolute;
+            opacity: 0.82;
+            pointer-events: none;
+            z-index: 0;
+            filter: drop-shadow(0 8px 12px rgba($border-color, 0.12));
+        }
+
+        .title {
             position: relative;
-            width: fit-content;
-            align-self: center;
+            z-index: 1;
+        }
 
-            .titleSticker {
-                position: absolute;
-                opacity: 0.9;
-                pointer-events: none;
-                z-index: 0;
-            }
+        .titleStickerLeft {
+            left: -5rem;
+            top: -0.25rem;
+            transform: rotate(-12deg);
+        }
 
-            .title {
-                position: relative;
-                z-index: 1;
-            }
-
-            .titleStickerLeft {
-                left: -5rem;
-                top: -0.25rem;
-                transform: rotate(-12deg);
-            }
-
-            .titleStickerRight {
-                right: -5.2rem;
-                bottom: -0.7rem;
-                transform: rotate(12deg);
-            }
+        .titleStickerRight {
+            right: -5.2rem;
+            bottom: -0.7rem;
+            transform: rotate(12deg);
         }
     }
 
@@ -50,51 +50,48 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        gap: 2rem;
-        padding-left: 80px;
+        gap: 1rem;
+        padding-left: 72px;
 
         &::before {
             content: '';
             position: absolute;
-            left: 48px;
-            top: 0;
-            bottom: 0;
+            left: 35px;
+            top: 0.75rem;
+            bottom: 0.75rem;
             width: 2px;
-            background-color: #d97b2b;
+            border-radius: 999px;
+            background: linear-gradient(180deg, transparent, rgba($color-button, 0.34), transparent);
         }
     }
 
-    @media (max-width: 768px) {
-        & {
-            padding: 1.5rem 0.75rem;
-        }
+    @media (max-width: 620px) {
+        padding-inline: 0.85rem;
 
-        .processContainer {
-            .titleWithStickers {
-                .titleSticker {
-                    width: 60px;
-                    height: 60px;
-                    opacity: 0.8;
-                }
+        .titleWithStickers {
+            .titleSticker {
+                width: 58px;
+                height: 58px;
+                opacity: 0.72;
+            }
 
-                .titleStickerLeft {
-                    left: -2rem;
-                    top: -1rem;
-                }
+            .titleStickerLeft {
+                left: -2rem;
+                top: -1rem;
+            }
 
-                .titleStickerRight {
-                    right: -2rem;
-                    bottom: -0.8rem;
-                }
+            .titleStickerRight {
+                right: -2rem;
+                bottom: -0.8rem;
             }
         }
 
         .processSteps {
-            gap: 1.25rem;
-            padding-left: 56px;
+            gap: 0.85rem;
+            padding-left: 52px;
 
             &::before {
-                left: 34px;
+                left: 25px;
             }
         }
     }

@@ -9,14 +9,14 @@ interface Props {
 export const AdminHeader = ({ onNewFocaccia }: Props) => {
   return (
     <header className="adminHeader">
-      <h1 className='adminHeaderTitle'>
-        Panel de Administración - Focaccias
-      </h1>
+      <div className='adminHeaderCopy'>
+        <span>Catálogo</span>
+        <h1 className='adminHeaderTitle'>
+          Focaccias
+        </h1>
+      </div>
 
-      <button
-        className='adminHeaderButton'
-        onClick={onNewFocaccia}
-      >
+      <button className='adminHeaderAction' onClick={onNewFocaccia}>
         <FaPlus />
         <span>Nueva Focaccia</span>
       </button>

@@ -1,0 +1,95 @@
+@use '../../../../../styles/variables' as *;
+@use 'sass:color';
+
+.adminState {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.15rem 1.25rem;
+    border: 1px solid rgba($border-color, 0.08);
+    border-radius: 1rem;
+    background: $secondary-color;
+    box-shadow: 0 10px 24px rgba($border-color, 0.05);
+
+    h2,
+    p {
+        margin: 0;
+    }
+
+    h2 {
+        color: $color-text;
+        font-size: $font-size-medium-large;
+        font-weight: $font-weight-extra-bold;
+        line-height: 1.15;
+    }
+
+    p {
+        margin-top: 0.25rem;
+        color: color.scale($color-text, $lightness: 18%);
+        font-size: $font-size-normal;
+        line-height: 1.4;
+    }
+}
+
+.adminStateIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    background: rgba($color-button, 0.1);
+    color: $color-button;
+    font-size: $font-size-medium-large;
+    flex: 0 0 auto;
+}
+
+.adminState--loading {
+    .adminStateIcon svg {
+        animation: adminStateSpin 0.9s linear infinite;
+    }
+}
+
+.adminState--error {
+    border-color: rgba($color-error, 0.18);
+    background:
+        linear-gradient(90deg, rgba($color-error, 0.06), transparent 42%),
+        $secondary-color;
+
+    .adminStateIcon {
+        background: rgba($color-error, 0.1);
+        color: $color-error;
+    }
+}
+
+.adminState--empty {
+    .adminStateIcon {
+        background: rgba($border-color, 0.06);
+        color: color.scale($color-text, $lightness: 18%);
+    }
+}
+
+.adminStateAction {
+    margin-left: auto;
+}
+
+@keyframes adminStateSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 640px) {
+    .adminState {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .adminStateAction {
+        width: 100%;
+        margin-left: 0;
+    }
+}

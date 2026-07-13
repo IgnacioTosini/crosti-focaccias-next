@@ -1,7 +1,14 @@
 import { TbTrash } from 'react-icons/tb';
 import type { FocacciaPedido } from '@/types';
 import { useCartStore } from '@/store/cart.store';
-import './_itemCardInOrder.scss';
+import './itemCardInOrder.scss';
+
+const currencyFormatter = new Intl.NumberFormat('es-AR', {
+    style: 'currency',
+    currency: 'ARS',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+});
 
 type ItemCardInOrderProps = {
     item: FocacciaPedido;
@@ -40,7 +47,7 @@ const ItemCardInOrder = ({ item, index }: ItemCardInOrderProps) => {
                 )}
             </div>
             <div className='itemPrice'>
-                <p>$ {(item.unitPrice * item.cantidad).toFixed(0)}</p>
+                <p>{currencyFormatter.format(item.unitPrice * item.cantidad)}</p>
             </div>
             <div className='itemQuantityContainer'>
                 <div className='itemQuantity'>
@@ -48,7 +55,7 @@ const ItemCardInOrder = ({ item, index }: ItemCardInOrderProps) => {
                     <span className='itemQuantityValue'>{item.cantidad}</span>
                     <button type='button' className='itemQuantityButton' onClick={handleIncrease} aria-label='Sumar cantidad'>+</button>
                 </div>
-                <p className='itemQuantityPrice'>{item.cantidad} x ${item.unitPrice.toFixed(0)}</p>
+                <p className='itemQuantityPrice'>{item.cantidad} x {currencyFormatter.format(item.unitPrice)}</p>
             </div>
             <button
                 type='button'

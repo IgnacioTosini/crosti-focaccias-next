@@ -1,11 +1,32 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { FiMessageCircle } from 'react-icons/fi'
-import { FaMapMarkerAlt } from 'react-icons/fa'
+import { FiMessageCircle, FiShoppingBag } from 'react-icons/fi'
+import { FaMapMarkerAlt, FaRegCalendarCheck } from 'react-icons/fa'
 import { animateHowToOrder } from '@/animations';
 import Image from 'next/image';
 import './_howToOrder.scss'
+
+const steps = [
+  {
+    number: '01',
+    title: 'Elegí',
+    icon: <FiShoppingBag className='stepIcon stepIconMenu' />,
+    details: ['Revisá sabores, tamaños y combos.', 'Agregá al carrito lo que querés compartir.'],
+  },
+  {
+    number: '02',
+    title: 'Confirmá',
+    icon: <FiMessageCircle className='stepIcon stepIconContact' />,
+    details: ['Enviá el pedido por WhatsApp.', 'Lo tomamos con anticipación para el finde.'],
+  },
+  {
+    number: '03',
+    title: 'Coordiná',
+    icon: <FaMapMarkerAlt className='stepIcon stepIconMap' />,
+    details: ['Entrega en zonas de Mar del Plata.', 'También podés retirar y elegir medio de pago.'],
+  },
+];
 
 export const HowToOrder = () => {
   const howToOrderRef = useRef<HTMLDivElement>(null);
@@ -38,18 +59,22 @@ export const HowToOrder = () => {
         />
       </div>
       <div className='howToOrderSteps'>
-        <div className='step'>
-          <h3 className='stepTitle'><FiMessageCircle className='stepIconContact'/><span>Contacto</span></h3>
-          <p className='stepDescription'>• WhatsApp o Instagram DM.</p>
-          <p className='stepDescription'>• Tomamos pedidos para el finde</p>
-          <p className='stepDescription'>• Confirma tu pedido con anticipación</p>
-        </div>
-        <div className='step'>
-          <h3 className='stepTitle'><FaMapMarkerAlt className='stepIconMap'/><span>Entrega</span></h3>
-          <p className='stepDescription'>• Zonas de entrega en Mar del Plata.</p>
-          <p className='stepDescription'>• Opción de retiro disponible</p>
-          <p className='stepDescription'>• Varios medios de pago aceptados</p>
-        </div>
+        {steps.map((step) => (
+          <article className='step' key={step.number}>
+            <div className='stepMarker'>{step.number}</div>
+            <div className='stepIconWrap'>{step.icon}</div>
+            <div className='stepContent'>
+              <h3 className='stepTitle'>{step.title}</h3>
+              {step.details.map((detail) => (
+                <p className='stepDescription' key={detail}>{detail}</p>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+      <div className='howToOrderNote'>
+        <FaRegCalendarCheck />
+        <span>Los pedidos se coordinan con anticipación para que salga todo fresco.</span>
       </div>
     </div>
   )

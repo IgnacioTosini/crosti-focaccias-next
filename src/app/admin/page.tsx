@@ -1,23 +1,24 @@
 
 import Link from 'next/link';
+import { FaClipboardList, FaPizzaSlice, FaTags } from 'react-icons/fa';
 import './_dashboard.scss';
 
 const sections = [
     {
         href: '/admin/focaccias',
-        icon: '🍕',
+        icon: FaPizzaSlice,
         title: 'Focaccias',
         description: 'Gestioná el catálogo de focaccias: agregar, editar y eliminar productos.',
     },
     {
         href: '/admin/combos',
-        icon: '🛍️',
+        icon: FaTags,
         title: 'Combos',
         description: 'Administrá los combos disponibles y sus precios especiales.',
     },
     {
         href: '/admin/pedidos',
-        icon: '📋',
+        icon: FaClipboardList,
         title: 'Pedidos',
         description: 'Revisá y gestioná los pedidos entrantes y su estado de entrega.',
     },
@@ -31,14 +32,18 @@ export default function AdminPage() {
                 <p>Seleccioná una sección para comenzar a gestionar.</p>
             </div>
             <div className="admin-dashboard__grid">
-                {sections.map((section) => (
+                {sections.map((section) => {
+                    const Icon = section.icon;
+
+                    return (
                     <Link key={section.href} href={section.href} className="dashboard-card">
-                        <div className="dashboard-card__icon">{section.icon}</div>
+                        <div className="dashboard-card__icon"><Icon /></div>
                         <p className="dashboard-card__title">{section.title}</p>
                         <p className="dashboard-card__description">{section.description}</p>
                         <span className="dashboard-card__arrow">→</span>
                     </Link>
-                ))}
+                    );
+                })}
             </div>
         </div>
     );

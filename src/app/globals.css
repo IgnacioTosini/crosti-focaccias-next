@@ -9,12 +9,12 @@ html {
   scroll-behavior: smooth;
   overflow-x: hidden;
   /* Offset global para links de ancla — compensa el header sticky */
-  scroll-padding-top: 96px;
+  scroll-padding-top: 82px;
 }
 
 @media (max-width: 768px) {
   html {
-    scroll-padding-top: 148px;
+    scroll-padding-top: 74px;
   }
 }
 

@@ -22,12 +22,12 @@ export const Process = () => {
         {
             stepNumber: 1,
             title: 'Contacto',
-            description: 'Completa el formulario o escribinos por WhatsApp con los datos de tu negocio.'
+            description: 'Completá el formulario o escribinos por WhatsApp con los datos de tu negocio.'
         },
         {
             stepNumber: 2,
             title: 'Definir cantidades',
-            description: 'Te asesoramos sobre variedades, volumenes y precios segun tus necesidades.'
+            description: 'Te asesoramos sobre variedades, volúmenes y precios según tus necesidades.'
         },
         {
             stepNumber: 3,

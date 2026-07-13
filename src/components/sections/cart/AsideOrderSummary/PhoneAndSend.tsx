@@ -24,6 +24,7 @@ export const PhoneAndSend = ({ clientPhone, phoneError, isSendingOrder, handlePh
             {phoneError && <span className='phoneError'>{phoneError}</span>}
         </div>
         <button
+            type='button'
             className='asideOrderSummaryButton'
             onClick={handleSendWhatsApp}
             disabled={!!phoneError || clientPhone.length < 10 || isSendingOrder}

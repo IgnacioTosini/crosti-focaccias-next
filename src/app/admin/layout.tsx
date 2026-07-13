@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import './admin.scss';
 
@@ -15,20 +16,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="admin-panel-layout">
       <aside className="admin-sidebar">
-        <h2>Panel de Control</h2>
+        <div className="admin-sidebar__brand">
+          <Image className="admin-sidebar__mark" src="/personajes/crosti-logo.svg" alt="Crosti" width={46} height={46} priority />
+          <div>
+            <h2>Panel de Control</h2>
+            <p>Crosti Admin</p>
+          </div>
+        </div>
         <nav>
           <ul>
             <li>
-              <button
-                className="adminHeaderButton"
-                onClick={handleBackToSite}
-              >
-                Volver al sitio
-              </button>
-            </li>
-            <li>
               <Link href="/admin" className="admin-logo">
-                <span className="admin-logo-icon">🍕</span>
                 <span className="admin-logo-text">Centro de Control</span>
               </Link>
             </li>
@@ -58,6 +56,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               >
                 Pedidos
               </Link>
+            </li>
+            <li>
+              <button
+                className="adminHeaderButton"
+                onClick={handleBackToSite}
+              >
+                Volver al sitio
+              </button>
             </li>
           </ul>
         </nav>

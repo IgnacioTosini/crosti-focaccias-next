@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { FaCheckCircle, FaImage, FaLeaf, FaSave, FaStar, FaTimes, FaTrashAlt } from 'react-icons/fa';
 import { focacciaSchema } from '@/schemas/focacciaSchema';
 import { ImageOptimizerPreview } from '@/components/media/ImageOptimizer/ImageOptimizerPreview';
 import { ImageService } from '@/services/ImageService';
@@ -76,7 +77,27 @@ export const AdminForm = ({ focacciaEdit, onClose }: Props) => {
 
   return (
     <div className='adminFormContainer'>
-      <h2>{focacciaEdit ? 'Editar Focaccia' : 'Nueva Focaccia'}</h2>
+      <div className='adminFormHeader'>
+        <div>
+          <span>{focacciaEdit ? 'Edición de catálogo' : 'Alta de producto'}</span>
+          <h2>{focacciaEdit ? 'Editar Focaccia' : 'Nueva Focaccia'}</h2>
+          <p>Completá la información que va a ver el cliente en el menú.</p>
+        </div>
+        <button
+          type='button'
+          className='adminFormCloseButton'
+          onClick={() => {
+            onClose();
+            setOptimizedImageFile(null);
+            setOptimizationStats(null);
+            setImageKey(prev => prev + 1);
+          }}
+          aria-label='Cerrar formulario'
+        >
+          <FaTimes />
+        </button>
+      </div>
+
       <Formik
         enableReinitialize
         initialValues={
@@ -188,34 +209,50 @@ export const AdminForm = ({ focacciaEdit, onClose }: Props) => {
       >
         {({ isSubmitting }) => (
           <Form className='adminForm'>
-
-            <div className='row'>
-              <div className='formGroup'>
-                <label htmlFor="name">Nombre:</label>
-                <Field type="text" id="name" name="name" />
-                <ErrorMessage name="name" component="div" className="error" />
+            <section className='adminFormSection'>
+              <div className='adminFormSectionHeader'>
+                <span>1</span>
+                <div>
+                  <h3>Datos principales</h3>
+                  <p>Nombre, descripción y precios base.</p>
+                </div>
               </div>
-              <div className='formGroup'>
-                <label htmlFor="mediumPrice">Precio mediana:</label>
-                <Field type="number" id="mediumPrice" name="mediumPrice" />
-                <ErrorMessage name="mediumPrice" component="div" className="error" />
-              </div>
-              <div className='formGroup'>
-                <label htmlFor="largePrice">Precio grande:</label>
-                <Field type="number" id="largePrice" name="largePrice" />
-                <ErrorMessage name="largePrice" component="div" className="error" />
-              </div>
-            </div>
 
-            <div className='formGroup'>
-              <label htmlFor="description">Descripción:</label>
-              <Field as="textarea" id="description" name="description" />
-              <ErrorMessage name="description" component="div" className="error" />
-            </div>
+              <div className='adminFormGrid'>
+                <div className='formGroup formGroupWide'>
+                  <label htmlFor="name">Nombre</label>
+                  <Field type="text" id="name" name="name" placeholder="Ej: Focaccia de Zucchini y Ricotta" />
+                  <ErrorMessage name="name" component="div" className="error" />
+                </div>
+                <div className='formGroup'>
+                  <label htmlFor="mediumPrice">Precio mediana</label>
+                  <Field type="number" id="mediumPrice" name="mediumPrice" placeholder="12000" />
+                  <ErrorMessage name="mediumPrice" component="div" className="error" />
+                </div>
+                <div className='formGroup'>
+                  <label htmlFor="largePrice">Precio grande</label>
+                  <Field type="number" id="largePrice" name="largePrice" placeholder="16000" />
+                  <ErrorMessage name="largePrice" component="div" className="error" />
+                </div>
+                <div className='formGroup formGroupFull'>
+                  <label htmlFor="description">Descripción</label>
+                  <Field as="textarea" id="description" name="description" placeholder="Contá ingredientes, estilo o detalle especial." />
+                  <ErrorMessage name="description" component="div" className="error" />
+                </div>
+              </div>
+            </section>
 
-            <div className='imageRow'>
-              <div className='formGroup'>
-                <label>Imagen:</label>
+            <section className='adminFormSection'>
+              <div className='adminFormSectionHeader'>
+                <span><FaImage /></span>
+                <div>
+                  <h3>Imagen del producto</h3>
+                  <p>Se optimiza antes de subirse al guardar.</p>
+                </div>
+              </div>
+
+              <div className='imageRow'>
+                <div className='formGroup imageFormGroup'>
                 <ImageOptimizerPreview
                   key={focacciaEdit ? `edit-${focacciaEdit.id}` : `new-focaccia-${imageKey}`}
                   onImageOptimized={handleImageOptimized}
@@ -229,59 +266,93 @@ export const AdminForm = ({ focacciaEdit, onClose }: Props) => {
                   initialImageUrl={focacciaEdit?.imageUrl}
                 />
                 {optimizationStats && (
-                  <div className={optimizationStats.compressionRatio > 0 ? "success" : "info"}>
+                  <div className={optimizationStats.compressionRatio > 0 ? "adminFormNotice success" : "adminFormNotice info"}>
                     {optimizationStats.compressionRatio > 0
-                      ? `✅ Imagen optimizada: ${optimizationStats.compressionRatio}% de reducción`
-                      : '✨ Imagen procesada: Ya tenía tamaño óptimo'
+                      ? `Imagen optimizada: ${optimizationStats.compressionRatio}% de reducción`
+                      : 'Imagen procesada: ya tenía tamaño óptimo'
                     }
                     <br />
                     <small>
-                      ({(optimizationStats.originalSize / 1024).toFixed(1)}KB → {(optimizationStats.optimizedSize / 1024).toFixed(1)}KB)
+                      {(optimizationStats.originalSize / 1024).toFixed(1)}KB a {(optimizationStats.optimizedSize / 1024).toFixed(1)}KB
                     </small>
                     <button
                       type="button"
                       onClick={handleClearImage}
                       className="clearImageButton"
-                      style={{ marginLeft: '10px', fontSize: '12px', padding: '2px 6px' }}
+                      aria-label='Limpiar imagen seleccionada'
                     >
-                      🗑️ Limpiar
+                      <FaTrashAlt />
+                      Limpiar
                     </button>
                   </div>
                 )}
                 {focacciaEdit?.imageUrl && !optimizedImageFile && (
-                  <div className="info">📷 Usando imagen actual</div>
+                  <div className="adminFormNotice info">Usando imagen actual</div>
                 )}
+                </div>
               </div>
-            </div>
+            </section>
 
-            <div className='checkboxRow'>
-              <div className='formGroup'>
-                <label htmlFor="isVeggie">¿Es veggie?</label>
-                <Field type="checkbox" name="isVeggie" />
-                <ErrorMessage name="isVeggie" component="div" className="error" />
+            <section className='adminFormSection'>
+              <div className='adminFormSectionHeader'>
+                <span>3</span>
+                <div>
+                  <h3>Estado y etiquetas</h3>
+                  <p>Controlá cómo aparece en el catálogo público.</p>
+                </div>
               </div>
-              <div className='formGroup'>
-                <label>¿Destacado?</label>
-                <Field type="checkbox" name="featured" />
+
+              <div className='checkboxRow'>
+                <div className='formGroup'>
+                  <label className='toggleCard' htmlFor="isVeggie">
+                    <Field type="checkbox" id="isVeggie" name="isVeggie" />
+                    <span className='toggleIcon'><FaLeaf /></span>
+                    <span>
+                      <strong>Veggie</strong>
+                      <small>Aparece con etiqueta verde.</small>
+                    </span>
+                  </label>
+                  <ErrorMessage name="isVeggie" component="div" className="error" />
+                </div>
+                <div className='formGroup'>
+                  <label className='toggleCard' htmlFor="featured">
+                    <Field type="checkbox" id="featured" name="featured" />
+                    <span className='toggleIcon'><FaStar /></span>
+                    <span>
+                      <strong>Destacada</strong>
+                      <small>Resalta dentro del menú.</small>
+                    </span>
+                  </label>
                 <ErrorMessage name="featured" component="div" className="error" />
+                </div>
+                <div className='formGroup'>
+                  <label className='toggleCard' htmlFor="isAvailable">
+                    <Field type="checkbox" id="isAvailable" name="isAvailable" />
+                    <span className='toggleIcon'><FaCheckCircle /></span>
+                    <span>
+                      <strong>Disponible</strong>
+                      <small>Visible para pedidos.</small>
+                    </span>
+                  </label>
+                  <ErrorMessage name="isAvailable" component="div" className="error" />
+                </div>
               </div>
-              <div className='formGroup'>
-                <label>¿Disponible?</label>
-                <Field type="checkbox" name="isAvailable" />
-                <ErrorMessage name="isAvailable" component="div" className="error" />
-              </div>
-            </div>
+            </section>
 
             <div className='submitButtonContainer'>
               <button type="submit" className='submitButton' disabled={isSubmitting || isUploadingImage}>
+                <FaSave />
                 {isUploadingImage ? 'Subiendo imagen...' : focacciaEdit ? (isSubmitting ? 'Actualizando...' : 'Actualizar Focaccia') : (isSubmitting ? 'Creando...' : 'Crear Focaccia')}
               </button>
-              <button type='button' onClick={() => {
+              <button type='button' className='cancelButton' onClick={() => {
                 onClose();
                 setOptimizedImageFile(null);
                 setOptimizationStats(null);
                 setImageKey(prev => prev + 1); // Forzar re-render del componente imagen
-              }}>Cancelar</button>
+              }}>
+                <FaTimes />
+                Cancelar
+              </button>
             </div>
           </Form>
         )}

@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
-import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import { FaAngleDown, FaAngleUp, FaSearch } from 'react-icons/fa';
 import type { Pedido } from '@/types';
 import { AdminOrderCard } from '../AdminOrderCard/AdminOrderCard';
+import { AdminState } from '../AdminState/AdminState';
 import { usePedidos } from '@/hooks/usePedidos';
 import './_pedidosList.scss';
 
@@ -9,7 +10,7 @@ const statusLabels: Record<string, string> = {
     ALL: 'Todos',
     PENDIENTE: 'Pendiente',
     CONFIRMADO: 'Confirmado',
-    EN_PREPARACION: 'En preparacion',
+    EN_PREPARACION: 'En preparación',
     LISTO: 'Listo',
     ENTREGADO: 'Entregado',
     CANCELADO: 'Cancelado',
@@ -73,24 +74,43 @@ export const PedidosList = () => {
     }, [orderedPedidos]);
 
     if (pedidos.isLoading) {
-        return <p className='ordersLoading'>Cargando pedidos...</p>;
+        return (
+            <AdminState
+                variant='loading'
+                title='Cargando pedidos'
+                description='Estamos buscando los pedidos más recientes.'
+            />
+        );
     }
 
     if (pedidos.isError) {
-        return <p className='ordersError'>No se pudieron cargar los pedidos.</p>;
+        return (
+            <AdminState
+                variant='error'
+                title='No se pudieron cargar los pedidos'
+                description='Revisá la conexión o intentá nuevamente en unos segundos.'
+            />
+        );
     }
 
     return (
         <div className='ordersListContainer'>
             <div className='ordersHeader'>
-                <h1>Pedidos</h1>
-                <button
-                    className='ordersToggleButton'
-                    onClick={() => setOpen(o => !o)}
-                    aria-label={open ? 'Ocultar lista de pedidos' : 'Mostrar lista de pedidos'}
-                >
-                    {open ? <FaAngleUp /> : <FaAngleDown />}
-                </button>
+                <div>
+                    <span className='ordersEyebrow'>Gestión</span>
+                    <h1>Pedidos</h1>
+                    <p>Seguimiento de pedidos entrantes, estados y totales.</p>
+                </div>
+                <div className='ordersHeaderMeta'>
+                    <span>{filteredPedidos.length} visibles</span>
+                    <button
+                        className='ordersToggleButton'
+                        onClick={() => setOpen(o => !o)}
+                        aria-label={open ? 'Ocultar lista de pedidos' : 'Mostrar lista de pedidos'}
+                    >
+                        {open ? <FaAngleUp /> : <FaAngleDown />}
+                    </button>
+                </div>
             </div>
 
             <div className='ordersSummary'>
@@ -101,13 +121,16 @@ export const PedidosList = () => {
             </div>
 
             <div className='ordersControls'>
-                <input
-                    type='text'
-                    value={search}
-                    onChange={(event) => setSearch(event.target.value)}
-                    placeholder='Buscar por numero de pedido, ID o telefono...'
-                    aria-label='Buscar pedido'
-                />
+                <label className='ordersSearchControl'>
+                    <FaSearch />
+                    <input
+                        type='text'
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)}
+                        placeholder='Buscar por número, ID o teléfono...'
+                        aria-label='Buscar pedido'
+                    />
+                </label>
                 <select
                     value={statusFilter}
                     onChange={(event) => setStatusFilter(event.target.value)}

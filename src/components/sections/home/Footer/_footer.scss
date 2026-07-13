@@ -3,106 +3,180 @@
 
 .footer {
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: $quinary-color;
-    color: $color-text-tertiary;
     width: 100%;
+    background:
+        linear-gradient(180deg, color.adjust($quinary-color, $lightness: -3%) 0%, #5f2f12 100%);
+    color: $color-text-tertiary;
 
-    @media (max-width: 768px) {
-        .footerTop {
-            flex-direction: column;
-            gap: 1.5rem;
+    .footerTop {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 1.5rem;
+        width: min(1120px, 100%);
+        padding: 1.35rem 1rem;
+    }
+
+    .footerBrand {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        min-width: 0;
+
+        img {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background-color: rgba($secondary-color, 0.12);
+            filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.16));
         }
     }
 
-    .footerTop {
+    .footerBrandText {
         display: flex;
-        justify-content: space-evenly;
+        flex-direction: column;
+        gap: 0.15rem;
+        min-width: 0;
+
+        p,
+        span {
+            margin: 0;
+        }
+
+        p {
+            font-family: $font-family-display;
+            font-size: $font-size-large;
+            font-weight: $font-weight-bold;
+            line-height: 1;
+            overflow-wrap: anywhere;
+        }
+
+        span {
+            color: rgba($color-text-tertiary, 0.78);
+            font-size: $font-size-small;
+            font-weight: $font-weight-medium;
+            overflow-wrap: anywhere;
+        }
+    }
+
+    .footerCredit {
+        display: inline-flex;
         align-items: center;
-        gap: 1rem;
-        padding: 1rem 0;
-        width: 100%;
-        max-width: 1200px;
+        justify-content: center;
+        gap: 0.45rem;
+        margin: 0;
+        padding: 0.55rem 0.85rem;
+        border-radius: 999px;
+        background-color: rgba($secondary-color, 0.09);
+        color: rgba($color-text-tertiary, 0.9);
+        font-size: $font-size-normal;
+        font-weight: $font-weight-medium;
+        text-align: center;
+        white-space: nowrap;
+        max-width: 100%;
 
-        .footerLogo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
+        .heartIcon {
+            color: #ff6b6b;
+            flex-shrink: 0;
+        }
+    }
 
-            img {
-                width: 5rem;
-                border-radius: 3rem;
-            }
+    .footerLinks {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.65rem;
+    }
 
-            figcaption {
-                font-size: $font-size-medium-large;
-                font-weight: $font-weight-medium;
-            }
+    .footerSocial {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border: 1px solid rgba($secondary-color, 0.14);
+        border-radius: 0.85rem;
+        background-color: rgba($secondary-color, 0.1);
+        color: $color-text-tertiary;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+
+        .footerIcon {
+            width: 21px;
+            height: 21px;
         }
 
-        .footerLinks {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-
-            .footerIcon {
-                cursor: pointer;
-                width: 20px;
-                height: 20px;
-                color: $color-text-tertiary;
-                transition: color 0.3s ease-in-out;
-            }
-
-            .instagram {
-                &:hover {
-                    color: $color-instagram;
-                }
-            }
-
-            .whatsapp {
-                &:hover {
-                    color: $color-whatsapp;
-                }
-            }
+        &:hover {
+            transform: translateY(-2px);
+            background-color: rgba($secondary-color, 0.18);
         }
 
-        .footerCredit {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: $font-size-normal;
+        &.instagram:hover {
+            color: color.adjust($color-instagram, $lightness: 12%);
+            border-color: rgba($color-instagram, 0.32);
+        }
 
-            .heartIcon {
-                color: $color-error;
-            }
+        &.whatsapp:hover {
+            color: $color-whatsapp;
+            border-color: rgba($color-whatsapp, 0.32);
         }
     }
 
     .footerBottom {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        flex-direction: column;
-        gap: 0.5rem;
-        width: 100%;
-        padding: 1rem 0;
+        gap: 1rem;
+        width: min(1120px, 100%);
+        padding: 0.9rem 1rem 1.15rem;
+        border-top: 1px solid rgba($secondary-color, 0.12);
+        color: rgba($color-text-tertiary, 0.68);
 
         p,
         span {
+            margin: 0;
             font-size: $font-size-small;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+        }
+    }
+
+    @media (max-width: 820px) {
+        .footerTop {
+            grid-template-columns: 1fr;
+            justify-items: center;
+            gap: 1.1rem;
+            text-align: center;
         }
 
-        &::before {
-            content: '';
-            width: 90%;
-            height: 1px;
-            background-color: $color-button;
-            margin-bottom: 1rem;
+        .footerBrand {
+            justify-content: center;
+        }
+
+        .footerCredit {
+            white-space: normal;
+        }
+
+        .footerLinks {
+            justify-content: center;
+        }
+
+        .footerBottom {
+            flex-direction: column;
+            text-align: center;
+            gap: 0.35rem;
+        }
+    }
+
+    @media (max-width: 420px) {
+        .footerBrand {
+            flex-direction: column;
+        }
+
+        .footerBrandText p {
+            font-size: $font-size-medium-large;
         }
     }
 }

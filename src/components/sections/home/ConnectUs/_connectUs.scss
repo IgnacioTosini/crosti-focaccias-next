@@ -6,72 +6,79 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 2rem;
-    padding: 2rem;
-    background-color: $quaternary-color;
+    gap: clamp(1.5rem, 4vw, 2.5rem);
     width: 100%;
-    overflow-x: hidden; // Evita scroll horizontal por animaciones GSAP
-
-    @media (max-width: 768px) {
-        padding: 1rem;
-    }
-
-    .connectUsTitle {
-        font-size: $font-size-xlarge;
-        font-weight: $font-weight-bold;
-        font-family: $font-family-display;
-        color: $color-text-tertiary;
-        margin-bottom: 1rem;
-    }
+    padding: clamp(3rem, 7vw, 5rem) 1rem;
+    background:
+        radial-gradient(circle at 16% 18%, rgba($secondary-color, 0.18), transparent 24rem),
+        linear-gradient(135deg, color.adjust($quaternary-color, $lightness: -5%) 0%, $quaternary-color 55%, #8f1111 100%);
+    overflow-x: hidden;
 
     .connectUsTitleWrap {
         position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.65rem;
+        gap: 0.7rem;
+        text-align: center;
+        max-width: 100%;
+    }
 
-        .connectCharacter {
-            width: 88px;
-            height: 88px;
-            object-fit: contain;
-            filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.2));
-        }
+    .connectUsTitle {
+        margin: 0;
+        font-size: clamp($font-size-xlarge, 4vw, 3rem);
+        font-weight: $font-weight-bold;
+        font-family: $font-family-display;
+        color: $color-text-tertiary;
+        text-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+        overflow-wrap: anywhere;
+    }
 
-        .connectSticker {
-            width: 72px;
-            height: 72px;
-            object-fit: contain;
-            transform: rotate(11deg);
-            opacity: 0.95;
-        }
+    .connectCharacter {
+        width: clamp(70px, 9vw, 96px);
+        height: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.22));
+    }
+
+    .connectSticker {
+        width: clamp(54px, 7vw, 74px);
+        height: auto;
+        object-fit: contain;
+        transform: rotate(11deg);
+        opacity: 0.95;
+        filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.16));
     }
 
     .connectCardsContainer {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1.5rem;
-        width: 100%;
-        max-width: 1200px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        width: min(920px, 100%);
+        min-width: 0;
+    }
 
-        @media (max-width: 768px) {
-            flex-direction: column;
-            align-items: center;
+    @media (max-width: 780px) {
+        .connectCardsContainer {
+            grid-template-columns: 1fr;
+            width: min(420px, 100%);
         }
     }
 
-    @media (max-width: 768px) {
-        .connectUsTitleWrap {
-            .connectCharacter {
-                width: 72px;
-                height: 72px;
-            }
+    @media (max-width: 520px) {
+        padding-inline: 0.85rem;
 
-            .connectSticker {
-                width: 56px;
-                height: 56px;
-            }
+        .connectUsTitleWrap {
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .connectCharacter {
+            width: 62px;
+        }
+
+        .connectSticker {
+            width: 48px;
         }
     }
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { FaPlus, FaTrash } from 'react-icons/fa';
+import { type FormEvent, useMemo, useState } from 'react';
+import { FaEdit, FaPlus, FaSave, FaTimes, FaTrash, FaUsers } from 'react-icons/fa';
 import {
   usePromociones,
   useCreatePromocion,
@@ -27,6 +27,30 @@ const emptyForm: PromotionPayload = {
   items: [],
 };
 
+const currencyFormatter = new Intl.NumberFormat('es-AR', {
+  style: 'currency',
+  currency: 'ARS',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+});
+
+const typeLabels: Record<PromotionType, string> = {
+  combos: 'Combos',
+  focaccias: 'Focaccias',
+  prepizzas: 'Prepizzas',
+};
+
+const itemTypeLabels: Record<PromotionItemType, string> = {
+  focaccia: 'Focaccia',
+  prepizza: 'Prepizza',
+  extra: 'Extra',
+};
+
+const sizeLabels: Record<PromotionSize, string> = {
+  MEDIANA: 'Mediana',
+  GRANDE: 'Grande',
+};
+
 export default function AdminCombosPage() {
   const { data: combos = [], isLoading, error } = usePromociones({ live: true });
   const createPromocion = useCreatePromocion();
@@ -38,6 +62,7 @@ export default function AdminCombosPage() {
   const [form, setForm] = useState<PromotionPayload>(emptyForm);
 
   const isSaving = createPromocion.isPending || updatePromocion.isPending;
+  const totalItems = combos.reduce((acc, combo) => acc + (combo.items?.length ?? 0), 0);
 
   const formTitle = useMemo(
     () => (editingId ? 'Editar combo' : 'Nuevo combo'),
@@ -116,7 +141,7 @@ export default function AdminCombosPage() {
     }));
   };
 
-  const handleSave = (event: React.FormEvent) => {
+  const handleSave = (event: FormEvent) => {
     event.preventDefault();
     if (!form.title.trim() || !form.description.trim()) {
       alert('Completá título y descripción.');
@@ -155,8 +180,9 @@ export default function AdminCombosPage() {
     <section className='adminCombos'>
       <header className='adminCombosHeader'>
         <div>
-          <h1>Panel de Administración - Combos</h1>
-          <p>Creá, editá y eliminá combos/promociones.</p>
+          <span className='adminCombosEyebrow'>Catálogo</span>
+          <h1>Combos</h1>
+          <p>Creá, editá y organizá promociones para el menú.</p>
         </div>
         <button className='primaryAction' onClick={handleNew} type='button'>
           <FaPlus />
@@ -166,170 +192,226 @@ export default function AdminCombosPage() {
 
       {isOpen && (
         <form className='comboForm' onSubmit={handleSave}>
-          <h2>{formTitle}</h2>
-          <div className='gridTwo'>
-            <label>
-              Título
-              <input
-                value={form.title}
-                onChange={(e) => handleFormChange('title', e.target.value)}
-                required
-              />
-            </label>
-            <label>
-              Tipo
-              <select
-                value={form.type}
-                onChange={(e) => handleFormChange('type', e.target.value as PromotionType)}
-              >
-                <option value='combos'>Combos</option>
-                <option value='focaccias'>Focaccias</option>
-                <option value='prepizzas'>Prepizzas</option>
-              </select>
-            </label>
-            <label>
-              Personas
-              <input
-                type='number'
-                min={0}
-                value={form.people}
-                onChange={(e) => handleFormChange('people', Number(e.target.value))}
-              />
-            </label>
-            <label>
-              Precio
-              <input
-                type='number'
-                min={0}
-                step='0.01'
-                value={form.price}
-                onChange={(e) => handleFormChange('price', Number(e.target.value))}
-              />
-            </label>
+          <div className='comboFormHeader'>
+            <div>
+              <span>{editingId ? 'Edición' : 'Alta'}</span>
+              <h2>{formTitle}</h2>
+              <p>Definí composición, precio y presentación pública.</p>
+            </div>
+            <button className='iconAction' type='button' onClick={resetForm} aria-label='Cerrar formulario'>
+              <FaTimes />
+            </button>
           </div>
 
-          <label>
-            Descripción
-            <textarea
-              rows={3}
-              value={form.description}
-              onChange={(e) => handleFormChange('description', e.target.value)}
-              required
-            />
-          </label>
+          <section className='comboFormSection'>
+            <div className='comboFormSectionHeader'>
+              <span>1</span>
+              <div>
+                <h3>Datos principales</h3>
+                <p>Título, descripción y precio del combo.</p>
+              </div>
+            </div>
 
-          <div className='comboItems'>
-            <div className='comboItemsHeader'>
-              <h3>Items del combo</h3>
+            <div className='comboFormGrid'>
+              <label className='formField formFieldWide'>
+                <span>Título</span>
+                <input
+                  value={form.title}
+                  onChange={(e) => handleFormChange('title', e.target.value)}
+                  placeholder='Ej: Combo 5 pax'
+                  required
+                />
+              </label>
+              <label className='formField'>
+                <span>Tipo</span>
+                <select
+                  value={form.type}
+                  onChange={(e) => handleFormChange('type', e.target.value as PromotionType)}
+                >
+                  <option value='combos'>Combos</option>
+                  <option value='focaccias'>Focaccias</option>
+                  <option value='prepizzas'>Prepizzas</option>
+                </select>
+              </label>
+              <label className='formField'>
+                <span>Personas</span>
+                <input
+                  type='number'
+                  min={0}
+                  value={form.people}
+                  onChange={(e) => handleFormChange('people', Number(e.target.value))}
+                />
+              </label>
+              <label className='formField'>
+                <span>Precio</span>
+                <input
+                  type='number'
+                  min={0}
+                  step='0.01'
+                  value={form.price}
+                  onChange={(e) => handleFormChange('price', Number(e.target.value))}
+                />
+              </label>
+              <label className='formField formFieldFull'>
+                <span>Descripción</span>
+                <textarea
+                  rows={3}
+                  value={form.description}
+                  onChange={(e) => handleFormChange('description', e.target.value)}
+                  placeholder='Contá qué incluye y para qué ocasión sirve.'
+                  required
+                />
+              </label>
+            </div>
+          </section>
+
+          <section className='comboFormSection'>
+            <div className='comboFormSectionHeader comboFormSectionHeaderWithAction'>
+              <span>2</span>
+              <div>
+                <h3>Items del combo</h3>
+                <p>Agregá focaccias, prepizzas o extras incluidos.</p>
+              </div>
               <button className='secondaryAction' type='button' onClick={addItem}>
-                + Agregar item
+                <FaPlus />
+                Agregar item
               </button>
             </div>
 
-            {form.items.length === 0 && <p className='muted'>No hay items cargados.</p>}
+            <div className='comboItems'>
+              {form.items.length === 0 && <p className='muted'>No hay items cargados.</p>}
 
-            {form.items.map((item, index) => (
-              <div key={`${item.id ?? 'new'}-${index}`} className='comboItemRow'>
-                <select
-                  value={item.itemType}
-                  onChange={(e) => updateItem(index, 'itemType', e.target.value as PromotionItemType)}
-                >
-                  <option value='focaccia'>Focaccia</option>
-                  <option value='prepizza'>Prepizza</option>
-                  <option value='extra'>Extra</option>
-                </select>
-
-                <input
-                  placeholder='Etiqueta (opcional)'
-                  value={item.label ?? ''}
-                  onChange={(e) => updateItem(index, 'label', e.target.value)}
-                />
-
-                <input
-                  type='number'
-                  min={1}
-                  value={item.quantity}
-                  onChange={(e) => updateItem(index, 'quantity', Number(e.target.value))}
-                />
-
-                <select
-                  value={item.size ?? ''}
-                  onChange={(e) =>
-                    updateItem(
-                      index,
-                      'size',
-                      e.target.value ? (e.target.value as PromotionSize) : null
-                    )
-                  }
-                >
-                  <option value=''>Sin tamaño</option>
-                  <option value='MEDIANA'>Mediana</option>
-                  <option value='GRANDE'>Grande</option>
-                </select>
-
-                <button
-                  type='button'
-                  className='dangerAction iconOnly'
-                  onClick={() => removeItem(index)}
-                  aria-label={`Eliminar item ${index + 1}`}
-                >
-                  <FaTrash />
-                </button>
-              </div>
-            ))}
-          </div>
+              {form.items.map((item, index) => (
+                <div key={`${item.id ?? 'new'}-${index}`} className='comboItemRow'>
+                  <span className='comboItemIndex'>{index + 1}</span>
+                  <label className='formField'>
+                    <span>Tipo</span>
+                    <select
+                      value={item.itemType}
+                      onChange={(e) => updateItem(index, 'itemType', e.target.value as PromotionItemType)}
+                    >
+                      <option value='focaccia'>Focaccia</option>
+                      <option value='prepizza'>Prepizza</option>
+                      <option value='extra'>Extra</option>
+                    </select>
+                  </label>
+                  <label className='formField'>
+                    <span>Etiqueta</span>
+                    <input
+                      placeholder='Opcional'
+                      value={item.label ?? ''}
+                      onChange={(e) => updateItem(index, 'label', e.target.value)}
+                    />
+                  </label>
+                  <label className='formField'>
+                    <span>Cant.</span>
+                    <input
+                      type='number'
+                      min={1}
+                      value={item.quantity}
+                      onChange={(e) => updateItem(index, 'quantity', Number(e.target.value))}
+                    />
+                  </label>
+                  <label className='formField'>
+                    <span>Tamaño</span>
+                    <select
+                      value={item.size ?? ''}
+                      onChange={(e) =>
+                        updateItem(
+                          index,
+                          'size',
+                          e.target.value ? (e.target.value as PromotionSize) : null
+                        )
+                      }
+                    >
+                      <option value=''>Sin tamaño</option>
+                      <option value='MEDIANA'>Mediana</option>
+                      <option value='GRANDE'>Grande</option>
+                    </select>
+                  </label>
+                  <button
+                    type='button'
+                    className='dangerAction iconOnly'
+                    onClick={() => removeItem(index)}
+                    aria-label={`Eliminar item ${index + 1}`}
+                  >
+                    <FaTrash />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
 
           <div className='formActions'>
             <button type='button' className='secondaryAction' onClick={resetForm}>
+              <FaTimes />
               Cancelar
             </button>
             <button type='submit' className='primaryAction' disabled={isSaving}>
+              <FaSave />
               {isSaving ? 'Guardando...' : 'Guardar combo'}
             </button>
           </div>
         </form>
       )}
 
-      <div className='combosList'>
-        {isLoading && <p>Cargando combos...</p>}
-        {!isLoading && error && <p>{(error as Error).message ?? 'Error al cargar combos'}</p>}
+      <div className='combosPanel'>
+        <div className='combosPanelHeader'>
+          <div>
+            <span className='adminCombosEyebrow'>Inventario</span>
+            <h2>Combos existentes</h2>
+          </div>
+          <div className='combosPanelStats'>
+            <span>{combos.length} combos</span>
+            <span>{totalItems} items</span>
+          </div>
+        </div>
 
-        {!isLoading && !error && combos.length === 0 && <p>No hay combos registrados.</p>}
+        <div className='combosList'>
+          {isLoading && <p className='combosState'>Cargando combos...</p>}
+          {!isLoading && error && <p className='combosState combosStateError'>{(error as Error).message ?? 'Error al cargar combos'}</p>}
+          {!isLoading && !error && combos.length === 0 && <p className='combosState'>No hay combos registrados.</p>}
 
-        {!isLoading && !error && combos.map((combo) => (
-          <article key={combo.id} className='comboCardAdmin'>
-            <div className='comboCardTop'>
-              <h3>{combo.title}</h3>
-              <span className='comboTypeTag'>{combo.type}</span>
-            </div>
+          {!isLoading && !error && combos.map((combo) => (
+            <article key={combo.id} className='comboCardAdmin'>
+              <div className='comboCardTop'>
+                <div>
+                  <span className='comboTypeTag'>{typeLabels[combo.type] ?? combo.type}</span>
+                  <h3>{combo.title}</h3>
+                </div>
+                <strong>{currencyFormatter.format(combo.price)}</strong>
+              </div>
 
-            <p>{combo.description}</p>
+              <p>{combo.description}</p>
 
-            <div className='comboMeta'>
-              <span>Personas: {combo.people}</span>
-              <span>Precio: ${combo.price}</span>
-            </div>
+              <div className='comboMeta'>
+                <span><FaUsers /> {combo.people} pax</span>
+                <span>{combo.items?.length ?? 0} items</span>
+              </div>
 
-            <ul>
-              {(combo.items ?? []).map((item) => (
-                <li key={item.id ?? `${combo.id}-${item.order}`}>
-                  {item.quantity} x {item.itemType}
-                  {item.label ? ` (${item.label})` : ''}
-                  {item.size ? ` - ${item.size}` : ''}
-                </li>
-              ))}
-            </ul>
+              <ul>
+                {(combo.items ?? []).map((item) => (
+                  <li key={item.id ?? `${combo.id}-${item.order}`}>
+                    <span>{item.quantity} x {itemTypeLabels[item.itemType] ?? item.itemType}</span>
+                    {item.label && <small>{item.label}</small>}
+                    {item.size && <small>{sizeLabels[item.size] ?? item.size}</small>}
+                  </li>
+                ))}
+              </ul>
 
-            <div className='comboCardActions'>
-              <button className='secondaryAction' type='button' onClick={() => handleEdit(combo)}>
-                Editar
-              </button>
-              <button className='dangerAction' type='button' onClick={() => handleDelete(combo.id, combo.title)}>
-                Eliminar
-              </button>
-            </div>
-          </article>
-        ))}
+              <div className='comboCardActions'>
+                <button className='secondaryAction' type='button' onClick={() => handleEdit(combo)}>
+                  <FaEdit />
+                  Editar
+                </button>
+                <button className='dangerAction' type='button' onClick={() => handleDelete(combo.id, combo.title)}>
+                  <FaTrash />
+                  Eliminar
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

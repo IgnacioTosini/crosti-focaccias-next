@@ -68,7 +68,7 @@ export const WELCOME_MESSAGE = {
  * Configuración visual del chatbot
  */
 export const CHATBOT_CONFIG = {
-    maxQuickRepliesToShow: 8, // Número máximo de preguntas a mostrar a la vez (mostrar todas)
+    maxQuickRepliesToShow: 5, // Número máximo de preguntas rápidas visibles
     typingDelay: 800, // Milisegundos de delay simulado para "escribiendo..."
     enableSound: false, // Sonido al recibir mensaje
     theme: {

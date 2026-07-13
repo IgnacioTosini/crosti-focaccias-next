@@ -4,76 +4,126 @@
 .productListContainer {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    padding: 2rem;
     width: 100%;
     max-width: 1200px;
+    margin-top: 2rem;
+    overflow: hidden;
+    border: 1px solid rgba($border-color, 0.08);
+    border-radius: 1rem;
+    background: $secondary-color;
+    box-shadow: 0 16px 34px rgba($border-color, 0.06);
+    min-width: 0;
 
-    .header {
-        position: relative;
-        background-color: $quaternary-color;
-        border-radius: 0.5rem 0.5rem 0 0;
-        padding: 1rem;
+    .productListHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.15rem 1.25rem;
         width: 100%;
+        border-bottom: 1px solid rgba($border-color, 0.08);
+        background:
+            linear-gradient(90deg, rgba($color-button, 0.07), transparent 52%),
+            $secondary-color;
 
-        h1 {
+        h2 {
+            margin: 0;
+            color: $color-text;
             font-size: $font-size-large;
             font-weight: $font-weight-extra-bold;
             font-family: $font-family-display;
-            color: $color-text-tertiary;
-            width: 100%;
-
-            @media (max-width: 576px) {
-                font-size: $font-size-medium-large;
-                text-align: center;
-            }
+            line-height: 1.1;
+            overflow-wrap: anywhere;
         }
+    }
 
-        .downButton {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba($tertiary-color, 0.5);
-            border: none;
-            color: $color-text-secondary;
-            font-size: 1.5rem;
-            width: 2rem;
-            height: 2rem;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.2s ease;
+    .productListEyebrow {
+        display: block;
+        margin-bottom: 0.15rem;
+        color: color.scale($color-text, $lightness: 34%);
+        font-size: $font-size-small;
+        font-weight: $font-weight-extra-bold;
+        text-transform: uppercase;
+    }
 
-            &:hover {
-                background: rgba(255, 255, 255, 0.3);
-            }
+    .productListMeta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: color.scale($color-text, $lightness: 18%);
+        font-size: $font-size-normal;
+        font-weight: $font-weight-bold;
+        white-space: nowrap;
+    }
 
-            @media (max-width: 576px) {
-                top: auto;
-                bottom: 1rem;
-                right: 50%;
-                transform: translateX(50%);
-            }
+    .productListToggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.35rem;
+        height: 2.35rem;
+        border: none;
+        border-radius: 50%;
+        background: rgba($color-button, 0.1);
+        color: $color-button;
+        cursor: pointer;
+        font-size: $font-size-medium-large;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+
+        &:hover {
+            background: rgba($color-button, 0.16);
+            transform: translateY(-1px);
         }
     }
 
     .productListUl {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+        display: none;
         width: 100%;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        min-width: 0;
+        margin: 0;
+        padding: 0;
+        list-style: none;
 
-        &:nth-last-child(1) {
-            border-radius: 0 0 1rem 1rem;
+        &.open {
+            display: flex;
+            flex-direction: column;
+        }
+
+        > li:not(:last-child) {
+            border-bottom: 1px solid rgba($border-color, 0.08);
+        }
+
+        > li {
+            min-width: 0;
         }
     }
 
-    .open {
-        max-height: 600px;
+    .productListEmpty {
+        padding: 2rem 1.25rem;
+        color: color.scale($color-text, $lightness: 22%);
+        font-size: $font-size-medium;
+        font-weight: $font-weight-bold;
+        text-align: center;
+    }
+
+    @media (max-width: 576px) {
+        margin-top: 1.25rem;
+        border-radius: 0.85rem;
+
+        .productListHeader {
+            align-items: flex-start;
+            flex-direction: column;
+            padding: 1rem;
+
+            h2 {
+                font-size: $font-size-medium-large;
+            }
+        }
+
+        .productListMeta {
+            justify-content: space-between;
+            width: 100%;
+            white-space: normal;
+        }
     }
 }

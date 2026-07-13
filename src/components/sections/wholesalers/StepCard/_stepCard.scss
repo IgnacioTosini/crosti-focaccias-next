@@ -3,72 +3,68 @@
 .stepCard {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: stretch;
 
     .stepMarker {
         position: absolute;
-        left: -80px;
+        left: -72px;
+        top: 50%;
         z-index: 2;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-family: $font-family;
-        font-size: clamp($font-size-medium, 2.5vw, $font-size-medium-large);
-        font-weight: $font-weight-extra-bold;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background-color: $color-button;
         color: $color-text-tertiary;
-        background-color: $color-hover-secondary;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.16);
+        box-shadow: 0 10px 20px rgba($color-button, 0.18);
+        font-family: $font-family;
+        font-size: $font-size-medium;
+        font-weight: $font-weight-extra-bold;
+        transform: translateY(-50%);
     }
 
     .stepContent {
         width: 100%;
-        background-color: $secondary-color;
-        border: 1px solid #e7e1d4;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.09);
+        padding: 1.15rem 1.25rem;
+        border: 1px solid rgba($quinary-color, 0.12);
+        border-radius: 1rem;
+        background-color: rgba($secondary-color, 0.9);
+        box-shadow: 0 10px 22px rgba($border-color, 0.07);
 
         h3,
         p {
             margin: 0;
             font-family: $font-family;
-            color: $quinary-color;
         }
 
         h3 {
-            font-size: clamp($font-size-large, 2.5vw, $font-size-medium-large);
+            color: $quinary-color;
+            font-size: $font-size-medium-large;
             font-weight: $font-weight-extra-bold;
+            line-height: 1.2;
         }
 
         p {
-            margin-top: 0.65rem;
-            font-size: clamp($font-size-small, 2vw, $font-size-medium);
+            margin-top: 0.45rem;
+            color: rgba($color-text, 0.76);
+            font-size: $font-size-medium;
             line-height: 1.5;
             font-weight: $font-weight-medium;
         }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 620px) {
         .stepMarker {
-            left: -56px;
+            left: -52px;
             width: 42px;
             height: 42px;
-            font-size: clamp($font-size-small, 2vw, $font-size-medium);
+            font-size: $font-size-small;
         }
 
         .stepContent {
             padding: 1rem;
-
-            h3 {
-                font-size: clamp($font-size-large, 2vw, $font-size-medium-large);
-            }
-
-            p {
-                font-size: clamp($font-size-small, 1.5vw, $font-size-medium);
-            }
         }
     }
 }

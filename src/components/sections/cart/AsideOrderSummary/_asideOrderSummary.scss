@@ -3,281 +3,412 @@
 
 .asideOrderSummaryOverlay {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
     display: flex;
     justify-content: flex-end;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); // Overlay visible semi-transparente
-    z-index: 200000; // Mayor que el header (1000)
+    background-color: rgba(23, 14, 10, 0.54);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    z-index: 200000;
 
     .asideOrderSummary {
         display: flex;
         flex-direction: column;
         position: relative;
-        background-color: $secondary-color;
-        width: 400px;
-        max-width: 100%;
-        height: 100%;
-        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+        width: min(430px, 100%);
+        max-width: 100vw;
+        height: 100dvh;
+        min-width: 0;
+        background-color: #fffaf2;
+        box-shadow: -18px 0 42px rgba($border-color, 0.24);
         transform: translateX(100%);
+    }
+
+    .asideOrderSummaryHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        padding: 1rem 1.15rem;
+        background:
+            linear-gradient(135deg, color.adjust($quaternary-color, $lightness: -4%) 0%, $quaternary-color 100%);
+        color: $color-text-tertiary;
+        flex-shrink: 0;
+    }
+
+    .asideOrderSummaryTitle {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        max-width: 100%;
+        gap: 0.7rem;
+    }
+
+    .asideOrderSummaryIcon {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+        color: $secondary-color;
+    }
+
+    .asideOrderSummaryText {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        margin: 0;
+        font-size: $font-size-large;
+        font-weight: $font-weight-bold;
+        font-family: $font-family-display;
+        color: $color-text-tertiary;
+        line-height: 1;
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .asideOrderSummaryNumber {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        height: 28px;
+        padding: 0 0.55rem;
+        border-radius: 999px;
+        background-color: rgba($secondary-color, 0.18);
+        color: $secondary-color;
+        font-family: $font-family;
+        font-size: $font-size-small;
+        font-weight: $font-weight-extra-bold;
+    }
+
+    .asideOrderSummaryCloseButton {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba($secondary-color, 0.18);
+        border-radius: 0.8rem;
+        background-color: rgba($secondary-color, 0.1);
+        color: $color-text-tertiary;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        &:hover {
+            background-color: rgba($secondary-color, 0.18);
+            transform: translateY(-1px);
+        }
+    }
+
+    .asideOrderSummaryContent {
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+        padding: 0.85rem;
+        flex: 1 1 auto;
+        min-height: 0;
+        min-width: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-width: thin;
+        scrollbar-color: rgba($quinary-color, 0.5) transparent;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: rgba($quinary-color, 0.45);
+            border-radius: 999px;
+        }
+    }
+
+    .asideOrderSummaryList {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        min-width: 0;
+        overflow: visible;
+        flex: 0 0 auto;
+        min-height: auto;
+    }
+
+    .asideOrderSummaryButton {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        min-height: 46px;
+        padding: 0.82rem 1rem;
+        border: none;
+        border-radius: 0.85rem;
+        background-color: $color-button;
+        color: $color-text-tertiary;
+        font-size: $font-size-medium;
+        font-weight: $font-weight-bold;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+
+        &:hover:not(:disabled) {
+            background-color: color.adjust($color-button, $lightness: -8%);
+            transform: translateY(-1px);
+        }
+
+        &:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        &.delete {
+            min-height: 40px;
+            margin-top: 0;
+            background-color: rgba($color-error, 0.09);
+            color: color.adjust($color-error, $lightness: -12%);
+            border: 1px solid rgba($color-error, 0.2);
+            box-shadow: none;
+
+            &:hover:not(:disabled) {
+                background-color: rgba($color-error, 0.14);
+            }
+        }
+    }
+
+    .emptyCartMessage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.85rem;
+        height: 100%;
+        padding: 2rem 1rem;
+        text-align: center;
+        color: $color-text;
+
+        .emptyCartIcon {
+            width: 52px;
+            height: 52px;
+            color: $color-text-secondary;
+        }
+
+        p,
+        span {
+            margin: 0;
+        }
+
+        p {
+            font-size: $font-size-medium-large;
+            font-weight: $font-weight-bold;
+        }
+
+        span {
+            max-width: 240px;
+            color: rgba($color-text, 0.72);
+            font-size: $font-size-normal;
+            line-height: 1.45;
+            overflow-wrap: anywhere;
+        }
+
+        .emptyCartButton {
+            min-height: 44px;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: 0.85rem;
+            background-color: $color-button;
+            color: $color-text-tertiary;
+            font-size: $font-size-medium;
+            font-weight: $font-weight-bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+
+            &:hover {
+                background-color: color.adjust($color-button, $lightness: -8%);
+                transform: translateY(-1px);
+            }
+        }
+    }
+
+    .asideOrderSummaryFooter {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 0.95rem 1.15rem 1.15rem;
+        border-top: 1px solid rgba($border-color, 0.12);
+        background-color: rgba($secondary-color, 0.96);
+        box-shadow: 0 -14px 28px rgba($border-color, 0.08);
+        color: $color-text;
+        flex-shrink: 0;
+        min-width: 0;
+    }
+
+    .sendPrice {
+        display: block;
+        padding: 0.62rem 0.75rem;
+        border-radius: 0.85rem;
+        background-color: rgba($primary-color, 0.8);
+        color: rgba($color-text, 0.82);
+        text-align: center;
+        font-size: $font-size-small;
+        font-weight: $font-weight-medium;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+    }
+
+    .asideOrderSummaryTotal {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: 0;
+        color: $color-text;
+
+        span {
+            font-size: $font-size-medium;
+            font-weight: $font-weight-bold;
+        }
+
+        strong {
+            color: $color-text-secondary;
+            font-size: $font-size-xlarge;
+            font-weight: $font-weight-extra-bold;
+            line-height: 1;
+            overflow-wrap: anywhere;
+            text-align: right;
+        }
+    }
+
+    .phoneInputContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+
+        label {
+            font-size: $font-size-normal;
+            font-weight: $font-weight-bold;
+            color: $color-text;
+            overflow-wrap: anywhere;
+        }
+    }
+
+    .phoneInput {
+        width: 100%;
+        min-height: 46px;
+        padding: 0.75rem 0.85rem;
+        border: 1px solid rgba($border-color, 0.22);
+        border-radius: 0.85rem;
+        font-size: $font-size-medium;
+        color: $color-text;
+        background-color: $secondary-color;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        &:focus {
+            outline: none;
+            border-color: rgba($color-button, 0.55);
+            box-shadow: 0 0 0 3px rgba($color-button, 0.1);
+        }
+
+        &.error {
+            border-color: rgba($color-error, 0.7);
+
+            &:focus {
+                box-shadow: 0 0 0 3px rgba($color-error, 0.12);
+            }
+        }
+
+        &::placeholder {
+            color: rgba($color-text, 0.45);
+        }
+    }
+
+    .phoneError {
+        display: block;
+        font-size: $font-size-small;
+        color: $color-error;
+        font-weight: $font-weight-bold;
+    }
+
+    .asideOrderSummaryFooter .asideOrderSummaryButton {
+        min-height: 50px;
+        margin: 0;
+        background-color: $color-whatsapp;
+        box-shadow: 0 10px 18px rgba($color-whatsapp, 0.16);
+        min-width: 0;
+
+        span {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        &:hover:not(:disabled) {
+            background-color: color.adjust($color-whatsapp, $lightness: -8%);
+        }
+    }
+
+    .asideOrderSummaryDisclaimer {
+        display: block;
+        margin: 0;
+        color: rgba($color-text, 0.64);
+        font-size: $font-size-small;
+        font-weight: $font-weight-medium;
+        text-align: center;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 520px) {
+        align-items: stretch;
+
+        .asideOrderSummary {
+            width: 100%;
+        }
 
         .asideOrderSummaryHeader {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 1rem 2rem;
-            background-color: $quaternary-color;
-
-            .asideOrderSummaryTitle {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-
-                .asideOrderSummaryIcon {
-                    font-size: $font-size-xlarge;
-                    color: $secondary-color;
-                }
-
-                .asideOrderSummaryText {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    font-size: $font-size-medium-large;
-                    font-weight: $font-weight-bold;
-                    font-family: $font-family-display;
-                    color: $color-text-tertiary;
-
-                    .asideOrderSummaryNumber {
-                        font-size: $font-size-medium;
-                        font-weight: $font-weight-extra-bold;
-                        background-color: color.adjust($color-button, $lightness: 10%);
-                        color: $secondary-color;
-                        padding: 0.2rem 0.6rem;
-                        border-radius: 1rem;
-                    }
-                }
-            }
-
-            .asideOrderSummaryCloseButton {
-                background: none;
-                border: none;
-                cursor: pointer;
-                color: $color-text-tertiary;
-
-                &:hover {
-                    color: color.adjust($color-text-tertiary, $lightness: -20%);
-                }
-            }
+            padding: 0.9rem 1rem;
         }
 
         .asideOrderSummaryContent {
-            display: flex;
-            flex-direction: column;
-            padding: .5rem;
-            flex: 1 1 0; // Permite que crezca pero se adapte al espacio disponible
-            min-height: 0; // Permite que flexbox funcione correctamente
-
-            .asideOrderSummaryList {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                width: 100%;
-                gap: 1rem;
-                overflow-y: auto;
-                flex-grow: 1;
-                scrollbar-width: thin;
-                scrollbar-color: $border-color transparent;
-                // Altura que deja espacio para header (~80px) + footer (~280px) + padding
-                max-height: calc(100dvh - 400px);
-
-                @media (max-width: 400px) {
-                    // En móviles, el footer es más compacto
-                    max-height: calc(100dvh - 350px);
-                }
-
-                &::-webkit-scrollbar {
-                    width: 8px;
-                }
-            }
-
-            .asideOrderSummaryButton {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 0.5rem;
-                width: 100%;
-                margin-top: auto;
-                padding: 1rem;
-                background-color: $color-button;
-                color: $color-text-tertiary;
-                border: none;
-                border-radius: 0.5rem;
-                font-size: $font-size-medium;
-                font-weight: $font-weight-bold;
-                cursor: pointer;
-                transition: background-color 0.2s ease;
-
-                &:hover {
-                    background-color: color.scale($color-button, $lightness: -10%);
-                }
-            }
-
-            .emptyCartMessage {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 1rem;
-                height: 100%;
-                text-align: center;
-                color: $color-text-secondary;
-
-                .emptyCartIcon {
-                    font-size: $font-size-xxlarge;
-                    color: $color-text-secondary;
-                }
-
-                p {
-                    font-size: $font-size-medium-large;
-                    font-weight: $font-weight-medium;
-                }
-
-                span {
-                    font-size: $font-size-normal;
-                    color: color.scale($color-text-secondary, $lightness: 20%);
-                }
-
-                .emptyCartButton {
-                    background-color: $color-button-secondary;
-                    color: $color-text-tertiary;
-                    padding: 0.75rem 1.5rem;
-                    border: none;
-                    border-radius: 0.5rem;
-                    font-size: $font-size-medium;
-                    font-weight: $font-weight-bold;
-                    cursor: pointer;
-                    transition: background-color 0.2s ease;
-
-                    &:hover {
-                        background-color: color.scale($color-button-secondary, $lightness: -10%);
-                    }
-                }
-            }
+            padding: 0.75rem;
         }
 
         .asideOrderSummaryFooter {
-            padding: 1rem 2rem;
-            border-top: 1px solid rgba($border-color, 0.2);
+            padding: 0.85rem 1rem 1rem;
+        }
+
+        .asideOrderSummaryText {
             font-size: $font-size-medium-large;
-            font-weight: $font-weight-bold;
-            color: $color-text-secondary;
-            flex-shrink: 0; // Evita que el footer se contraiga
-            min-height: fit-content; // Asegura que mantenga su altura mínima
+        }
 
-            .sendPrice {
-                display: block;
-                margin-top: 0.5rem;
-                font-size: $font-size-small;
-                background-color: color.scale($color-button-secondary, $lightness: 40%);
-                color: $color-text;
-                text-align: center;
-                padding: 0.5rem;
-                border-radius: 0.5rem;
-                margin: 0.5rem 0;
+        .asideOrderSummaryTotal {
+            align-items: flex-start;
+
+            strong {
+                font-size: $font-size-large;
             }
+        }
+    }
 
-            .asideOrderSummaryTotal {
-                margin-bottom: 0.5rem;
-                color: $color-text;
-                font-weight: $font-weight-bold;
-            }
+    @media (max-width: 360px) {
+        .asideOrderSummaryHeader,
+        .asideOrderSummaryFooter,
+        .asideOrderSummaryContent {
+            padding-left: 0.7rem;
+            padding-right: 0.7rem;
+        }
 
-            .phoneInputContainer {
-                margin-bottom: 1rem;
-
-                label {
-                    display: block;
-                    margin-bottom: 0.5rem;
-                    font-size: $font-size-medium;
-                    font-weight: $font-weight-medium;
-                    color: $color-text;
-                }
-
-                .phoneInput {
-                    width: 100%;
-                    padding: 0.75rem;
-                    border: 1px solid rgba($border-color, 0.3);
-                    border-radius: 0.5rem;
-                    font-size: $font-size-medium;
-                    color: $color-text;
-                    background-color: $secondary-color;
-                    transition: border-color 0.2s ease;
-
-                    &:focus {
-                        outline: none;
-                        border-color: $color-button;
-                    }
-
-                    &.error {
-                        border-color: #ef5350;
-                        
-                        &:focus {
-                            border-color: #e53935;
-                        }
-                    }
-
-                    &::placeholder {
-                        color: color.scale($color-text-secondary, $lightness: 30%);
-                    }
-                }
-
-                .phoneError {
-                    display: block;
-                    margin-top: 0.5rem;
-                    font-size: $font-size-small;
-                    color: #ef5350;
-                    font-weight: $font-weight-medium;
-                }
-            }
-
-            .asideOrderSummaryButton {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 0.5rem;
-                width: 100%;
-                margin-top: 0.5rem;
-                padding: 1rem;
-                border: none;
-                border-radius: 0.5rem;
-                background-color: $color-whatsapp;
-                color: $color-text-tertiary;
-                font-size: $font-size-medium-large;
-                font-weight: $font-weight-bold;
-                cursor: pointer;
-                transition: all 0.2s ease-in-out;
-
-                &:hover:not(:disabled) {
-                    transform: scale(1.05);
-                    background-color: color.scale($color-whatsapp, $lightness: -10%);
-                }
-
-                &:disabled {
-                    opacity: 0.5;
-                    cursor: not-allowed;
-                }
-            }
-
-            .asideOrderSummaryDisclaimer {
-                display: block;
-                margin-top: 0.5rem;
-                font-size: $font-size-small;
-                color: color.scale($color-text-secondary, $lightness: 20%);
-                text-align: center;
-            }
+        .asideOrderSummaryCloseButton {
+            width: 36px;
+            height: 36px;
         }
     }
 }

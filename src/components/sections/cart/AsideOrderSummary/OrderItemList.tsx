@@ -4,6 +4,13 @@ import { TbTrash } from 'react-icons/tb';
 import type { ComboPedido, FocacciaItem, FocacciaPedido } from '@/types';
 import { useCartStore } from '@/store/cart.store';
 
+const currencyFormatter = new Intl.NumberFormat('es-AR', {
+    style: 'currency',
+    currency: 'ARS',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+});
+
 type OrderItemListProps = {
     items: FocacciaPedido[];
     combos?: ComboPedido[];
@@ -39,27 +46,36 @@ const OrderItemList = ({
                         {combo.focaccias.length > 0 && (
                             <div className='flavorSelectionContainer'>
                                 <p className='flavorSelectionTitle'>Elegí sabores para el combo</p>
-                                {combo.focaccias.map((slot, slotIndex) => (
-                                    <select
+                                {combo.focaccias.map((slot, slotIndex) => {
+                                    const isMissingFlavor = !Number.isInteger(slot.focaccia.id) || slot.focaccia.id <= 0;
+
+                                    return (
+                                    <label
+                                        className={`flavorSelectGroup${isMissingFlavor ? ' flavorSelectGroupMissing' : ''}`}
                                         key={`combo-${combo.combo.id}-slot-${slotIndex}`}
-                                        className='flavorSelectStyled'
-                                        value={slot.focaccia.id > 0 ? String(slot.focaccia.id) : ''}
-                                        onChange={(event) => {
-                                            const selectedId = Number(event.target.value);
-                                            if (!Number.isInteger(selectedId) || selectedId <= 0 || !onSelectComboFlavor) {
-                                                return;
-                                            }
-                                            onSelectComboFlavor(combo.combo.id, slotIndex, selectedId);
-                                        }}
                                     >
-                                        <option value=''>Seleccionar sabor #{slotIndex + 1}</option>
-                                        {availableFocaccias.map((focaccia) => (
-                                            <option key={focaccia.id} value={focaccia.id}>
-                                                {focaccia.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                ))}
+                                        <span>Sabor #{slotIndex + 1}</span>
+                                        <select
+                                            className='flavorSelectStyled'
+                                            value={slot.focaccia.id > 0 ? String(slot.focaccia.id) : ''}
+                                            onChange={(event) => {
+                                                const selectedId = Number(event.target.value);
+                                                if (!Number.isInteger(selectedId) || selectedId <= 0 || !onSelectComboFlavor) {
+                                                    return;
+                                                }
+                                                onSelectComboFlavor(combo.combo.id, slotIndex, selectedId);
+                                            }}
+                                        >
+                                            <option value=''>Seleccionar sabor</option>
+                                            {availableFocaccias.map((focaccia) => (
+                                                <option key={focaccia.id} value={focaccia.id}>
+                                                    {focaccia.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </label>
+                                    );
+                                })}
                             </div>
                         )}
 
@@ -86,7 +102,7 @@ const OrderItemList = ({
                         )}
                     </div>
                     <div className='itemPrice'>
-                        <p>$ {(combo.unitPrice * combo.cantidad).toFixed(0)}</p>
+                        <p>{currencyFormatter.format(combo.unitPrice * combo.cantidad)}</p>
                     </div>
                     <div className='itemQuantityContainer'>
                         <div className='itemQuantity'>
@@ -108,7 +124,7 @@ const OrderItemList = ({
                                 +
                             </button>
                         </div>
-                        <p className='itemQuantityPrice'>{combo.cantidad} x ${combo.unitPrice.toFixed(0)}</p>
+                        <p className='itemQuantityPrice'>{combo.cantidad} x {currencyFormatter.format(combo.unitPrice)}</p>
                     </div>
 
                     <button

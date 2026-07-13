@@ -7,23 +7,34 @@ import Image from 'next/image'
 import './_footer.scss'
 
 export const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <div className='footer'>
+    <footer className='footer'>
       <div className='footerTop'>
-        <picture className='footerLogo'>
-          <Image src="/personajes/crosti-logo.svg" alt="Logo de Crosti" width={90} height={100} />
-          <figcaption>Crosti Focaccias</figcaption>
-        </picture>
-        <div className='footerLinks'>
-          <FaInstagram className='footerIcon instagram' onClick={handleInstagramClick} />
-          <FaWhatsapp className='footerIcon whatsapp' onClick={handleWhatsAppClick} />
+        <div className='footerBrand'>
+          <Image src="/personajes/crosti-logo.svg" alt="Logo de Crosti" width={72} height={72} />
+          <div className='footerBrandText'>
+            <p>Crosti Focaccias</p>
+            <span>Artesanales en Mar del Plata</span>
+          </div>
         </div>
+
         <p className='footerCredit'>Hecho con amor en Mar del Plata <BiHeart className='heartIcon' /></p>
+
+        <div className='footerLinks'>
+          <button type='button' className='footerSocial instagram' onClick={handleInstagramClick} aria-label='Abrir Instagram de Crosti'>
+            <FaInstagram className='footerIcon' />
+          </button>
+          <button type='button' className='footerSocial whatsapp' onClick={handleWhatsAppClick} aria-label='Enviar WhatsApp a Crosti'>
+            <FaWhatsapp className='footerIcon' />
+          </button>
+        </div>
       </div>
       <div className='footerBottom'>
-        <p>© {new Date().getFullYear()} Crosti Focaccias. Todos los derechos reservados.</p>
+        <p>© {currentYear} Crosti Focaccias. Todos los derechos reservados.</p>
         <span>Creado por Ignacio Tosini</span>
       </div>
-    </div>
+    </footer>
   )
 }

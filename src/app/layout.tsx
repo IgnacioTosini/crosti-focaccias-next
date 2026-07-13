@@ -90,8 +90,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
-      <body className={`${monument.variable} ${brandDisplay.variable}`}>
+    <html lang="es" data-scroll-behavior="smooth">
+      <body
+        className={`${monument.variable} ${brandDisplay.variable}`}
+        suppressHydrationWarning
+      >
         <Providers>
           {children}
           <ToastContainer position="top-right" autoClose={3000} />

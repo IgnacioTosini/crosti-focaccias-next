@@ -4,18 +4,20 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-	gap: 10px;
-	min-height: 240px;
-    max-width: 360px;
-	padding: 28px 32px 30px;
-	background-color: $primary-color;
-	border: 1px solid #ead8be;
+	gap: 0.7rem;
+	min-height: 220px;
+	padding: 1.35rem;
+	border: 1px solid rgba($quinary-color, 0.12);
 	border-radius: 1rem;
-    transition: box-shadow 0.3s ease-in-out;
+	background-color: rgba($primary-color, 0.72);
+	box-shadow: 0 10px 24px rgba($border-color, 0.06);
+	transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 
-    &:hover {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.336);
-    }
+	&:hover {
+		transform: translateY(-3px);
+		border-color: rgba($color-button, 0.18);
+		box-shadow: 0 16px 30px rgba($border-color, 0.12);
+	}
 
 	h3,
 	p {
@@ -23,23 +25,23 @@
 	}
 
 	.whyCardIcon {
+		display: inline-flex;
+		width: 34px;
+		height: 34px;
 		color: #d36a17;
-		font-size: 30px;
 		line-height: 1;
-		margin-bottom: 8px;
 	}
 
 	h3 {
 		color: $quinary-color;
 		font-family: $font-family;
-		font-size: $font-size-large;
-		line-height: 1.2;
+		font-size: $font-size-medium-large;
+		line-height: 1.22;
 		font-weight: $font-weight-extra-bold;
-		margin-bottom: 4px;
 	}
 
 	.whyCardDescription {
-		color: $color-text;
+		color: rgba($color-text, 0.78);
 		font-family: $font-family;
 		font-size: $font-size-medium;
 		line-height: 1.5;

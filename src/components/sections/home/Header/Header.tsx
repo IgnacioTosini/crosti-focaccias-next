@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { IoCartOutline } from 'react-icons/io5';
+import { useEffect, useRef, useState } from 'react';
+import { IoBusinessOutline, IoCartOutline, IoClose, IoMenu } from 'react-icons/io5';
 import { animateHeader } from '@/animations';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cart.store';
@@ -10,6 +10,7 @@ import './_header.scss'
 
 export const Header = () => {
   const headerRef = useRef<HTMLDivElement>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { quantity, totalPrice, setIsOrderOpen } = useCartStore();
   const preOrder = {
     quantity,
@@ -24,25 +25,63 @@ export const Header = () => {
     };
   }, []);
 
+  const closeMenu = () => setIsMenuOpen(false);
+
   return (
-    <div className='header' ref={headerRef}>
-      <div className='logoContainer'>
-        <Image src="/personajes/crosti-logo.svg" alt="Crosti Logo" width={50} height={50} />
-        <Link href="/" className='logoText' scroll={false} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <h1>Crosti</h1>
-        </Link>
-      </div>
-      <nav className='navLinks'>
-        <ul>
-          <li><Link href="#sobre-nosotros">Sobre nosotros</Link></li>
-          <li><Link href="#menu">Menú</Link></li>
-          <li><Link href="#contacto">Contacto</Link></li>
-        </ul>
-        <div className='buttonsContainer'>
-        <Link href='/wholesalers' className='wholesalersButton'>🏢 Mayoristas</Link>
-          <button className='primaryButton' onClick={() => setIsOrderOpen(true)}><IoCartOutline /><span>Carrito</span><span>{preOrder.quantity}</span></button>
+    <header className={`siteHeader ${isMenuOpen ? 'isMenuOpen' : ''}`} ref={headerRef}>
+      <div className='siteHeaderInner'>
+        <div className='logoContainer'>
+          <Image src="/personajes/crosti-logo.svg" alt="Crosti Logo" width={44} height={44} priority />
+          <Link
+            href="/"
+            className='logoText'
+            scroll={false}
+            onClick={() => {
+              closeMenu();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          >
+            <h1>Crosti</h1>
+          </Link>
         </div>
-      </nav>
-    </div>
+
+        <button
+          className='mobileMenuButton'
+          type='button'
+          aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+          aria-expanded={isMenuOpen}
+          aria-controls='main-navigation'
+          onClick={() => setIsMenuOpen((open) => !open)}
+        >
+          {isMenuOpen ? <IoClose /> : <IoMenu />}
+        </button>
+
+        <nav className='navLinks' id='main-navigation' aria-label='Navegación principal'>
+          <ul>
+            <li><Link href="#sobre-nosotros" onClick={closeMenu}>Sobre nosotros</Link></li>
+            <li><Link href="#menu" onClick={closeMenu}>Menú</Link></li>
+            <li><Link href="#contacto" onClick={closeMenu}>Contacto</Link></li>
+          </ul>
+          <div className='buttonsContainer'>
+            <Link href='/wholesalers' className='wholesalersButton' onClick={closeMenu}>
+              <IoBusinessOutline />
+              <span>Mayoristas</span>
+            </Link>
+            <button
+              className='primaryButton'
+              type='button'
+              onClick={() => {
+                closeMenu();
+                setIsOrderOpen(true);
+              }}
+            >
+              <IoCartOutline />
+              <span>Carrito</span>
+              <span className='cartBadge'>{preOrder.quantity}</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </header>
   )
 }

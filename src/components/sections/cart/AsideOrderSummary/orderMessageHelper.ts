@@ -7,6 +7,13 @@ type GenerateOrderMessageParams = {
     clientPhone: string;
 };
 
+const money = (value: number) => `$${new Intl.NumberFormat('es-AR', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+}).format(value)}`;
+
+const sizeLabel = (size?: string) => size === 'GRANDE' ? 'Grande' : 'Mediana';
+
 export function generateOrderMessage({ focaccias, combos, totalPrice, clientPhone }: GenerateOrderMessageParams): string {
     let message = `CROSTI FOCACCIAS\n`;
     message += `Nuevo Pedido\n\n`;
@@ -16,10 +23,10 @@ export function generateOrderMessage({ focaccias, combos, totalPrice, clientPhon
 
     focaccias.forEach((item, index) => {
         message += `${index + 1}. ${item.focaccia.name}\n`;
-        message += `   Tamaño: ${item.size === 'GRANDE' ? 'Grande' : 'Mediana'}\n`;
+        message += `   Tamaño: ${sizeLabel(item.size)}\n`;
         message += `   Cantidad: x${item.cantidad}\n`;
-        message += `   Precio unit: $${item.unitPrice.toFixed(2)}\n`;
-        message += `   Subtotal: $${(item.unitPrice * item.cantidad).toFixed(2)}\n`;
+        message += `   Precio unit: ${money(item.unitPrice)}\n`;
+        message += `   Subtotal: ${money(item.unitPrice * item.cantidad)}\n`;
         if (item.sabores && item.sabores.length > 0) {
             message += `   Sabores: ${item.sabores.join(', ')}\n`;
         }
@@ -29,12 +36,13 @@ export function generateOrderMessage({ focaccias, combos, totalPrice, clientPhon
     combos.forEach((combo, index) => {
         message += `Combo ${index + 1}: ${combo.combo.name}\n`;
         message += `   Cantidad: x${combo.cantidad}\n`;
-        message += `   Precio unit: $${combo.unitPrice.toFixed(2)}\n`;
-        message += `   Subtotal: $${(combo.unitPrice * combo.cantidad).toFixed(2)}\n`;
+        message += `   Precio unit: ${money(combo.unitPrice)}\n`;
+        message += `   Subtotal: ${money(combo.unitPrice * combo.cantidad)}\n`;
         if (combo.focaccias && combo.focaccias.length > 0) {
             message += `   Focaccias:\n`;
-            combo.focaccias.forEach((f) => {
-                message += `      - ${f.cantidad} x ${f.focaccia.name} (${f.size})`;
+            combo.focaccias.forEach((f, slotIndex) => {
+                const name = f.focaccia.name?.trim() || `Sabor pendiente #${slotIndex + 1}`;
+                message += `      - ${f.cantidad} x ${name} (${sizeLabel(f.size)})`;
                 if (f.sabores && f.sabores.length > 0) message += ` [Sabores: ${f.sabores.join(', ')}]`;
                 message += `\n`;
             });
@@ -55,7 +63,7 @@ export function generateOrderMessage({ focaccias, combos, totalPrice, clientPhon
     });
 
     message += `================================\n`;
-    message += `TOTAL A PAGAR: $${totalPrice.toFixed(2)}\n`;
+    message += `TOTAL A PAGAR: ${money(totalPrice)}\n`;
     message += `================================\n\n`;
     message += `Mi telefono de contacto:\n${clientPhone}\n\n`;
     message += `Muchas gracias!`;

@@ -18,7 +18,7 @@ export const WholesalersHeader = () => {
   }, []);
 
   return (
-    <div className='header' ref={headerRef}>
+    <header className='wholesalersHeader' ref={headerRef}>
       <div className='logoContainer'>
         <Image src="/personajes/crosti-logo.svg" alt="Crosti Logo" width={50} height={50} priority />
         <Link className='logoText' href='/'>
@@ -31,6 +31,6 @@ export const WholesalersHeader = () => {
           <li><Link href="/wholesalers/#contacto">Contacto</Link></li>
         </ul>
       </nav>
-    </div>
+    </header>
   )
 }

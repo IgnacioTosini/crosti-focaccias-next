@@ -58,14 +58,14 @@ export const animateBanner = (scope?: Element | string) => {
             ease: 'power3.out'
         }, '-=0.5');
 
-        // Botones: aparecen con pop y stagger
+        // Botones: aparecen con slide y stagger sin alterar su escala final
         timeline.from('.buttonsContainer > *', {
             y: 50,
-            scale: 0.5,
             opacity: 0,
-            duration: 0.7,
+            duration: 0.6,
             stagger: 0.18,
-            ease: 'back.out(2.5)'
+            ease: 'power3.out',
+            clearProps: 'transform'
         }, '-=0.4');
     }, scope);
 };

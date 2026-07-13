@@ -7,6 +7,7 @@
 	background: linear-gradient(150deg, #f7f3ea 0%, #f4ecdf 100%);
 	box-shadow: 0 6px 14px rgba(70, 40, 10, 0.08);
 	min-height: 170px;
+    min-width: 0;
 	overflow: hidden;
 
 	.comboCardBody {
@@ -38,9 +39,13 @@
 		font-weight: $font-weight-bold;
 		letter-spacing: -0.012em;
 		line-height: 32px;
+        overflow-wrap: anywhere;
+        word-break: break-word;
 	}
 
 	.comboDescription {
+        width: 100%;
+        min-width: 0;
 		min-height: 3.2rem;
 		max-height: 4.5rem;
 		overflow-y: auto;
@@ -81,29 +86,41 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.3rem 0.5rem;
+		width: 100%;
+		min-width: 0;
 
 		li {
+			display: inline-flex;
+			align-items: center;
+			flex-wrap: wrap;
+			max-width: 100%;
 			font-size: 0.75rem;
 			color: #a16f4f;
 			background: rgba(#a16f4f, 0.1);
 			border-radius: 999px;
 			padding: 0.18rem 0.55rem;
-			white-space: nowrap;
+			white-space: normal;
+			overflow-wrap: anywhere;
+			word-break: break-word;
+			line-height: 1.35;
 		}
 	}
 
 	.comboItemQty {
 		font-weight: $font-weight-bold;
 		margin-right: 0.2rem;
+		flex: 0 0 auto;
 	}
 
 	.comboItemSize {
 		color: #c4895a;
 		font-size: 0.7rem;
 		margin-left: 0.1rem;
+		flex: 0 0 auto;
 	}
 
 	.itemCardFooter {
+        min-width: 0;
 		margin-top: auto;
 		padding: 0.25rem 0 0;
 
@@ -118,6 +135,7 @@
 			border-radius: 0.62rem;
 			padding: 0.58rem 1rem;
 			min-width: 118px;
+            min-width: min(118px, 100%);
 			justify-content: center;
 			background-color: #9c4f13;
 
@@ -204,6 +222,12 @@
 
 		.comboDescription {
 			min-height: auto;
+            max-height: none;
 		}
+
+        .comboSubtitle {
+            font-size: $font-size-medium-large;
+            line-height: 1.2;
+        }
 	}
 }

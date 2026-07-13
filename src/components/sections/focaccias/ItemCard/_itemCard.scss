@@ -6,33 +6,38 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: flex-start;
     background-color: $secondary-color;
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba($quinary-color, 0.12);
+    border-radius: 1.05rem;
+    box-shadow: 0 10px 24px rgba($border-color, 0.08);
     text-align: left;
-    transition: all 0.2s ease-in-out;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     width: 100%;
-    max-width: 350px;
-    min-height: 480px;
+    min-width: 0;
+    min-height: 100%;
     cursor: default;
+    overflow: hidden;
 
     &:hover {
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        transform: translateY(-3px);
+        border-color: rgba($color-button, 0.18);
+        box-shadow: 0 18px 34px rgba($border-color, 0.14);
     }
 
     .itemImageContainer {
         position: relative;
-        border-radius: 1rem 1rem 0 0;
         overflow: hidden;
         width: 100%;
-        height: 230px;
-        object-fit: cover;
+        height: 220px;
+        padding: 0;
+        border: none;
+        background-color: rgba($primary-color, 0.55);
+        cursor: zoom-in;
 
         .itemImage {
             width: 100%;
             height: 100%;
-            border-radius: 1rem 1rem 0 0;
             object-fit: cover;
             transition: all 0.3s ease-in-out;
             position: relative;
@@ -52,7 +57,6 @@
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
             background-size: 200% 100%;
             animation: shimmer 1s infinite;
-            border-radius: 1rem 1rem 0 0;
             z-index: 1;
         }
 
@@ -65,10 +69,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #f5f5f5;
-            color: #666;
-            font-size: 0.875rem;
-            border-radius: 1rem 1rem 0 0;
+            background: linear-gradient(135deg, rgba($primary-color, 0.85), rgba($secondary-color, 0.95));
+            color: rgba($quinary-color, 0.82);
+            font-size: $font-size-normal;
+            font-weight: $font-weight-bold;
 
             span {
                 text-align: center;
@@ -97,42 +101,31 @@
     }
 
     .itemName {
-        font-size: $font-size-large;
+        font-size: clamp($font-size-medium-large, 2vw, $font-size-large);
         font-weight: $font-weight-extra-bold;
         color: $color-text-secondary;
-        padding: 1.25rem 1rem 0.2rem;
+        padding: 1rem 1rem 0.25rem;
         text-align: left;
         width: 100%;
+        line-height: 1.18;
         min-height: unset;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .itemDescription {
         font-size: $font-size-normal;
-        color: $color-text-secondary;
-        padding: 0 1rem 0.9rem;
+        color: rgba($color-text, 0.78);
+        padding: 0 1rem 1rem;
         text-align: left;
-        min-height: 54px;
-        max-height: 72px;
-        overflow-y: auto;
+        min-height: 66px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         word-break: break-word;
         overflow-wrap: break-word;
-
-        scrollbar-width: thin;
-        scrollbar-color: $quinary-color rgba($quinary-color, 0.12);
-
-        &::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        &::-webkit-scrollbar-track {
-            background: rgba($quinary-color, 0.12);
-            border-radius: 999px;
-        }
-
-        &::-webkit-scrollbar-thumb {
-            background: $quinary-color;
-            border-radius: 999px;
-        }
+        line-height: 1.48;
     }
 
     .itemSizeSelector {
@@ -140,19 +133,21 @@
         margin: 0 auto;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        border-radius: 0.75rem;
+        border-radius: 0.85rem;
         overflow: hidden;
-        border: 1px solid rgba($color-text-secondary, 0.2);
+        border: 1px solid rgba($quinary-color, 0.16);
+        background-color: rgba($primary-color, 0.45);
+        min-width: 0;
 
         .sizeButton {
             border: none;
-            background-color: rgba($primary-color, 0.65);
-            padding: 0.55rem 0.3rem;
+            background-color: transparent;
+            padding: 0.65rem 0.35rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, color 0.2s ease;
             cursor: pointer;
 
             .sizeTitle {
@@ -160,21 +155,28 @@
                 font-weight: $font-weight-bold;
                 color: $color-text-secondary;
                 line-height: 1.1;
+                overflow-wrap: anywhere;
             }
 
             .sizeHint {
                 font-size: $font-size-small;
                 color: $color-text;
                 line-height: 1.1;
+                overflow-wrap: anywhere;
             }
 
             &.active {
                 background-color: $quinary-color;
+                box-shadow: inset 0 0 0 1px rgba($secondary-color, 0.14);
 
                 .sizeTitle,
                 .sizeHint {
                     color: $color-text-tertiary;
                 }
+            }
+
+            &:hover:not(.active) {
+                background-color: rgba($quinary-color, 0.08);
             }
         }
     }
@@ -191,6 +193,7 @@
         padding: 0.65rem;
         cursor: pointer;
         transition: background-color 0.2s ease;
+        overflow-wrap: anywhere;
 
         &:hover {
             background-color: color.adjust($primary-color, $lightness: -8%);
@@ -200,14 +203,31 @@
 
 .itemFeature {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
+    top: 0.85rem;
+    left: 0.85rem;
     background-color: color.adjust($color-button-secondary, $lightness: -10%);
     color: $color-text-tertiary;
-    padding: 0.25rem 0.5rem;
+    padding: 0.32rem 0.62rem;
     border-radius: 1rem;
-    font-size: $font-size-normal;
+    font-size: $font-size-small;
+    font-weight: $font-weight-bold;
     z-index: 3;
+}
+
+@media (max-width: 620px) {
+    .itemCard {
+        .itemImageContainer {
+            height: 230px;
+        }
+
+        .itemDescription {
+            min-height: auto;
+        }
+
+        .itemName {
+            font-size: $font-size-medium-large;
+        }
+    }
 }
 
 @keyframes shimmer {

@@ -1,4 +1,4 @@
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaImage, FaTrash } from 'react-icons/fa';
 import type { FocacciaItem } from '@/types';
 import { ItemCategory } from '@/components/sections/focaccias/ItemCategory/ItemCategory';
 import { ImageService } from '@/services/ImageService';
@@ -42,20 +42,39 @@ export const AdminItemCard = ({ item, onEdit }: AdminItemCardProps) => {
 
   return (
     <div className='adminItemCard'>
+      <div className='adminItemMedia'>
+        {item.imageUrl ? (
+          <Image src={item.imageUrl} alt={item.name} width={160} height={120} className='adminItemImage' />
+        ) : (
+          <div className='adminItemImageFallback' aria-hidden='true'>
+            <FaImage />
+          </div>
+        )}
+      </div>
+
       <div className='adminItemCardContent'>
         <div className='adminItemCardHeader'>
           <h2 className='adminItemName'>{item.name}</h2>
-          {item.isVeggie && <ItemCategory focaccia={item} />}
-          {item.featured && <span className='featuredBadge'>Destacada</span>}
+          <div className='adminItemBadges'>
+            {item.isVeggie && <ItemCategory focaccia={item} />}
+            {item.featured && <span className='featuredBadge'>Destacada</span>}
+            {!item.isAvailable && <span className='unavailableBadge'>No disponible</span>}
+          </div>
         </div>
         <p className='adminItemDescription'>{item.description}</p>
-        <div className='adminItemPrices'>
-          <span className='adminItemPrice'>Mediana: $ {item.mediumPrice}</span>
-          <span className='adminItemPrice'>Grande: $ {item.largePrice}</span>
-        </div>
-        {!item.isAvailable && <span className='unavailableBadge'>No disponible</span>}
-        <Image src={item.imageUrl} alt={item.name} width={300} height={200} className='adminItemImage' />
       </div>
+
+      <div className='adminItemPrices' aria-label='Precios'>
+        <span>
+          <small>Mediana</small>
+          $ {item.mediumPrice}
+        </span>
+        <span>
+          <small>Grande</small>
+          $ {item.largePrice}
+        </span>
+      </div>
+
       <div className='adminItemCardActions'>
         <button
           className='adminItemCardEditButton'

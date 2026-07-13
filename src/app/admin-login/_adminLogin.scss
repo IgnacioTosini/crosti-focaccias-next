@@ -1,48 +1,142 @@
 @use '../../styles/variables' as *;
 @use 'sass:color';
 
-.adminLoginForm {
+.adminLoginPage {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100dvh;
+    padding: 1rem;
+    background:
+        radial-gradient(circle at 18% 14%, rgba($color-button, 0.08), transparent 24rem),
+        linear-gradient(135deg, $primary-color 0%, #fff8ec 100%);
+}
 
-    h1 {
-        margin-bottom: 2rem;
+.adminLoginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: min(420px, 100%);
+    padding: clamp(1.2rem, 4vw, 2rem);
+    border: 1px solid rgba($quinary-color, 0.12);
+    border-radius: 1.15rem;
+    background-color: rgba($secondary-color, 0.94);
+    box-shadow: 0 22px 54px rgba($border-color, 0.16);
+
+    .adminLoginBrand {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+
+        img {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            filter: drop-shadow(0 8px 14px rgba($border-color, 0.12));
+        }
+
+        p,
+        span {
+            margin: 0;
+        }
+
+        p {
+            color: $color-text;
+            font-size: $font-size-medium-large;
+            font-weight: $font-weight-extra-bold;
+            line-height: 1.1;
+        }
+
+        span {
+            display: block;
+            margin-top: 0.15rem;
+            color: rgba($color-text, 0.68);
+            font-size: $font-size-small;
+            font-weight: $font-weight-bold;
+            text-transform: uppercase;
+        }
     }
 
-    label {
-        margin-bottom: 0.5rem;
-        font-weight: bold;
+    .adminLoginHeader {
+        h1,
+        p {
+            margin: 0;
+        }
+
+        h1 {
+            color: $color-text;
+            font-size: $font-size-xlarge;
+            font-weight: $font-weight-extra-bold;
+            line-height: 1.15;
+        }
+
+        p {
+            margin-top: 0.45rem;
+            color: rgba($color-text, 0.72);
+            font-size: $font-size-normal;
+            line-height: 1.45;
+        }
+    }
+
+    .adminLoginField {
+        display: flex;
+        flex-direction: column;
+        gap: 0.45rem;
+
+        label {
+            color: $quinary-color;
+            font-size: $font-size-normal;
+            font-weight: $font-weight-extra-bold;
+        }
     }
 
     input {
-        padding: 0.5rem;
-        margin-bottom: 1rem;
-        border: 1px solid #ccc;
-        border-radius: .5rem;
         width: 100%;
-        max-width: 300px;
+        min-height: 48px;
+        padding: 0.8rem 0.9rem;
+        border: 1px solid rgba($quinary-color, 0.18);
+        border-radius: 0.85rem;
+        background-color: #fff9ee;
+        color: $color-text;
+        font-size: $font-size-medium;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+
+        &::placeholder {
+            color: rgba($color-text, 0.42);
+        }
 
         &:focus {
-            outline: none;
-            border-color: $primary-color;
-            box-shadow: 0 0 0 2px color.scale($primary-color, $alpha: -50%);
+            border-color: rgba($color-button, 0.55);
+            background-color: $secondary-color;
+            box-shadow: 0 0 0 3px rgba($color-button, 0.1);
         }
     }
 
     button {
-        padding: 0.75rem 1.5rem;
-        color: $color-text-tertiary;
-        background-color: $quaternary-color;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 50px;
         border: none;
-        border-radius: .5rem;
+        border-radius: 0.9rem;
+        background-color: $color-button;
+        color: $color-text-tertiary;
+        font-size: $font-size-medium;
+        font-weight: $font-weight-extra-bold;
         cursor: pointer;
-        transition: all 0.3s ease-in-out;
+        box-shadow: 0 12px 22px rgba($color-button, 0.16);
+        transition: background-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
 
-        &:hover {
-            background-color: $color-hover-primary;
+        &:hover:not(:disabled) {
+            background-color: color.adjust($color-button, $lightness: -8%);
+            transform: translateY(-1px);
+        }
+
+        &:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
         }
     }
 }

@@ -28,6 +28,20 @@ export const Hero = () => {
                     <span className='badge'>🏢 Ventas Mayoristas</span>
                     <h1 className='title'>Focaccias artesanales <span>para negocios</span></h1>
                     <p className='description'>Trabajamos con cafeterías, eventos y comercios que buscan productos de calidad artesanal, con identidad y sabor real.</p>
+                    <div className='heroStats' aria-label='Datos de servicio mayorista'>
+                        <div>
+                            <strong>Fresco</strong>
+                            <span>producción a pedido</span>
+                        </div>
+                        <div>
+                            <strong>Flexible</strong>
+                            <span>volumen según demanda</span>
+                        </div>
+                        <div>
+                            <strong>Directo</strong>
+                            <span>trato sin intermediarios</span>
+                        </div>
+                    </div>
                     <div className='placesList'>
                         <PlaceCard icon="☕" label="Cafeterías" />
                         <PlaceCard icon="🎉" label="Eventos" />
@@ -37,7 +51,7 @@ export const Hero = () => {
                     </div>
                     <div className='buttonsContainer'>
                         <Link href="#contacto" className='primaryWholesalerButton'><IoIosSend className='icon'/>Consultar ahora</Link>
-                        <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`} className='secondaryWholesalerButton'><BsWhatsapp className='icon'/>Whatsapp directo</Link>
+                        <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ''}`} className='secondaryWholesalerButton'><BsWhatsapp className='icon'/>WhatsApp directo</Link>
                     </div>
                 </div>
                 <div className='heroMedia'>

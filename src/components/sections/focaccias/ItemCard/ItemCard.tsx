@@ -18,7 +18,7 @@ export const ItemCard = ({ focaccia }: ItemCardProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState<FocacciaSize>('MEDIANA');
   const [imageError, setImageError] = useState(false);
-  const [showSkeleton, setShowSkeleton] = useState(true);
+  const [showSkeleton, setShowSkeleton] = useState(Boolean(focaccia.imageUrl));
 
   const addFocaccia = useCartStore(state => state.addFocaccia);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -50,9 +50,11 @@ export const ItemCard = ({ focaccia }: ItemCardProps) => {
   return (
     <>
       <div className='itemCard' ref={cardRef}>
-        <picture
+        <button
+          type='button'
           className='itemImageContainer'
           onClick={() => setModalOpen(true)}
+          aria-label={`Ver imagen ampliada de ${focaccia.name}`}
         >
           {showSkeleton && (
             <div className='imageSkeleton'>
@@ -76,10 +78,10 @@ export const ItemCard = ({ focaccia }: ItemCardProps) => {
             />
           ) : (
             <div className='imageError'>
-              <span>⚠️ Error al cargar imagen</span>
+              <span>Imagen próximamente</span>
             </div>
           )}
-        </picture>
+        </button>
 
         <h3 className='itemName'>{focaccia.name}</h3>
         <p className='itemDescription'>{focaccia.description}</p>
