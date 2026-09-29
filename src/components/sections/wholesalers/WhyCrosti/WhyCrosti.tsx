@@ -1,5 +1,6 @@
 "use client";
 
+import { usePageText } from '@/components/content/PageContentProvider';
 import { useEffect, useRef } from 'react';
 import { Title } from '@/components/shared/Title/Title';
 import { WhyCard } from '../WhyCard/WhyCard';
@@ -10,6 +11,7 @@ import { animateWhyCrosti } from '@/animations';
 import './_whyCrosti.scss';
 
 export const WhyCrosti = () => {
+    const t = usePageText();
     const whyCrostiRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -25,15 +27,15 @@ export const WhyCrosti = () => {
             <div className="whyCrostiContainer">
                 <div className='titleWithStickers'>
                     <Image
-                        src="/stickersAdicionales/vine-leaf.png"
+                        src={t('why.stickerLeft')}
                         alt="Sticker decorativo hoja"
                         width={96}
                         height={96}
                         className='titleSticker titleStickerLeft'
                     />
-                    <Title title="¿Por qué elegir Crosti?" subTitle="Lo que nos hace diferentes" />
+                    <Title title={t('why.title')} subTitle={t('why.subtitle')} />
                     <Image
-                        src="/stickersAdicionales/artichoke.png"
+                        src={t('why.stickerRight')}
                         alt="Sticker decorativo alcachofa"
                         width={92}
                         height={92}
@@ -41,12 +43,12 @@ export const WhyCrosti = () => {
                     />
                 </div>
                 <div className='whyCrostiCards'>
-                    <WhyCard icon={<FaAward className='whyCardIcon' />} title={'Producción artesanal'} description={'Cada focaccia hecha a mano con masa madre. Calidad que se nota desde la primera mordida.'} />
-                    <WhyCard icon={<FaLeaf className='whyCardIcon' />} title={'Ingredientes de calidad'} description={'Seleccionamos ingredientes frescos y de temporada para garantizar el mejor sabor.'} />
-                    <WhyCard icon={<FaTruck className='whyCardIcon' />} title={'Entregas programadas'} description={'Coordinamos horarios y frecuencias según las necesidades de tu negocio.'} />
-                    <WhyCard icon={<FaLeaf className='whyCardIcon' />} title={'Opciones vegetarianas'} description={'Toda nuestra línea es apta para vegetarianos. Ideal para públicos diversos.'} />
-                    <WhyCard icon={<FaBoxes className='whyCardIcon' />} title={'Pedidos personalizados'} description={'Adaptamos las cantidades y variedades a lo que necesita tu negocio.'} />
-                    <WhyCard icon={<IoPeople className='whyCardIcon' />} title={'Atención directa'} description={'Trato personal y directo. Sin intermediarios, con respuesta rápida siempre.'} />
+                    <WhyCard icon={<FaAward className='whyCardIcon' />} title={t('why.card1Title')} description={t('why.card1Text')} />
+                    <WhyCard icon={<FaLeaf className='whyCardIcon' />} title={t('why.card2Title')} description={t('why.card2Text')} />
+                    <WhyCard icon={<FaTruck className='whyCardIcon' />} title={t('why.card3Title')} description={t('why.card3Text')} />
+                    <WhyCard icon={<FaLeaf className='whyCardIcon' />} title={t('why.card4Title')} description={t('why.card4Text')} />
+                    <WhyCard icon={<FaBoxes className='whyCardIcon' />} title={t('why.card5Title')} description={t('why.card5Text')} />
+                    <WhyCard icon={<IoPeople className='whyCardIcon' />} title={t('why.card6Title')} description={t('why.card6Text')} />
                 </div>
             </div>
         </div>

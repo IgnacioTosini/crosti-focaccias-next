@@ -1,5 +1,6 @@
 "use client";
 
+import { usePageText } from '@/components/content/PageContentProvider';
 import { useEffect, useRef } from 'react';
 import { Title } from '@/components/shared/Title/Title'
 import { WholesalersForm } from '../WholesalersForm/WholesalersForm'
@@ -8,6 +9,7 @@ import { animateWholesalersContact } from '@/animations';
 import './_wholesalersContact.scss'
 
 export const WholesalersContact = () => {
+    const t = usePageText();
     const wholesalersContactRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
@@ -23,15 +25,15 @@ export const WholesalersContact = () => {
             <div className="wholesalersContactContainer">
                 <div className='titleWithStickers'>
                     <Image
-                        src="/stickersAdicionales/cherry-tomatoes.png"
+                        src={t('contact.stickerLeft')}
                         alt="Sticker decorativo tomates"
                         width={92}
                         height={92}
                         className='titleSticker titleStickerLeft'
                     />
-                    <Title title={'Contacto mayorista'} subTitle='Hablemos de tu negocio' />
+                    <Title title={t('contact.title')} subTitle={t('contact.subtitle')} />
                     <Image
-                        src="/stickersAdicionales/cheese-wedge.png"
+                        src={t('contact.stickerRight')}
                         alt="Sticker decorativo queso"
                         width={90}
                         height={90}

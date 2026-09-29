@@ -7,8 +7,10 @@ import Image from 'next/image';
 import { useCartStore } from '@/store/cart.store';
 import Link from 'next/link';
 import './_header.scss'
+import { usePageText } from '@/components/content/PageContentProvider';
 
 export const Header = () => {
+  const t = usePageText();
   const headerRef = useRef<HTMLDivElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { quantity, totalPrice, setIsOrderOpen } = useCartStore();
@@ -31,7 +33,7 @@ export const Header = () => {
     <header className={`siteHeader ${isMenuOpen ? 'isMenuOpen' : ''}`} ref={headerRef}>
       <div className='siteHeaderInner'>
         <div className='logoContainer'>
-          <Image src="/personajes/crosti-logo.svg" alt="Crosti Logo" width={44} height={44} priority />
+          <Image src={t('nav.logo')} alt="Crosti Logo" width={44} height={44} priority />
           <Link
             href="/"
             className='logoText'
@@ -58,14 +60,15 @@ export const Header = () => {
 
         <nav className='navLinks' id='main-navigation' aria-label='Navegación principal'>
           <ul>
-            <li><Link href="#sobre-nosotros" onClick={closeMenu}>Sobre nosotros</Link></li>
-            <li><Link href="#menu" onClick={closeMenu}>Menú</Link></li>
-            <li><Link href="#contacto" onClick={closeMenu}>Contacto</Link></li>
+            <li><Link href="#sobre-nosotros" onClick={closeMenu}>{t('nav.about')}</Link></li>
+            <li><Link href="#menu" onClick={closeMenu}>{t('nav.menu')}</Link></li>
+            <li><Link href="#preguntas-frecuentes" onClick={closeMenu}>{t('nav.faq')}</Link></li>
+            <li><Link href="#contacto" onClick={closeMenu}>{t('nav.contact')}</Link></li>
           </ul>
           <div className='buttonsContainer'>
             <Link href='/wholesalers' className='wholesalersButton' onClick={closeMenu}>
               <IoBusinessOutline />
-              <span>Mayoristas</span>
+              <span>{t('nav.wholesalers')}</span>
             </Link>
             <button
               className='primaryButton'
@@ -76,7 +79,7 @@ export const Header = () => {
               }}
             >
               <IoCartOutline />
-              <span>Carrito</span>
+              <span>{t('nav.cart')}</span>
               <span className='cartBadge'>{preOrder.quantity}</span>
             </button>
           </div>

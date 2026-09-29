@@ -1,5 +1,6 @@
 'use client';
 
+import { usePageText } from '@/components/content/PageContentProvider';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { BsWhatsapp } from 'react-icons/bs';
@@ -29,6 +30,7 @@ const validationSchema = Yup.object({
 });
 
 export const WholesalersForm = () => {
+    const t = usePageText();
     return (
         <Formik
             initialValues={initialValues}
@@ -39,58 +41,58 @@ export const WholesalersForm = () => {
                 <Form className="wholesalersForm" noValidate>
                     <div className="wholesalersFormGrid">
                         <div className="fieldGroup">
-                            <label htmlFor="name">Nombre *</label>
+                            <label htmlFor="name">{t('contact.nameLabel')}</label>
                             <div className={`inputWithIcon${errors.name && touched.name ? ' inputWithIcon--error' : ''}`}>
                                 <FaRegUser className="fieldIcon" aria-hidden="true" />
-                                <Field id="name" name="name" type="text" placeholder="Tu nombre" />
+                                <Field id="name" name="name" type="text" placeholder={t('contact.namePlaceholder')} />
                             </div>
                             <ErrorMessage name="name" component="p" className="fieldError" />
                         </div>
 
                         <div className="fieldGroup">
-                            <label htmlFor="business">Negocio / Empresa</label>
+                            <label htmlFor="business">{t('contact.businessLabel')}</label>
                             <div className="inputWithIcon">
                                 <FaRegBuilding className="fieldIcon" aria-hidden="true" />
-                                <Field id="business" name="business" type="text" placeholder="Nombre de tu local o empresa" />
+                                <Field id="business" name="business" type="text" placeholder={t('contact.businessPlaceholder')} />
                             </div>
                         </div>
 
                         <div className="fieldGroup">
-                            <label htmlFor="social">Instagram o web</label>
+                            <label htmlFor="social">{t('contact.socialLabel')}</label>
                             <div className="inputWithIcon">
                                 <IoLogoInstagram className="fieldIcon" aria-hidden="true" />
-                                <Field id="social" name="social" type="text" placeholder="@tunegocio o www.tunegocio.com" />
+                                <Field id="social" name="social" type="text" placeholder={t('contact.socialPlaceholder')} />
                             </div>
                         </div>
 
                         <div className="fieldGroup">
-                            <label htmlFor="phone">Teléfono *</label>
+                            <label htmlFor="phone">{t('contact.phoneLabel')}</label>
                             <div className={`inputWithIcon${errors.phone && touched.phone ? ' inputWithIcon--error' : ''}`}>
                                 <FiPhone className="fieldIcon" aria-hidden="true" />
-                                <Field id="phone" name="phone" type="tel" placeholder="Tu numero de contacto" />
+                                <Field id="phone" name="phone" type="tel" placeholder={t('contact.phonePlaceholder')} />
                             </div>
                             <ErrorMessage name="phone" component="p" className="fieldError" />
                         </div>
 
                         <div className="fieldGroup fullWidth">
-                            <label htmlFor="details">Contanos sobre tu negocio</label>
+                            <label htmlFor="details">{t('contact.detailsLabel')}</label>
                             <Field
                                 as="textarea"
                                 id="details"
                                 name="details"
                                 rows={4}
-                                placeholder="¿Qué tipo de local tenés? ¿Para qué ocasión necesitás las focaccias? Cualquier detalle que nos ayude a preparar la mejor propuesta..."
+                                placeholder={t('contact.detailsPlaceholder')}
                             />
                         </div>
                     </div>
 
                     <button type="submit" className="whatsappButton">
                         <BsWhatsapp aria-hidden="true" />
-                        Consultar por WhatsApp
+                        {t('contact.button')}
                     </button>
 
                     <p className="formFootnote">
-                        Al enviar, te abrimos WhatsApp con toda la info precargada. Tu consulta también queda guardada para hacerte seguimiento.
+                        {t('contact.footnote')}
                     </p>
                 </Form>
             )}

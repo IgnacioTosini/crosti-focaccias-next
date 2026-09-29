@@ -1,6 +1,20 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## Datos de demostración
+
+`npm run seed:demo` agrega 8 focaccias con imágenes y 6 combos/especiales a la base configurada en `DATABASE_URL`. Conserva los datos existentes y evita duplicados al repetir la carga. Ver [instrucciones del catálogo demo](prisma/demo/README.md).
+
+## Editor de contenido
+
+En `/admin/contenido` se editan los textos e imágenes de Inicio y Mayoristas por sección, incluidas las preguntas frecuentes, el formulario mayorista, los logos y las decoraciones. La vista previa usa las páginas reales en escritorio o celular y mantiene el borrador privado hasta guardar. Cancelar recupera el contenido guardado de la página seleccionada.
+
+Las imágenes nuevas se seleccionan como archivos JPG, PNG o WebP de hasta 4 MB. La vista previa usa archivos locales y solo al guardar se suben a la carpeta `content` de Cloudinary; las URLs se publican junto con los textos en `PageContent`. La carga utiliza las credenciales `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY` y `CLOUDINARY_API_SECRET` del servidor. Las imágenes anteriores se conservan en Cloudinary. Si falla la publicación después de una carga, el editor conserva el borrador y reutiliza esa carga al reintentar.
+
+Los textos se guardan en `PageContent`. Para una instalación nueva, ejecutá `npm run prisma:generate` y `npm run prisma:migrate:deploy` con el `DATABASE_URL` correspondiente. Reiniciá el servidor de desarrollo después de regenerar Prisma si estaba abierto. Los despliegues con `build:vercel` ya ejecutan estos pasos. Las páginas conservan los textos originales hasta su primera edición.
+
+Validación del contenido: `node --experimental-strip-types --test src/lib/siteContent.test.mjs`.
+
+## Desarrollo local
 
 First, run the development server:
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { usePageText } from '@/components/content/PageContentProvider';
 import { useEffect, useRef } from 'react';
 import { Title } from '@/components/shared/Title/Title';
 import { StepCard } from '../StepCard/StepCard';
@@ -8,6 +9,7 @@ import { animateProcess } from '@/animations';
 import './_process.scss';
 
 export const Process = () => {
+    const t = usePageText();
     const processRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -21,23 +23,23 @@ export const Process = () => {
     const steps = [
         {
             stepNumber: 1,
-            title: 'Contacto',
-            description: 'Completá el formulario o escribinos por WhatsApp con los datos de tu negocio.'
+            title: t('process.step1Title'),
+            description: t('process.step1Text')
         },
         {
             stepNumber: 2,
-            title: 'Definir cantidades',
-            description: 'Te asesoramos sobre variedades, volúmenes y precios según tus necesidades.'
+            title: t('process.step2Title'),
+            description: t('process.step2Text')
         },
         {
             stepNumber: 3,
-            title: 'Coordinación',
-            description: 'Acordamos días, horarios y modalidad de entrega o retiro.'
+            title: t('process.step3Title'),
+            description: t('process.step3Text')
         },
         {
             stepNumber: 4,
-            title: 'Producción y envío',
-            description: 'Producimos fresco y entregamos puntual para que tu negocio brille.'
+            title: t('process.step4Title'),
+            description: t('process.step4Text')
         },
     ];
 
@@ -46,15 +48,15 @@ export const Process = () => {
             <div className="processContainer">
                 <div className='titleWithStickers'>
                     <Image
-                        src="/stickersAdicionales/garlic-clove.png"
+                        src={t('process.stickerLeft')}
                         alt="Sticker decorativo ajo"
                         width={92}
                         height={92}
                         className='titleSticker titleStickerLeft'
                     />
-                    <Title title="El proceso" subTitle="Cómo funciona" />
+                    <Title title={t('process.title')} subTitle={t('process.subtitle')} />
                     <Image
-                        src="/stickersAdicionales/onion-rings.png"
+                        src={t('process.stickerRight')}
                         alt="Sticker decorativo cebolla"
                         width={88}
                         height={88}

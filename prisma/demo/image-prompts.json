@@ -1,0 +1,37 @@
+{
+  "tool": "image_gen (built-in)",
+  "images": [
+    {
+      "file": "images/romero-sal-marina.webp",
+      "prompt": "Use case: product-mockup. Asset type: square product photo for the demo catalog of an Argentine focaccia bakery. Create one photorealistic appetizing artisanal rectangular focaccia topped with classic rosemary and flaky sea salt, with no other toppings. Thick airy dimpled golden bread, crisp edges, olive oil shine. Three-quarter top-down angle, whole focaccia centered filling most of the frame, on parchment over a pale warm cream tabletop. Soft natural window light, warm realistic colors, detailed baked textures. A clean consistent bakery catalog composition. No people, hands, text, logos, watermarks, collage, packaging, or drinks. Single square photograph."
+    },
+    {
+      "file": "images/cherry-albahaca.webp",
+      "prompt": "Use case: product-mockup. Asset type: square product photo for the demo catalog of an Argentine focaccia bakery. Create one photorealistic appetizing artisanal rectangular focaccia topped with roasted red cherry tomato halves and fresh basil leaves. Thick airy dimpled golden bread, crisp edges, olive oil shine. Three-quarter top-down angle, whole focaccia centered filling most of the frame, on parchment over a pale warm cream tabletop. Soft natural window light, warm realistic colors, detailed baked textures. A clean consistent bakery catalog composition. No people, hands, text, logos, watermarks, collage, packaging, or drinks. Single square photograph."
+    },
+    {
+      "file": "images/cebolla-morada.webp",
+      "prompt": "Use case: product-mockup. Asset type: square product photo for the demo catalog of an Argentine focaccia bakery. Create one photorealistic appetizing artisanal rectangular focaccia topped with caramelized red onion crescents and thyme. Thick airy dimpled golden bread, crisp edges, olive oil shine. Three-quarter top-down angle, whole focaccia centered filling most of the frame, on parchment over a pale warm cream tabletop. Soft natural window light, warm realistic colors, detailed baked textures. A clean consistent bakery catalog composition. No people, hands, text, logos, watermarks, collage, packaging, or drinks. Single square photograph."
+    },
+    {
+      "file": "images/aceitunas-oregano.webp",
+      "prompt": "Use case: product-mockup. Asset type: square product photo for the demo catalog of an Argentine focaccia bakery. Create one photorealistic appetizing artisanal rectangular focaccia topped with pitted green and black olive slices with oregano. Thick airy dimpled golden bread, crisp edges, olive oil shine. Three-quarter top-down angle, whole focaccia centered filling most of the frame, on parchment over a pale warm cream tabletop. Soft natural window light, warm realistic colors, detailed baked textures. A clean consistent bakery catalog composition. No people, hands, text, logos, watermarks, collage, packaging, or drinks. Single square photograph."
+    },
+    {
+      "file": "images/cuatro-quesos.webp",
+      "prompt": "Use case: product-mockup. Asset type: square product photo for the demo catalog of an Argentine focaccia bakery. Create one photorealistic appetizing artisanal rectangular focaccia topped with four melted cheeses including mozzarella, parmesan, provolone and small blue cheese crumbles. Thick airy dimpled golden bread, crisp edges, olive oil shine. Three-quarter top-down angle, whole focaccia centered filling most of the frame, on parchment over a pale warm cream tabletop. Soft natural window light, warm realistic colors, detailed baked textures. A clean consistent bakery catalog composition. No people, hands, text, logos, watermarks, collage, packaging, or drinks. Single square photograph."
+    },
+    {
+      "file": "images/panceta-cheddar.webp",
+      "prompt": "Use case: product-mockup. Asset type: square product photo for the demo catalog of an Argentine focaccia bakery. Create one photorealistic appetizing artisanal rectangular focaccia topped with crispy bacon pieces and melted cheddar. Thick airy dimpled golden bread, crisp edges, olive oil shine. Three-quarter top-down angle, whole focaccia centered filling most of the frame, on parchment over a pale warm cream tabletop. Soft natural window light, warm realistic colors, detailed baked textures. A clean consistent bakery catalog composition. No people, hands, text, logos, watermarks, collage, packaging, or drinks. Single square photograph."
+    },
+    {
+      "file": "images/jamon-rucula.webp",
+      "prompt": "Use case: product-mockup. Asset type: square product photo for the demo catalog of an Argentine focaccia bakery. Create one photorealistic appetizing artisanal rectangular focaccia topped with folded prosciutto slices, fresh arugula and parmesan shavings. Thick airy dimpled golden bread, crisp edges, olive oil shine. Three-quarter top-down angle, whole focaccia centered filling most of the frame, on parchment over a pale warm cream tabletop. Soft natural window light, warm realistic colors, detailed baked textures. A clean consistent bakery catalog composition. No people, hands, text, logos, watermarks, collage, packaging, or drinks. Single square photograph."
+    },
+    {
+      "file": "images/hongos-provolone.webp",
+      "prompt": "Use case: product-mockup. Asset type: square product photo for the demo catalog of an Argentine focaccia bakery. Create one photorealistic appetizing artisanal rectangular focaccia topped with roasted sliced mushrooms and melted provolone. Thick airy dimpled golden bread, crisp edges, olive oil shine. Three-quarter top-down angle, whole focaccia centered filling most of the frame, on parchment over a pale warm cream tabletop. Soft natural window light, warm realistic colors, detailed baked textures. A clean consistent bakery catalog composition. No people, hands, text, logos, watermarks, collage, packaging, or drinks. Single square photograph."
+    }
+  ]
+}

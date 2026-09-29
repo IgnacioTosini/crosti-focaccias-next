@@ -76,7 +76,7 @@ export const useCartStore = create<CartState>()(
                 }
                 const quantity = focaccias.reduce((acc, i) => acc + i.cantidad, 0) + state.combos.reduce((acc, c) => acc + c.cantidad, 0);
                 const totalPrice = focaccias.reduce((acc, i) => acc + i.unitPrice * i.cantidad, 0) + state.combos.reduce((acc, c) => acc + c.unitPrice * c.cantidad, 0);
-                return { focaccias, quantity, totalPrice, isOrderOpen: true };
+                return { focaccias, quantity, totalPrice };
             }),
 
             increaseFocacciaQuantity: (focacciaId, size) =>
@@ -145,7 +145,7 @@ export const useCartStore = create<CartState>()(
                 }
                 const quantity = state.focaccias.reduce((acc, i) => acc + i.cantidad, 0) + combos.reduce((acc, c) => acc + c.cantidad, 0);
                 const totalPrice = state.focaccias.reduce((acc, i) => acc + i.unitPrice * i.cantidad, 0) + combos.reduce((acc, c) => acc + c.unitPrice * c.cantidad, 0);
-                return { combos, quantity, totalPrice, isOrderOpen: true };
+                return { combos, quantity, totalPrice };
             }),
 
             increaseComboQuantity: (comboId) =>

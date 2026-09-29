@@ -1,16 +1,10 @@
-import { Footer } from "@/components/sections/home/Footer/Footer";
-import { Hero, Process, WholesalersContact, WholesalersHeader, WhyCrosti } from "@/components/sections/wholesalers";
+import { WholesalersPageContent } from '@/components/sections/wholesalers/WholesalersPageContent';
+import { PageContentProvider } from '@/components/content/PageContentProvider';
+import { getPublishedContent } from '@/services/SiteContentService';
 
-export default function WholesalersPage() {
+export default async function WholesalersPage() {
+    const values = await getPublishedContent('wholesalers');
     return (
-        <div>
-            <WholesalersHeader />
-            <Hero />
-            <WhyCrosti />
-            <Process />
-            {/* <OurMenu /> */}
-            <WholesalersContact />
-            <Footer />
-        </div>
+        <PageContentProvider page='wholesalers' values={values}><WholesalersPageContent /></PageContentProvider>
     );
 }

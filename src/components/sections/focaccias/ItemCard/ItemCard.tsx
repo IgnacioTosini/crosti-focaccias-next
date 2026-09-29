@@ -8,6 +8,7 @@ import { ItemCategory } from '../ItemCategory/ItemCategory'
 import { animateItemCard } from '@/animations'
 import { useCartStore } from '@/store/cart.store'
 import { CustomButton } from '@/components/shared/CustomButton/CustomButton';
+import { notifyCartAddition } from '@/components/shared/CartToast/CartToast';
 import './_itemCard.scss'
 
 type ItemCardProps = {
@@ -45,6 +46,7 @@ export const ItemCard = ({ focaccia }: ItemCardProps) => {
       unitPrice,
       subtotal: unitPrice,
     });
+    notifyCartAddition(focaccia.name, selectedSize === 'GRANDE' ? 'Tamaño grande' : 'Tamaño mediana');
   };
 
   return (

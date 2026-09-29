@@ -1,0 +1,105 @@
+@use '../../../styles/variables' as *;
+
+.content-editor {
+    max-width: 1200px;
+    margin-inline: auto;
+    color: $color-text;
+    min-width: 0;
+    padding-bottom: 1rem;
+
+    &__heading { margin-bottom: 1.75rem; h1 { font-size: clamp(1.8rem, 4vw, 2.35rem); margin: .35rem 0; } p { line-height: 1.65; color: rgba($color-text, .75); } }
+    &__eyebrow { color: $quinary-color; font-size: .68rem; font-weight: 800; letter-spacing: .12em; }
+    &__pages { display: flex; gap: .75rem; margin-bottom: 1.8rem; button { flex: 1; max-width: 250px; display: flex; flex-direction: column; gap: .4rem; text-align: left; padding: 1rem 1.25rem; border: 1px solid rgba($border-color, .15); border-radius: 14px; background: $secondary-color; cursor: pointer; color: $color-text; strong { display: flex; align-items: center; gap: .5rem; } > span { font-size: .75rem; opacity: .7; } &[aria-pressed='true'] { border-color: $quinary-color; background: $primary-color; box-shadow: 0 0 0 1px $quinary-color; } } }
+    &__dot { width: 7px; height: 7px; border-radius: 50%; background: $quinary-color; }
+    &__page-info { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; h2 { font-size: 1.5rem; margin-bottom: .25rem; } p { font-size: .8rem; line-height: 1.6; max-width: 520px; } }
+    &__status { display: inline-flex; align-items: center; gap: .4rem; flex-shrink: 0; padding: .5rem .7rem; background: #eaf5ed; color: #27623d; font-size: .72rem; border-radius: 99px; font-weight: 700; &.is-dirty { background: #fff1d8; color: $quinary-color; } }
+    &__hint { font-size: .75rem; line-height: 1.6; margin: 1rem 0 1.5rem; color: rgba($color-text, .7); }
+    &__fields { border: 0; min-width: 0; }
+    &__section { border: 1px solid rgba($border-color, .12); border-radius: 16px; background: $secondary-color; margin-bottom: .9rem; overflow: hidden; > summary { padding: 1.1rem 1.25rem; display: flex; align-items: center; gap: .9rem; cursor: pointer; list-style: none; &::-webkit-details-marker { display: none; } > span:nth-child(2) { display: flex; flex-direction: column; gap: .2rem; flex: 1; } strong { font-size: .93rem; } small { font-size: .7rem; color: rgba($color-text, .62); } > svg { flex-shrink: 0; width: .75rem; transition: transform .2s; } } &[open] > summary { border-bottom: 1px solid rgba($border-color, .08); > svg { transform: rotate(180deg); } } }
+    &__section-number { width: 36px; height: 36px; display: grid; place-items: center; background: $primary-color; color: $quinary-color; border-radius: 11px; font-size: .75rem; font-weight: 800; flex-shrink: 0; }
+    &__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem 1.4rem; padding: 1.4rem; }
+    &__field { min-width: 0; &.is-wide { grid-column: 1 / -1; } label { display: block; font-size: .8rem; font-weight: 700; margin-bottom: .45rem; } input, textarea { width: 100%; max-width: 100%; border: 1px solid rgba($border-color, .22); background: #fdfdfb; border-radius: 9px; padding: .75rem .85rem; font: inherit; font-size: .87rem; line-height: 1.6; color: $color-text; resize: vertical; &[aria-invalid='true'] { border-color: $color-button; } } }
+    &__field-footer { display: flex; justify-content: flex-end; gap: .5rem; padding-top: .3rem; min-height: 18px; small { font-size: .62rem; color: rgba($color-text, .6); margin-left: auto; flex-shrink: 0; } > span { font-size: .7rem; color: $color-button; } }
+    &__image-field {
+        min-width: 0;
+        padding: 1rem;
+        border: 1px solid rgba($border-color, .12);
+        border-radius: 12px;
+        background: #fdfdfb;
+        > label { display: block; margin-bottom: .75rem; font-size: .8rem; font-weight: 700; }
+        > p { margin: .7rem 0; font-size: .72rem; line-height: 1.6; color: rgba($color-text, .7); }
+        > input {
+            display: block;
+            width: 100%;
+            min-width: 0;
+            padding: .45rem;
+            border: 1px solid rgba($border-color, .22);
+            border-radius: 8px;
+            color: $color-text;
+            font-size: .72rem;
+            cursor: pointer;
+            &::file-selector-button { margin-right: .65rem; padding: .55rem .7rem; border: 0; border-radius: 6px; background: $color-button; color: $secondary-color; font: inherit; font-weight: 700; cursor: pointer; }
+            &[aria-invalid='true'] { border-color: $color-button; }
+        }
+        > .content-editor__image-error { color: $color-button; }
+    }
+    &__image-preview {
+        position: relative;
+        height: 185px;
+        border-radius: 9px;
+        overflow: hidden;
+        background: repeating-conic-gradient(#e9e8e3 0% 25%, #f7f7f3 0% 50%) 50% / 20px 20px;
+        img { object-fit: contain; padding: .5rem; }
+    }
+    &__image-tools {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        margin-top: .65rem;
+        button { display: inline-flex; align-items: center; gap: .4rem; padding: .5rem .65rem; border: 1px solid rgba($quinary-color, .2); border-radius: 7px; background: $primary-color; color: $quinary-color; font-size: .68rem; font-weight: 700; cursor: pointer; }
+    }
+    &__actions { position: sticky; bottom: 0; z-index: 5; margin-top: 1.5rem; padding: 1rem 1.15rem; background: $secondary-color; border: 1px solid rgba($border-color, .14); border-radius: 14px; box-shadow: 0 -8px 30px rgba($border-color, .06); display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; > div:first-child { display: flex; flex-direction: column; gap: .3rem; strong { font-size: .8rem; } span { font-size: .66rem; color: rgba($color-text, .7); } } }
+    &__buttons { display: flex; gap: .55rem; flex-wrap: wrap; button { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; padding: .7rem .9rem; border: 1px solid rgba($border-color, .22); background: $secondary-color; color: $color-text; border-radius: 9px; font-weight: 700; font-size: .77rem; min-height: 42px; cursor: pointer; } }
+    &__buttons &__save-button { background: $color-button; color: $secondary-color; border-color: $color-button; }
+    &__buttons &__preview-button { color: $quinary-color; border-color: rgba($quinary-color, .45); background: $primary-color; }
+    &__notice { padding: 1rem; border: 1px solid rgba($border-color, .15); border-radius: 10px; background: $secondary-color; margin: .75rem 0 1.25rem; line-height: 1.6; font-size: .85rem; &--error { color: $color-button; background: #fff3f0; border-color: rgba($color-button, .2); } &--success { color: #27623d; background: #eaf5ed; } button { padding: .55rem .8rem; margin-top: .5rem; cursor: pointer; } }
+    &__sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+
+.content-editor, .content-preview {
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    :is(button, input, textarea, summary):focus-visible { outline: 3px solid rgba($quinary-color, .5); outline-offset: 3px; }
+}
+
+.content-preview {
+    position: fixed; inset: 0; margin: auto; padding: 0; width: calc(100vw - 32px); max-width: 1500px; height: calc(100dvh - 32px); max-height: none; border: 0; border-radius: 16px; background: #edf0f2; color: $color-text; overflow: hidden;
+    &[open] { display: flex; flex-direction: column; }
+    &::backdrop { background: rgba($color-admin-sidebar-bg, .72); backdrop-filter: blur(3px); }
+    &__toolbar { display: flex; flex-shrink: 0; gap: 1rem; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; background: $secondary-color; h2 { font-size: 1.3rem; } p { font-size: .72rem; margin-top: .2rem; } }
+    &__devices { display: flex; gap: .25rem; background: #f1f2f4; padding: .25rem; border-radius: 9px; button { display: flex; align-items: center; gap: .5rem; border: 0; border-radius: 7px; padding: .6rem .8rem; font-weight: 700; font-size: .72rem; color: $color-text; cursor: pointer; &[aria-pressed='true'] { background: $color-admin-sidebar-bg; color: $secondary-color; } } }
+    &__close { display: grid; place-items: center; flex-shrink: 0; width: 38px; height: 38px; background: transparent; border: 1px solid rgba($border-color, .15); border-radius: 9px; cursor: pointer; }
+    &__stage { position: relative; flex: 1; min-height: 0; overflow: hidden; display: flex; justify-content: center; }
+    &__frame { flex-shrink: 0; background: $primary-color; box-shadow: 0 0 30px rgba($border-color, .15); iframe { display: block; border: 0; transform-origin: top left; } }
+    &__loading { position: absolute; inset: 0; display: flex; gap: 1rem; flex-direction: column; align-items: center; justify-content: center; background: #edf0f2; z-index: 1; padding: 1.5rem; text-align: center; font-size: .85rem; button { padding: .65rem 1rem; cursor: pointer; } }
+    &__footer { flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .8rem 1.25rem; background: $secondary-color; > p { max-width: 360px; font-size: .68rem; line-height: 1.6; } }
+    > .content-editor__notice { margin: 0; border-radius: 0; }
+}
+
+@media (max-width: 700px) {
+    .content-editor {
+        &__heading { margin-bottom: 1.2rem; }
+        &__page-info { flex-direction: column; gap: .7rem; }
+        &__grid { grid-template-columns: minmax(0, 1fr); padding: 1rem; gap: .8rem; }
+        &__section > summary { padding: .9rem; }
+        &__actions { padding: .75rem; gap: .65rem; > div:first-child span { display: none; } }
+        &__buttons { width: 100%; gap: .45rem; button { flex: 1; padding: .65rem .5rem; font-size: .68rem; } }
+        &__pages button { padding: .85rem 1rem; }
+    }
+    .content-preview {
+        width: 100vw; height: 100dvh; border-radius: 0;
+        &__toolbar { flex-wrap: wrap; gap: .75rem; padding: .85rem; > div:first-child { flex: 1; min-width: 0; } h2 { font-size: 1.15rem; } p { line-height: 1.5; } }
+        &__close { order: -1; }
+        &__devices { justify-content: center; width: 100%; order: 2; }
+        &__footer { flex-wrap: wrap; padding: .75rem; gap: .5rem; > p { max-width: none; } .content-editor__buttons { width: 100%; button { flex: 1; } } }
+    }
+}

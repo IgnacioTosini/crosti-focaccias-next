@@ -5,22 +5,24 @@ import { BiHeart } from 'react-icons/bi'
 import { handleInstagramClick, handleWhatsAppClick } from '@/utils'
 import Image from 'next/image'
 import './_footer.scss'
+import { usePageText } from '@/components/content/PageContentProvider';
 
 export const Footer = () => {
+  const t = usePageText();
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className='footer'>
       <div className='footerTop'>
         <div className='footerBrand'>
-          <Image src="/personajes/crosti-logo.svg" alt="Logo de Crosti" width={72} height={72} />
+          <Image src={t('footer.logo')} alt="Logo de Crosti" width={72} height={72} />
           <div className='footerBrandText'>
-            <p>Crosti Focaccias</p>
-            <span>Artesanales en Mar del Plata</span>
+            <p>{t('footer.brand')}</p>
+            <span>{t('footer.tagline')}</span>
           </div>
         </div>
 
-        <p className='footerCredit'>Hecho con amor en Mar del Plata <BiHeart className='heartIcon' /></p>
+        <p className='footerCredit'>{t('footer.credit')} <BiHeart className='heartIcon' /></p>
 
         <div className='footerLinks'>
           <button type='button' className='footerSocial instagram' onClick={handleInstagramClick} aria-label='Abrir Instagram de Crosti'>
@@ -32,7 +34,7 @@ export const Footer = () => {
         </div>
       </div>
       <div className='footerBottom'>
-        <p>© {currentYear} Crosti Focaccias. Todos los derechos reservados.</p>
+        <p>© {currentYear} {t('footer.copyright')}</p>
         <span>Creado por Ignacio Tosini</span>
       </div>
     </footer>

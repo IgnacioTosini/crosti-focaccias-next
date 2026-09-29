@@ -58,6 +58,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </Link>
             </li>
             <li>
+              <Link href="/admin/contenido" className={isActive('/admin/contenido') ? 'active' : ''} aria-current={isActive('/admin/contenido') ? 'page' : undefined}>
+                Contenido
+              </Link>
+            </li>
+            <li>
               <button
                 className="adminHeaderButton"
                 onClick={handleBackToSite}

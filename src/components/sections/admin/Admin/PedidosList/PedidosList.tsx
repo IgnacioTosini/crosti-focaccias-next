@@ -1,25 +1,22 @@
+'use client';
+
 import { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { FaAngleDown, FaAngleUp, FaSearch } from 'react-icons/fa';
 import type { Pedido } from '@/types';
 import { AdminOrderCard } from '../AdminOrderCard/AdminOrderCard';
 import { AdminState } from '../AdminState/AdminState';
 import { usePedidos } from '@/hooks/usePedidos';
+import { matchesOrderFilters, orderFilterLabels, type OrderFilters } from '@/lib/adminDashboard';
 import './_pedidosList.scss';
 
-const statusLabels: Record<string, string> = {
-    ALL: 'Todos',
-    PENDIENTE: 'Pendiente',
-    CONFIRMADO: 'Confirmado',
-    EN_PREPARACION: 'En preparación',
-    LISTO: 'Listo',
-    ENTREGADO: 'Entregado',
-    CANCELADO: 'Cancelado',
-};
-
-export const PedidosList = () => {
+export const PedidosList = ({ initialFilters = { status: 'ALL', date: '', orderId: null } }: { initialFilters?: OrderFilters }) => {
     const pedidos = usePedidos();
+    const router = useRouter();
 
-    const [statusFilter, setStatusFilter] = useState<string>('ALL');
+    const [statusFilter, setStatusFilter] = useState(initialFilters.status);
+    const [dateFilter, setDateFilter] = useState(initialFilters.date);
+    const [orderIdFilter, setOrderIdFilter] = useState(initialFilters.orderId);
     const [search, setSearch] = useState('');
     const [open, setOpen] = useState(true);
 
@@ -35,8 +32,7 @@ export const PedidosList = () => {
         const normalizedSearch = search.trim().toLowerCase();
 
         return orderedPedidos.filter((pedido) => {
-            const matchesStatus = statusFilter === 'ALL' || pedido.status === statusFilter;
-            if (!matchesStatus) {
+            if (!matchesOrderFilters(pedido, { status: statusFilter, date: dateFilter, orderId: orderIdFilter })) {
                 return false;
             }
 
@@ -52,7 +48,15 @@ export const PedidosList = () => {
                 || phone.includes(normalizedSearch)
                 || id.includes(normalizedSearch);
         });
-    }, [orderedPedidos, search, statusFilter]);
+    }, [orderedPedidos, search, statusFilter, dateFilter, orderIdFilter]);
+
+    const clearFilters = () => {
+        setStatusFilter('ALL');
+        setDateFilter('');
+        setOrderIdFilter(null);
+        setSearch('');
+        router.replace('/admin/pedidos', { scroll: false });
+    };
 
     const summary = useMemo(() => {
         return orderedPedidos.reduce(
@@ -136,11 +140,22 @@ export const PedidosList = () => {
                     onChange={(event) => setStatusFilter(event.target.value)}
                     aria-label='Filtrar por estado'
                 >
-                    {Object.entries(statusLabels).map(([value, label]) => (
+                    {Object.entries(orderFilterLabels).map(([value, label]) => (
                         <option key={value} value={value}>{label}</option>
                     ))}
                 </select>
+                <label className='ordersDateControl'>
+                    <span>Fecha (Argentina)</span>
+                    <input type='date' value={dateFilter} onChange={(event) => setDateFilter(event.target.value)} aria-label='Filtrar por fecha de pedido' />
+                </label>
             </div>
+
+            {(statusFilter !== 'ALL' || dateFilter || orderIdFilter !== null || search) && (
+                <div className='ordersActiveFilters'>
+                    <p>{orderIdFilter !== null ? `Mostrando el pedido #${orderIdFilter}` : 'Mostrando pedidos filtrados'}</p>
+                    <button type='button' onClick={clearFilters}>Limpiar filtros y ver todos</button>
+                </div>
+            )}
 
             <ul
                 className={`ordersList${open ? ' open' : ''}`}

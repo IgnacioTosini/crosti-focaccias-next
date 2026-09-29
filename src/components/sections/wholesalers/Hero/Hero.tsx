@@ -1,5 +1,6 @@
 "use client";
 
+import { usePageText } from '@/components/content/PageContentProvider';
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { PlaceCard } from '../PlaceCard/PlaceCard'
@@ -11,6 +12,7 @@ import { animateWholesalersHero } from '@/animations';
 import './_hero.scss';
 
 export const Hero = () => {
+    const t = usePageText();
     const heroRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -25,38 +27,38 @@ export const Hero = () => {
         <div className="wholesalersHero" ref={heroRef}>
             <div className='contentContainer'>
                 <div className='contentLeft'>
-                    <span className='badge'>🏢 Ventas Mayoristas</span>
-                    <h1 className='title'>Focaccias artesanales <span>para negocios</span></h1>
-                    <p className='description'>Trabajamos con cafeterías, eventos y comercios que buscan productos de calidad artesanal, con identidad y sabor real.</p>
+                    <span className='badge'>{t('hero.badge')}</span>
+                    <h1 className='title'>{t('hero.title')} <span>{t('hero.highlight')}</span></h1>
+                    <p className='description'>{t('hero.description')}</p>
                     <div className='heroStats' aria-label='Datos de servicio mayorista'>
                         <div>
-                            <strong>Fresco</strong>
-                            <span>producción a pedido</span>
+                            <strong>{t('hero.stat1Title')}</strong>
+                            <span>{t('hero.stat1Text')}</span>
                         </div>
                         <div>
-                            <strong>Flexible</strong>
-                            <span>volumen según demanda</span>
+                            <strong>{t('hero.stat2Title')}</strong>
+                            <span>{t('hero.stat2Text')}</span>
                         </div>
                         <div>
-                            <strong>Directo</strong>
-                            <span>trato sin intermediarios</span>
+                            <strong>{t('hero.stat3Title')}</strong>
+                            <span>{t('hero.stat3Text')}</span>
                         </div>
                     </div>
                     <div className='placesList'>
-                        <PlaceCard icon="☕" label="Cafeterías" />
-                        <PlaceCard icon="🎉" label="Eventos" />
-                        <PlaceCard icon="🏪" label="Comercios" />
-                        <PlaceCard icon="🍽️" label="Restaurantes" />
-                        <PlaceCard icon="🍴" label="Catering" />
+                        <PlaceCard icon="☕" label={t('hero.place1')} />
+                        <PlaceCard icon="🎉" label={t('hero.place2')} />
+                        <PlaceCard icon="🏪" label={t('hero.place3')} />
+                        <PlaceCard icon="🍽️" label={t('hero.place4')} />
+                        <PlaceCard icon="🍴" label={t('hero.place5')} />
                     </div>
                     <div className='buttonsContainer'>
-                        <Link href="#contacto" className='primaryWholesalerButton'><IoIosSend className='icon'/>Consultar ahora</Link>
-                        <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ''}`} className='secondaryWholesalerButton'><BsWhatsapp className='icon'/>WhatsApp directo</Link>
+                        <Link href="#contacto" className='primaryWholesalerButton'><IoIosSend className='icon'/>{t('hero.contactButton')}</Link>
+                        <Link href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || ''}`} className='secondaryWholesalerButton'><BsWhatsapp className='icon'/>{t('hero.whatsappButton')}</Link>
                     </div>
                 </div>
                 <div className='heroMedia'>
                     <Image
-                        src="/wholesalers/HeroImage.webp"
+                        src={t('hero.image')}
                         alt="Crosti Mayorista"
                         width={550}
                         height={420}
@@ -68,8 +70,8 @@ export const Hero = () => {
                     <div className='qualityBadgeContainer'>
                         <MdOutlineStarOutline />
                         <div className='qualityBadge'>
-                            <h3>Calidad garantizada</h3>
-                            <p>Masa madre · Ingredientes frescos · Hecho en el día</p>
+                            <h3>{t('hero.qualityTitle')}</h3>
+                            <p>{t('hero.qualityText')}</p>
                         </div>
                     </div>
                 </div>

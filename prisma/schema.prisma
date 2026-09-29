@@ -112,3 +112,10 @@ model PromocionItem {
 
     @@index([promocionId])
 }
+
+model PageContent {
+    page      String   @id
+    values    Json
+    revision  Int      @default(1)
+    updatedAt DateTime @updatedAt
+}

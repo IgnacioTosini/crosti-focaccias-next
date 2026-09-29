@@ -6,29 +6,16 @@ import { FaMapMarkerAlt, FaRegCalendarCheck } from 'react-icons/fa'
 import { animateHowToOrder } from '@/animations';
 import Image from 'next/image';
 import './_howToOrder.scss'
-
-const steps = [
-  {
-    number: '01',
-    title: 'Elegí',
-    icon: <FiShoppingBag className='stepIcon stepIconMenu' />,
-    details: ['Revisá sabores, tamaños y combos.', 'Agregá al carrito lo que querés compartir.'],
-  },
-  {
-    number: '02',
-    title: 'Confirmá',
-    icon: <FiMessageCircle className='stepIcon stepIconContact' />,
-    details: ['Enviá el pedido por WhatsApp.', 'Lo tomamos con anticipación para el finde.'],
-  },
-  {
-    number: '03',
-    title: 'Coordiná',
-    icon: <FaMapMarkerAlt className='stepIcon stepIconMap' />,
-    details: ['Entrega en zonas de Mar del Plata.', 'También podés retirar y elegir medio de pago.'],
-  },
-];
+import { usePageText } from '@/components/content/PageContentProvider';
 
 export const HowToOrder = () => {
+  const t = usePageText();
+  const icons = [<FiShoppingBag key='menu' className='stepIcon stepIconMenu' />, <FiMessageCircle key='contact' className='stepIcon stepIconContact' />, <FaMapMarkerAlt key='map' className='stepIcon stepIconMap' />];
+  const steps = icons.map((icon, index) => ({
+    number: `0${index + 1}`, icon,
+    title: t(`order.step${index + 1}Title`),
+    details: [t(`order.step${index + 1}Line1`), t(`order.step${index + 1}Line2`)],
+  }));
   const howToOrderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,15 +30,15 @@ export const HowToOrder = () => {
     <div className='howToOrder' ref={howToOrderRef}>
       <div className='howToOrderTitleWrap'>
         <Image
-          src='/stickersAdicionales/garlic-clove.png'
+          src={t('order.stickerLeft')}
           alt='Sticker decorativo ajo'
           width={74}
           height={74}
           className='titleSticker titleStickerLeft'
         />
-        <h2 className='howToOrderTitle'>¿Cómo Pedir?</h2>
+        <h2 className='howToOrderTitle'>{t('order.title')}</h2>
         <Image
-          src='/stickersAdicionales/onion-rings.png'
+          src={t('order.stickerRight')}
           alt='Sticker decorativo cebolla'
           width={74}
           height={74}
@@ -65,8 +52,8 @@ export const HowToOrder = () => {
             <div className='stepIconWrap'>{step.icon}</div>
             <div className='stepContent'>
               <h3 className='stepTitle'>{step.title}</h3>
-              {step.details.map((detail) => (
-                <p className='stepDescription' key={detail}>{detail}</p>
+              {step.details.map((detail, index) => (
+                <p className='stepDescription' key={index}>{detail}</p>
               ))}
             </div>
           </article>
@@ -74,7 +61,7 @@ export const HowToOrder = () => {
       </div>
       <div className='howToOrderNote'>
         <FaRegCalendarCheck />
-        <span>Los pedidos se coordinan con anticipación para que salga todo fresco.</span>
+        <span>{t('order.note')}</span>
       </div>
     </div>
   )

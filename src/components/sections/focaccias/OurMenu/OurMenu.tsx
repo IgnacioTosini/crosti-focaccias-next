@@ -9,12 +9,14 @@ import { SmartLoading } from '../SmartLoading/SmartLoading'
 import { CombosSection } from '../CombosSection/CombosSection'
 import { FocacciasSection } from '../FocacciasSection/FocacciasSection'
 import './_ourMenu.scss'
+import { usePageText } from '@/components/content/PageContentProvider';
 
 interface OurMenuProps {
   initialFocaccias?: FocacciaItem[]
 }
 
 export default function OurMenu({ initialFocaccias }: OurMenuProps) {
+  const t = usePageText();
   const ourMenuRef = useRef<HTMLDivElement>(null)
   // Polling cada 30 s para reflejar cambios del admin sin recargar la página,
   // igual que el comportamiento de CombosSection con usePromociones.
@@ -47,7 +49,7 @@ export default function OurMenu({ initialFocaccias }: OurMenuProps) {
 
   return (
     <div className='ourMenu' ref={ourMenuRef}>
-      <h2 className='ourMenuTitle'>Nuestro Menú</h2>
+      <h2 className='ourMenuTitle'>{t('menu.title')}</h2>
       <CombosSection />
       <div className='menuItemsContainer'>
         {isLoading && !hasData ? (
@@ -68,9 +70,9 @@ export default function OurMenu({ initialFocaccias }: OurMenuProps) {
       <div className='extraInfo'>
         <FaRegLightbulb />
         <div className='extraInfoContent'>
-          <h4>Extra info:</h4>
+          <h4>{t('menu.infoTitle')}</h4>
           <p>
-            Tenés tamaños mediana y grande. Si te sobra, podés congelarla hasta por 60 días ❄️
+            {t('menu.info')}
           </p>
         </div>
       </div>

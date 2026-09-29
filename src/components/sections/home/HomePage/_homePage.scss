@@ -1,6 +1,7 @@
 @use '../../../../styles/variables' as *;
 
 .homePage {
+    overflow-wrap: anywhere;
     display: flex;
     flex-direction: column;
     align-items: center;

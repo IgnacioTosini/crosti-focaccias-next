@@ -3,7 +3,7 @@ import { Banner } from '../Banner/Banner'
 import { ConnectUs } from '../ConnectUs/ConnectUs'
 import { Header } from '../Header/Header'
 import { HowToOrder } from '../HowToOrder/HowToOrder'
-import { Chatbot } from '../Chatbot/Chatbot';
+import { FrequentlyAskedQuestions } from '../FrequentlyAskedQuestions/FrequentlyAskedQuestions';
 import { ScrollLock } from '@/components/shared/ScrollLock/ScrollLock';
 import type { FocacciaItem } from '@/types';
 import OurMenu from '../../focaccias/OurMenu/OurMenu';
@@ -13,12 +13,13 @@ import './_homePage.scss'
 
 interface HomePageProps {
     initialFocaccias?: FocacciaItem[];
+    preview?: boolean;
 }
 
-export const HomePage = ({ initialFocaccias }: HomePageProps) => {
+export const HomePage = ({ initialFocaccias, preview = false }: HomePageProps) => {
     return (
         <main className="homePage">
-            <ScrollLock />
+            {!preview && <ScrollLock />}
 
             <Header />
             <Banner />
@@ -35,12 +36,15 @@ export const HomePage = ({ initialFocaccias }: HomePageProps) => {
                 <HowToOrder />
             </section>
 
+            <section id="preguntas-frecuentes">
+                <FrequentlyAskedQuestions />
+            </section>
+
             <section id="contacto">
                 <ConnectUs />
             </section>
 
-            <CartUI />
-            <Chatbot />
+            {!preview && <CartUI />}
             <Footer />
         </main>
     );

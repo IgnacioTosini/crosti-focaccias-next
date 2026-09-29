@@ -3,6 +3,8 @@
 
 .admin-panel-layout {
   display: flex;
+  width: 100%;
+  min-width: 0;
   min-height: 100dvh;
   background: #f4f5f7;
   overflow-x: clip;
@@ -14,6 +16,7 @@
     flex-direction: column;
     gap: 1.25rem;
     width: 250px;
+    min-width: 0;
     height: 100dvh;
     padding: 1.25rem;
     background: linear-gradient(180deg, #20242b 0%, #171a20 100%);
@@ -57,12 +60,13 @@
     flex-shrink: 0;
   }
 
-  nav,
-  ul {
+  .admin-sidebar nav,
+  .admin-sidebar ul {
     width: 100%;
+    min-width: 0;
   }
 
-  ul {
+  .admin-sidebar ul {
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
@@ -71,7 +75,7 @@
     margin: 0;
   }
 
-  li {
+  .admin-sidebar li {
     margin: 0;
   }
 
@@ -148,7 +152,7 @@
       }
     }
 
-    nav {
+    .admin-sidebar nav {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior-x: contain;
@@ -157,13 +161,13 @@
       width: 100%;
     }
 
-    ul {
+    .admin-sidebar ul {
       flex-direction: row;
       width: max-content;
       min-width: 100%;
     }
 
-    li {
+    .admin-sidebar li {
       flex: 0 0 auto;
     }
 

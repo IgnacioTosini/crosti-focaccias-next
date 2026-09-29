@@ -52,7 +52,10 @@ export function ReactQueryProvider({ children }: { children: React.ReactNode }) 
             persistOptions={{
                 persister,
                 maxAge: PERSISTED_CACHE_TIME,
-                buster: "crosti-v4"
+                buster: "crosti-v4",
+                dehydrateOptions: {
+                    shouldDehydrateQuery: (query) => query.state.status === 'success' && query.queryKey[0] !== 'admin-dashboard',
+                },
             }}
             onSuccess={() => {
                 queryClient.removeQueries({ queryKey: ['focaccias'] })

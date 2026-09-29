@@ -5,8 +5,10 @@ import { ConnectCard } from '../ConnectCard/ConnectCard'
 import { animateConnectUs } from '@/animations';
 import Image from 'next/image';
 import './_connectUs.scss'
+import { usePageText } from '@/components/content/PageContentProvider';
 
 export const ConnectUs = () => {
+  const t = usePageText();
   const connectUsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,15 +23,15 @@ export const ConnectUs = () => {
     <div className='connectUs' ref={connectUsRef}>
       <div className='connectUsTitleWrap'>
         <Image
-          src='/personajes/crosti-lentes-de-sol.svg'
+          src={t('contact.character')}
           alt='Crosti con lentes'
           width={90}
           height={90}
           className='connectCharacter'
         />
-        <h2 className='connectUsTitle'>¡Conectemos!</h2>
+        <h2 className='connectUsTitle'>{t('contact.title')}</h2>
         <Image
-          src='/stickersAdicionales/herb-sprigs.png'
+          src={t('contact.sticker')}
           alt='Sticker decorativo hierbas'
           width={76}
           height={76}
@@ -37,9 +39,9 @@ export const ConnectUs = () => {
         />
       </div>
       <div className='connectCardsContainer'>
-        <ConnectCard title='WhatsApp' description='Enviar mensaje' iconUrl='WhatsApp' />
-        <ConnectCard title='Instagram' description='@crosti.focaccias' iconUrl='Instagram' link='https://www.instagram.com/crosti.focaccias' />
-        <ConnectCard title='Ubicación' description='Mar del Plata' iconUrl='Map' />
+        <ConnectCard title={t('contact.whatsappTitle')} description={t('contact.whatsappDescription')} iconUrl='WhatsApp' />
+        <ConnectCard title={t('contact.instagramTitle')} description={t('contact.instagramDescription')} iconUrl='Instagram' link='https://www.instagram.com/crosti.focaccias' />
+        <ConnectCard title={t('contact.locationTitle')} description={t('contact.locationDescription')} iconUrl='Map' />
       </div>
     </div>
   )

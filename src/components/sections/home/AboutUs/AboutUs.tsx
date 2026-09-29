@@ -5,8 +5,10 @@ import { IoLeafSharp } from 'react-icons/io5'
 import { animateAboutUs } from '@/animations'
 import './_aboutUs.scss'
 import Image from 'next/image';
+import { usePageText } from '@/components/content/PageContentProvider';
 
 export const AboutUs = () => {
+  const t = usePageText();
   const aboutUsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,31 +22,31 @@ export const AboutUs = () => {
   return (
     <div className='aboutUsContainer' ref={aboutUsRef}>
       <div className='aboutUsTitleWrapper'>
-        <h2 className='aboutUsTitle'>Sobre Crosti</h2>
+        <h2 className='aboutUsTitle'>{t('about.title')}</h2>
         <div className='aboutUsCharacterFloat'>
-          <Image src='/personajes/crosti-original.svg' alt='Crosti' width={80} height={80} />
+          <Image src={t('about.character')} alt='Crosti' width={80} height={80} />
         </div>
       </div>
       <div className='textImageContainer'>
         <div className='textContainer'>
-          <span className='aboutUsKicker'>Hecho en Mar del Plata</span>
-          <p className='aboutUsText'>Crosti nació del amor por la cocina artesanal y la pasión por crear momentos especiales alrededor de la mesa. Cada focaccia es preparada con masa madre, ingredientes frescos y el cariño de siempre.</p>
-          <p className='aboutUsText'>Desde Mar del Plata, llevamos el sabor auténtico de Italia a tu hogar, con opciones que cuidan tanto el paladar como las preferencias de cada familia.</p>
+          <span className='aboutUsKicker'>{t('about.eyebrow')}</span>
+          <p className='aboutUsText'>{t('about.paragraph1')}</p>
+          <p className='aboutUsText'>{t('about.paragraph2')}</p>
 
           <div className='aboutUsHighlights'>
-            <span className='aboutUsText leafText'><IoLeafSharp className='leaf' />Opciones veggie disponibles</span>
-            <span className='aboutUsText doughText'>Masa madre · Hechas en el día</span>
+            <span className='aboutUsText leafText'><IoLeafSharp className='leaf' />{t('about.veggie')}</span>
+            <span className='aboutUsText doughText'>{t('about.dough')}</span>
           </div>
         </div>
         <figure className='imageContainer'>
           <Image
-            src='/personajes/crosti_original.webp'
+            src={t('about.image')}
             alt='Crosti, personaje de la marca'
             width={340}
             height={420}
             className='aboutUsCharacter'
           />
-          <figcaption className='aboutUsText'>Hecho con amor y tradición</figcaption>
+          <figcaption className='aboutUsText'>{t('about.caption')}</figcaption>
         </figure>
       </div>
     </div>

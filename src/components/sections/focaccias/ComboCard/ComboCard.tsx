@@ -1,4 +1,5 @@
 import { CustomButton } from '@/components/shared/CustomButton/CustomButton';
+import { notifyCartAddition } from '@/components/shared/CartToast/CartToast';
 import { useCartStore } from '@/store/cart.store';
 import type { ComboItem, ComboPedido } from '@/types';
 import { handleWhatsAppClick } from '@/utils';
@@ -88,6 +89,7 @@ export const ComboCard = ({ id, people, title, description, price, type, items }
         };
 
         addCombo(comboPedido);
+        notifyCartAddition(title, comboFocacciaSlots.length > 0 ? 'Elegí los sabores desde el carrito.' : undefined);
     };
 
     return (
