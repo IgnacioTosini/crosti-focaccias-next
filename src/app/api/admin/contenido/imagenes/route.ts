@@ -26,8 +26,9 @@ export async function POST(request: NextRequest) {
     if (!signatureMatches) return respond({ message: 'El archivo no es una imagen válida.' }, 415);
 
     try {
-        // The folder in the Media Library and the public ID both stay under content.
-        const params = { asset_folder: 'content', public_id: `content/${randomUUID()}`, overwrite: 'false', allowed_formats: 'jpg,png,webp', timestamp: String(Math.floor(Date.now() / 1000)) };
+        // The Media Library folder is independent of the public ID used in image URLs.
+        const assetFolder = `${process.env.CLOUDINARY_UPLOAD_FOLDER || 'Crosti Focaccias'}/content`;
+        const params = { asset_folder: assetFolder, public_id: `content/${randomUUID()}`, overwrite: 'false', allowed_formats: 'jpg,png,webp', timestamp: String(Math.floor(Date.now() / 1000)) };
         const signature = createHash('sha1').update(Object.entries(params).sort(([a], [b]) => a.localeCompare(b)).map(([key, value]) => `${key}=${value}`).join('&') + secret).digest('hex');
         const form = new FormData();
         form.append('file', file);
